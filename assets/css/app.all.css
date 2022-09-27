@@ -1302,19 +1302,19 @@ img.mfp-img {
   font-family: "Open Sans";
   font-style: normal;
   font-weight: 300;
-  src: local("Open Sans Light"), local("OpenSans-Light"), url("fonts/iransans/IRANSansXFaNum-Light.woff") format("woff");
+  src: local("Open Sans Light"), local("OpenSans-Light"), url("fonts/opensans/opensans-light.woff") format("woff");
 }
 @font-face {
   font-family: "Open Sans";
   font-style: normal;
   font-weight: 400;
-  src: local("Open Sans"), local("OpenSans"), url("fonts/iransans/IRANSansXFaNum-Regular.woff") format("woff");
+  src: local("Open Sans"), local("OpenSans"), url("fonts/opensans/opensans.woff") format("woff");
 }
 @font-face {
   font-family: "Open Sans";
   font-style: normal;
   font-weight: 700;
-  src: local("Open Sans Bold"), local("OpenSans-Bold"), url("fonts/iransans/IRANSansXFaNum-Bold.woff") format("woff");
+  src: local("Open Sans Bold"), local("OpenSans-Bold"), url("fonts/opensans/opensans-bold.woff") format("woff");
 }
 .navbar-nav .nav-link {
   padding: 15px 15px !important;
@@ -1972,6 +1972,9 @@ img.mfp-img {
   .cart-item-details-container {
     width: 150px !important;
   }
+  .message-send-button {
+    display: inline !important;
+  }
 }
 @media screen and (max-width: 440px) {
   .custom-toolbar .DTTT_container .w200, .custom-toolbar .DTTT_container .w150, .custom-toolbar .DTTT_container .btn, .custom-toolbar .DTTT_container .dropdown {
@@ -2382,6 +2385,12 @@ img.mfp-img {
 .pt35 {
   padding-top: 35px !important;
 }
+.w140 {
+  width: 140px;
+}
+.w-filter-right {
+  width: calc(100% - 140px);
+}
 /*x-editable*/
 .editable-container .select2-container {
   min-width: 110px;
@@ -2684,6 +2693,7 @@ table.header-style {
   width: 100%;
   max-width: 100%;
   border: none !important;
+  overflow-x: unset !important;
 }
 td.option a, .action-option {
   cursor: pointer;
@@ -3089,6 +3099,12 @@ td.option a.delete:hover {
 .DTTT_container .input-daterange .input-group-addon {
   margin-left: -5px !important;
 }
+.DTTT_container .btn.active {
+  border-color: #f2f4f6 !important;
+}
+.DTTT_container .btn:hover, .DTTT_container .btn:active, .DTTT_container .btn:focus {
+  border-color: #f2f4f6 !important;
+}
 div.dataTables_wrapper div.dataTables_processing {
   top: 20% !important;
 }
@@ -3399,6 +3415,9 @@ i.online {
 }
 .btn-default:hover {
   background-color: #E6E6E6;
+  border-color: #E6E6E6;
+}
+.btn-default:active, .btn-default:focus {
   border-color: #E6E6E6;
 }
 .btn-primary {
@@ -4037,6 +4056,9 @@ body.modal-open {
   border-bottom: 2px solid #20446f !important;
   border-radius: 0;
   cursor: default;
+}
+.nav-tabs li .active:focus, .nav-tabs li.active:focus {
+  outline: none;
 }
 .nav-tabs.title li a {
   padding: 20px 15px;
@@ -4842,7 +4864,7 @@ svg:not(.gantt) {
   padding: 20px 30px;
 }
 .view-container {
-  max-width: 100%;
+  max-width: 1060px;
   margin: auto;
 }
 .view-container-large {
@@ -6256,4 +6278,19 @@ input[type="color"]::-webkit-color-swatch {
 }
 .bottom-25 {
   bottom: 25px !important;
+}
+.message-send-button {
+  position: absolute;
+  padding: 10px;
+  right: 0;
+  display: none;
+}
+.message-send-button svg {
+  transform: rotate(45deg);
+}
+.btn-group .btn.active {
+  border-color: #f2f4f6 !important;
+}
+.email-template-form .modal-body {
+  padding: 1rem;
 }

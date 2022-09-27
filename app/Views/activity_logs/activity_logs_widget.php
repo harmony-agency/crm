@@ -78,8 +78,7 @@ foreach ($activity_logs as $log) {
 
                         echo "<ul>";
                         foreach ($changes_array as $change) {
-                            // Harmony Convert To UTF8
-                            echo utf8_decode($change);
+                            echo $change;
                         }
                         echo "</ul>";
                     }

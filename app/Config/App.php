@@ -3,6 +3,7 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
+use CodeIgniter\Session\Handlers\FileHandler;
 
 class App extends BaseConfig {
 
@@ -362,7 +363,7 @@ class App extends BaseConfig {
      * (empty string) means default SameSite attribute set by browsers (`Lax`)
      * will be set on cookies. If set to `None`, `$cookieSecure` must also be set.
      *
-     * @var string
+     * @var string|null
      *
      * @deprecated use Config\Cookie::$samesite property instead.
      */
@@ -480,7 +481,7 @@ class App extends BaseConfig {
      * Defaults to `Lax` as recommended in this link:
      *
      * @see https://portswigger.net/web-security/csrf/samesite-cookies
-     * @deprecated Use `Config\Security` $samesite property instead of using this property.
+     * @deprecated `Config\Cookie` $samesite property is used.
      *
      * @var string
      */
@@ -507,7 +508,7 @@ class App extends BaseConfig {
     public $CSPEnabled = false;
 
     /* User configs */
-    public $encryption_key = "572324fe670e2c2";
+    public $encryption_key = "enter_encryption_key";
     public $csrf_protection = true;
     public $temp_file_path = 'files/temp/';
     public $profile_image_path = 'files/profile_images/';

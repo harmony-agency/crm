@@ -59,17 +59,17 @@ class Project_files_model extends Crud_model {
         $file_category_table = $this->db->prefixTable('file_category');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $project_files_table.id=$id";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $project_files_table.project_id=$project_id";
         }
 
-        $category_id = get_array_value($options, "category_id");
+        $category_id = $this->_get_clean_value($options, "category_id");
         if ($category_id) {
             $where .= " AND $project_files_table.category_id=$category_id";
         }

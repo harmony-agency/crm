@@ -2,11 +2,6 @@
     <?php echo view('includes/meta'); ?>
     <?php echo view('includes/helper_js'); ?>
     <?php echo view('includes/plugin_language_js'); ?>
-    <?php
-    $Users_model = model("App\Models\Users_model");
-    $login_user_id = $Users_model->login_user_id();
-    $personal_rtl_support = get_setting('user_' . $login_user_id . '_personal_rtl_support');
-    ?>
 
     <?php
     //We'll merge all css and js into sigle files. If you want to use the css separately, you can use it.
@@ -72,7 +67,7 @@
         "assets/css/app.all.css",
     );
 
-    if ((get_setting("rtl") && !$personal_rtl_support) || $personal_rtl_support == "yes") {
+    if (app_lang("text_direction") == "rtl") {
         array_push($css_files, "assets/css/rtl.css");
     }
 

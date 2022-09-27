@@ -512,7 +512,7 @@
         .nav-item{
             #user-dropdown{
                 padding-right: 8px !important;
-            }   
+            }
         }
     }
 
@@ -655,6 +655,10 @@
     .cart-item-details-container{
         width: 150px !important;
     }
+
+    .message-send-button{
+        display: inline !important;
+    }
 }
 
 @media screen and (max-width: 440px) {
@@ -672,7 +676,7 @@
             }
             #calendar-filter-dropdown{
                 .DTTT_container{
-                    width: 180px; 
+                    width: 180px;
                     @media (max-width: 400px){
                         width: 100px !important;
                     }
@@ -703,7 +707,7 @@
 
     .g-recaptcha{
         margin-left: -25px;
-        -ms-transform: scale(0.8,0.8); 
+        -ms-transform: scale(0.8,0.8);
         -webkit-transform: scale(0.8,0.8);
         -moz-transform: scale(0.8,0.8);
         transform: scale(0.8,0.8);

@@ -409,6 +409,7 @@ table.header-style{
     width: 100%;
     max-width: 100%;
     border: none !important;
+    overflow-x: unset !important
 }
 
 td.option a, .action-option {
@@ -921,6 +922,15 @@ td {
         }
         .input-group-addon{
             margin-left: -5px !important;
+        }
+    }
+
+    .btn{
+        &.active{
+            border-color: #f2f4f6 !important;
+        }
+        &:hover, &:active, &:focus {
+            border-color: #f2f4f6 !important;
         }
     }
 }

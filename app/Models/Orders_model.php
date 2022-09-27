@@ -21,17 +21,17 @@ class Orders_model extends Crud_model {
         $projects_table = $this->db->prefixTable('projects');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $orders_table.id=$id";
         }
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $orders_table.client_id=$client_id";
         }
 
-        $order_date = get_array_value($options, "order_date");
-        $deadline = get_array_value($options, "deadline");
+        $order_date = $this->_get_clean_value($options, "order_date");
+        $deadline = $this->_get_clean_value($options, "deadline");
         if ($order_date && $deadline) {
             $where .= " AND ($orders_table.order_date BETWEEN '$order_date' AND '$deadline') ";
         }
@@ -52,7 +52,7 @@ class Orders_model extends Crud_model {
             - $discount_amount
            )";
 
-        $status_id = get_array_value($options, "status_id");
+        $status_id = $this->_get_clean_value($options, "status_id");
         if ($status_id) {
             $where .= " AND $orders_table.status_id='$status_id'";
         }

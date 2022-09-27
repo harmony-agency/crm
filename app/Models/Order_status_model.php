@@ -16,7 +16,7 @@ class Order_status_model extends Crud_model {
         $orders_table = $this->db->prefixTable('orders');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $order_status_table.id=$id";
         }

@@ -73,7 +73,7 @@ foreach ($task_statuses as $status) {
             order: [[1, "desc"]],
             filterDropdown: [
 <?php if ($show_milestone_info) { ?>
-                {name: "milestone_id", class: "w200", options: <?php echo $milestone_dropdown; ?>},
+                {name: "milestone_id", class: "w150", options: <?php echo $milestone_dropdown; ?>},
 <?php } ?>
             {name: "assigned_to", class: "w150", options: <?php echo $assigned_to_dropdown; ?>}
             , <?php echo $custom_field_filters; ?>
@@ -124,9 +124,9 @@ foreach ($task_statuses as $status) {
             responsive: false, //hide responsive (+) icon
             filterDropdown: [
             {name: "milestone_id", class: "w150", options: <?php echo $milestone_dropdown; ?>},
+            {name: "priority_id", class: "w100", options: <?php echo $priorities_dropdown; ?>},
 <?php if (!$show_assigned_tasks_only) { ?>{name: "assigned_to", class: "w150", options: <?php echo $assigned_to_dropdown; ?>}, <?php } ?>
-            {name: "priority_id", class: "w150", options: <?php echo $priorities_dropdown; ?>},
-            {name: "quick_filter", class: "w200", showHtml: true, options: <?php echo view("projects/tasks/quick_filters_dropdown"); ?>}
+            {name: "quick_filter", class: "w175", showHtml: true, options: <?php echo view("projects/tasks/quick_filters_dropdown"); ?>}
             , <?php echo $custom_field_filters; ?>
             ],
             singleDatepicker: [{name: "deadline", defaultText: "<?php echo app_lang('deadline') ?>",

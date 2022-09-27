@@ -3,8 +3,8 @@
     <div class="card clearfix">
         <ul id="estimate-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
             <li class="title-tab"><h4 class="pl15 pt10 pr15"><?php echo app_lang('estimates'); ?></h4></li>
-            <li><a id="monthly-estimate-button"  role="presentation" href="javascript:;" data-bs-target="#monthly-estimates"><?php echo app_lang("monthly"); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("estimates/yearly/"); ?>" data-bs-target="#yearly-estimates"><?php echo app_lang('yearly'); ?></a></li>
+            <li><a id="monthly-estimate-button"  role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#monthly-estimates"><?php echo app_lang("monthly"); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("estimates/yearly/"); ?>" data-bs-target="#yearly-estimates"><?php echo app_lang('yearly'); ?></a></li>
             <div class="tab-title clearfix no-border">
                 <div class="title-button-group">
                     <?php echo modal_anchor(get_uri("estimates/modal_form"), "<i data-feather='plus-circle' class='icon-16'></i> " . app_lang('add_estimate'), array("class" => "btn btn-default", "title" => app_lang('add_estimate'))); ?>

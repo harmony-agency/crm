@@ -2,7 +2,7 @@
     <div class='card-header'>
         <i data-feather="mail" class='icon-16 mr10'></i><?php echo app_lang($model_info->template_name); ?>
     </div>
-    <?php echo form_open(get_uri("email_templates/save"), array("id" => "email-template-form-$model_info->id", "class" => "general-form", "role" => "form")); ?>
+    <?php echo form_open(get_uri("email_templates/save"), array("id" => "email-template-form-$model_info->id", "class" => "general-form email-template-form", "role" => "form")); ?>
     <div class="modal-body clearfix">
         <input type="hidden" name="id" value="<?php echo $model_info->id; ?>" />
         <div class='row'>

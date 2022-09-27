@@ -2,10 +2,10 @@
     <div class="card clearfix">
         <ul id="invoices-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
             <li class="title-tab"><h4 class="pl15 pt10 pr15"><?php echo app_lang("invoices"); ?></h4></li>
-            <li><a id="monthly-expenses-button"  role="presentation"  href="javascript:;" data-bs-target="#monthly-invoices"><?php echo app_lang("monthly"); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("invoices/yearly/"); ?>" data-bs-target="#yearly-invoices"><?php echo app_lang('yearly'); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("invoices/custom/"); ?>" data-bs-target="#custom-invoices"><?php echo app_lang('custom'); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("invoices/recurring/"); ?>" data-bs-target="#recurring-invoices"><?php echo app_lang('recurring'); ?></a></li>
+            <li><a id="monthly-expenses-button"  role="presentation" data-bs-toggle="tab"  href="javascript:;" data-bs-target="#monthly-invoices"><?php echo app_lang("monthly"); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("invoices/yearly/"); ?>" data-bs-target="#yearly-invoices"><?php echo app_lang('yearly'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("invoices/custom/"); ?>" data-bs-target="#custom-invoices"><?php echo app_lang('custom'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("invoices/recurring/"); ?>" data-bs-target="#recurring-invoices"><?php echo app_lang('recurring'); ?></a></li>
             <div class="tab-title clearfix no-border">
                 <div class="title-button-group">
                     <?php if ($can_edit_invoices) { ?>
@@ -85,8 +85,8 @@
 <?php echo $custom_field_headers; ?>,
             {title: '<i data-feather="menu" class="icon-16"></i>', "class": "text-center dropdown-option w100", visible: optionVisibility}
             ],
-            printColumns: combineCustomFieldsColumns([0, 1, 2, 4, 6, 7, 8, 9], '<?php echo $custom_field_headers; ?>'),
-            xlsColumns: combineCustomFieldsColumns([0, 1, 2, 4, 6, 7, 8, 9], '<?php echo $custom_field_headers; ?>'),
+            printColumns: combineCustomFieldsColumns([0, 1, 2, 4, 6, 7, 8, 9, 10], '<?php echo $custom_field_headers; ?>'),
+            xlsColumns: combineCustomFieldsColumns([0, 1, 2, 4, 6, 7, 8, 9, 10], '<?php echo $custom_field_headers; ?>'),
             summation: [
             {column: 7, dataType: 'currency', conversionRate: <?php echo $conversion_rate; ?>},
             {column: 8, dataType: 'currency', conversionRate: <?php echo $conversion_rate; ?>},

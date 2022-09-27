@@ -16,12 +16,12 @@ class Checklist_template_model extends Crud_model {
         $checklist_groups_table = $this->db->prefixTable('checklist_groups');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $checklist_template_table.id=$id";
         }
 
-        $group_id = get_array_value($options, "group_id");
+        $group_id = $this->_get_clean_value($options, "group_id");
         if ($group_id) {
             $where .= " AND FIND_IN_SET($checklist_template_table.id, (SELECT $checklist_groups_table.checklists FROM $checklist_groups_table WHERE $checklist_groups_table.id=$group_id ))";
         }

@@ -14,7 +14,7 @@ class Team_model extends Crud_model {
     function get_details($options = array()) {
         $team_table = $this->db->prefixTable('team');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $team_table.id=$id";
         }

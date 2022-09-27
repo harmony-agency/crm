@@ -17,7 +17,7 @@ class Events_model extends Crud_model {
         $clients_table = $this->db->prefixTable('clients');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $events_table.id=$id";
         }
@@ -25,25 +25,20 @@ class Events_model extends Crud_model {
         $start_date_query = "";
         $end_date_query = "";
 
-        $start_date = get_array_value($options, "start_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
         if ($start_date) {
-            $start_date = $this->db->escapeString($start_date);
             $start_date_query = " DATE($events_table.start_date)>='$start_date'";
         }
 
         $order_by = " ORDER BY $events_table.start_date ASC ";
 
-        $reminder_start_date_time = get_array_value($options, "reminder_start_date_time");
+        $reminder_start_date_time = $this->_get_clean_value($options, "reminder_start_date_time");
         if ($reminder_start_date_time) {
             //remove seconds since it'll give reminder only for minutes at most
-            $reminder_start_date_time = $this->db->escapeString($reminder_start_date_time);
-
-            $reminder_end_date_time = get_array_value($options, "reminder_end_date_time");
-            $get_future_events_only = get_array_value($options, "get_future_events_only");
+            $reminder_end_date_time = $this->_get_clean_value($options, "reminder_end_date_time");
+            $get_future_events_only = $this->_get_clean_value($options, "get_future_events_only");
             if ($reminder_end_date_time) {
                 //to load reminders for next 24 hours only
-                $reminder_end_date_time = $this->db->escapeString($reminder_end_date_time);
-
                 $where .= " AND (
                     (CONCAT($events_table.start_date, ' ', $events_table.start_time)>='$reminder_start_date_time' AND CONCAT($events_table.start_date, ' ', $events_table.start_time)<='$reminder_end_date_time') 
                     OR ($events_table.snoozing_time>='$reminder_start_date_time' AND $events_table.snoozing_time<='$reminder_end_date_time') 
@@ -64,15 +59,14 @@ class Events_model extends Crud_model {
             }
         }
 
-        $end_date = get_array_value($options, "end_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($end_date) {
-            $end_date = $this->db->escapeString($end_date);
             $end_date_query = " DATE($events_table.end_date)<='$end_date'";
         }
 
         if (!$end_date) {
             //when we'll find event by date, we also have to find the recurring events
-            $include_recurring = get_array_value($options, "include_recurring");
+            $include_recurring = $this->_get_clean_value($options, "include_recurring");
             if ($include_recurring) {
                 $where .= " AND (( " . $start_date_query . " AND " . $end_date_query . ") OR $events_table.recurring = 1) ";
             } else if ($start_date_query && $end_date_query) {
@@ -81,22 +75,21 @@ class Events_model extends Crud_model {
         }
 
 
-        $future_from = get_array_value($options, "future_from");
+        $future_from = $this->_get_clean_value($options, "future_from");
         if ($future_from) {
             $where .= " AND (DATE($events_table.start_date)>='$future_from' OR DATE($events_table.last_start_date)>='$future_from' )";
         }
 
-        $recurring = get_array_value($options, "recurring");
+        $recurring = $this->_get_clean_value($options, "recurring");
         if ($recurring) {
-            $recurring = $this->db->escapeString($recurring);
             $where .= " AND $events_table.recurring=1";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
 
             //find events where share with the user and his/her team
-            $team_ids = get_array_value($options, "team_ids");
+            $team_ids = $this->_get_clean_value($options, "team_ids");
             $team_search_sql = "";
 
             //searh for teams
@@ -108,7 +101,7 @@ class Events_model extends Crud_model {
             }
 
 
-            $is_client = get_array_value($options, "is_client");
+            $is_client = $this->_get_clean_value($options, "is_client");
             if ($is_client) {
                 //client user's can't see the events which has shared with all team members
                 $where .= " AND ($events_table.created_by=$user_id OR (FIND_IN_SET('contact:$user_id', $events_table.share_with)))";
@@ -124,37 +117,37 @@ class Events_model extends Crud_model {
             $where .= " AND $users_table.deleted=0 AND $users_table.status='active'";
         }
 
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $events_table.client_id=$client_id";
         }
 
-        $task_id = get_array_value($options, "task_id");
+        $task_id = $this->_get_clean_value($options, "task_id");
         if ($task_id) {
             $where .= " AND $events_table.task_id=$task_id";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $events_table.project_id=$project_id";
         }
 
-        $lead_id = get_array_value($options, "lead_id");
+        $lead_id = $this->_get_clean_value($options, "lead_id");
         if ($lead_id) {
             $where .= " AND $events_table.lead_id=$lead_id";
         }
 
-        $ticket_id = get_array_value($options, "ticket_id");
+        $ticket_id = $this->_get_clean_value($options, "ticket_id");
         if ($ticket_id) {
             $where .= " AND $events_table.ticket_id=$ticket_id";
         }
 
-        $reminder_status = get_array_value($options, "reminder_status");
+        $reminder_status = $this->_get_clean_value($options, "reminder_status");
         if ($reminder_status) {
             $where .= " AND $events_table.reminder_status='$reminder_status'";
         }
 
-        $type = get_array_value($options, "type");
+        $type = $this->_get_clean_value($options, "type");
         if ($type && $type !== "all") {
             $where .= " AND $events_table.type='$type'";
         } else if (!$type) {
@@ -162,14 +155,14 @@ class Events_model extends Crud_model {
             $where .= " AND $events_table.type='event'";
         }
 
-        $label_id = get_array_value($options, "label_id");
+        $label_id = $this->_get_clean_value($options, "label_id");
         if ($label_id) {
             $where .= " AND FIND_IN_SET($label_id, $events_table.labels) ";
         }
 
-        $limit = get_array_value($options, "limit");
+        $limit = $this->_get_clean_value($options, "limit");
         $limit = $limit ? $limit : "20000";
-        $offset = get_array_value($options, "offset");
+        $offset = $this->_get_clean_value($options, "offset");
         $offset = $offset ? $offset : "0";
 
         $select_labels_data_query = $this->get_labels_data_query();
@@ -191,11 +184,11 @@ class Events_model extends Crud_model {
         $now = get_my_local_time("Y-m-d");
 
         $where = "";
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
 
             //find events where share with the user and his/her team
-            $team_ids = get_array_value($options, "team_ids");
+            $team_ids = $this->_get_clean_value($options, "team_ids");
             $team_search_sql = "";
 
             //searh for teams
@@ -206,7 +199,7 @@ class Events_model extends Crud_model {
                 }
             }
 
-            $is_client = get_array_value($options, "is_client");
+            $is_client = $this->_get_clean_value($options, "is_client");
             if ($is_client) {
                 //client user's can't see the events which has shared with all team members
                 $where .= " AND ($events_table.created_by=$user_id OR (FIND_IN_SET('contact:$user_id', $events_table.share_with)))";

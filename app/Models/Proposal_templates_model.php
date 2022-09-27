@@ -15,7 +15,7 @@ class Proposal_templates_model extends Crud_model {
         $proposal_templates_table = $this->db->prefixTable('proposal_templates');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $proposal_templates_table.id=$id";
         }

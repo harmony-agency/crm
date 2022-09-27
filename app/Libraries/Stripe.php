@@ -14,7 +14,7 @@ class Stripe {
         require_once(APPPATH . "ThirdParty/Stripe/vendor/autoload.php");
     }
 
-    public function get_stripe_payment_intent_session($data = array(), $login_user = 0) {
+    public function get_stripe_checkout_session($data = array(), $login_user = 0) {
         $invoice_id = get_array_value($data, "invoice_id");
         $currency = get_array_value($data, "currency");
         $payment_amount = get_array_value($data, "payment_amount");
@@ -68,17 +68,22 @@ class Stripe {
 
         \Stripe\Stripe::setApiKey($this->stripe_config->secret_key);
         $session = \Stripe\Checkout\Session::create(array(
+                    'mode' => 'payment',
                     'payment_method_types' => array('card'),
                     'line_items' => array(
                         array(
-                            'name' => 'INVOICE #' . $invoice_id,
-                            'description' => $description,
-                            'amount' => $payment_amount * 100, //stripe will devide it with 100
-                            'currency' => $currency,
                             'quantity' => 1,
-                            'images' => array(
-                                get_file_uri("assets/images/stripe-payment-logo.png")
-                            )
+                            'price_data' => array(
+                                'unit_amount' => $payment_amount * 100, //stripe will devide it with 100
+                                'currency' => $currency,
+                                'product_data' => array(
+                                    'name' => 'INVOICE #' . $invoice_id,
+                                    'description' => $description,
+                                    'images' => array(
+                                        get_file_uri("assets/images/stripe-payment-logo.png")
+                                    ),
+                                )
+                            ),
                         )
                     ),
                     'payment_intent_data' => array(
@@ -91,9 +96,15 @@ class Stripe {
         ));
 
         if ($session->id) {
-            //so, the session creation is success
-            //save ipn data to db
-            $stripe_ipn_data["payment_intent"] = $session->payment_intent;
+            /**
+              so, the session creation is success
+              save ipn data to db
+              store the session id now
+              because in the latest version, we won't get payment_intent here
+              but it'll be available after the payment
+              so get the payment_intent after the payment with the session_id
+             */
+            $stripe_ipn_data["session_id"] = $session->id;
             $Stripe_ipn_model = model("App\Models\Stripe_ipn_model");
             $Stripe_ipn_model->ci_save($stripe_ipn_data);
 
@@ -105,9 +116,17 @@ class Stripe {
         return $this->stripe_config->publishable_key;
     }
 
-    public function is_valid_ipn($payment_intent) {
+    public function is_valid_ipn($session_id) {
+
+        //get the payment_intent with the session_id
         \Stripe\Stripe::setApiKey($this->stripe_config->secret_key);
-        $payment = \Stripe\PaymentIntent::retrieve($payment_intent);
+
+        $session = \Stripe\Checkout\Session::retrieve($session_id);
+        if (!($session && $session->payment_intent)) {
+            return false;
+        }
+
+        $payment = \Stripe\PaymentIntent::retrieve($session->payment_intent);
         if ($payment && $payment->status == "succeeded") {
             //so the payment is successful
             return $payment;

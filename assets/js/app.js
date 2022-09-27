@@ -2198,7 +2198,7 @@ var $appFilterXhrRequest = 'new';
 
             }
             if (!settings.hideTools) {
-                datatableOptions.sDom = "<'datatable-tools row'<'col-md-2 toolbar-left-top pl15'l><'col-md-10 custom-toolbar pr15'f<'datatable-export DTTT_container'B>>r>t<'datatable-tools clearfix row'<'col-md-3 pl15'<'summation-section'> i><'col-md-9 pr15'p>>";
+                datatableOptions.sDom = "<'datatable-tools'<'w140 float-start toolbar-left-top pl15'l><'w-filter-right float-end custom-toolbar pr15'f<'datatable-export DTTT_container'B>>r>t<'datatable-tools clearfix row'<'col-md-3 pl15'<'summation-section'> i><'col-md-9 pr15'p>>";
             }
             datatableOptions.buttons = datatableButtons;
 

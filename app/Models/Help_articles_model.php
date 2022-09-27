@@ -17,25 +17,24 @@ class Help_articles_model extends Crud_model {
         $article_helpful_status_table = $this->db->prefixTable('article_helpful_status');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $help_articles_table.id=$id";
         }
 
-        $type = get_array_value($options, "type");
+        $type = $this->_get_clean_value($options, "type");
         if ($type) {
-            $type = $this->db->escapeString($type);
             $where .= " AND $help_categories_table.type='$type'";
         }
 
 
-        $only_active_categories = get_array_value($options, "only_active_categories");
+        $only_active_categories = $this->_get_clean_value($options, "only_active_categories");
         if ($only_active_categories) {
             $where .= " AND $help_categories_table.status='active'";
         }
 
         $extra_select = "";
-        $login_user_id = get_array_value($options, "login_user_id");
+        $login_user_id = $this->_get_clean_value($options, "login_user_id");
         if ($login_user_id) {
             $extra_select = ", (SELECT count($article_helpful_status_table.id) FROM $article_helpful_status_table WHERE $article_helpful_status_table.article_id=$help_articles_table.id AND $article_helpful_status_table.deleted=0 AND $article_helpful_status_table.created_by=$login_user_id) as article_helpful_status,
                     (SELECT count($article_helpful_status_table.id) FROM $article_helpful_status_table WHERE $article_helpful_status_table.article_id=$help_articles_table.id AND $article_helpful_status_table.deleted=0 AND $article_helpful_status_table.status='yes') as helpful_status_yes,

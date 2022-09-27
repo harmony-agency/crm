@@ -24,7 +24,7 @@ if ($dashboard_type == "custom" && $dashboard_info->id !== get_setting("staff_de
 
     <div class="float-end clearfix">
         <span class="float-end dropdown dashboard-dropdown ml10">
-            <div class="dropdown-toggle clickable" type="button" data-bs-toggle="dropdown" aria-expanded="true" >
+            <div class="dropdown-toggle clickable" data-bs-toggle="dropdown" aria-expanded="true" >
                 <i data-feather="more-horizontal" class="icon-16"></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-end mt-1" role="menu">

@@ -21,33 +21,33 @@ class Invoices_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $invoices_table.id=$id";
         }
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $invoices_table.client_id=$client_id";
         }
 
-        $exclude_draft = get_array_value($options, "exclude_draft");
+        $exclude_draft = $this->_get_clean_value($options, "exclude_draft");
         if ($exclude_draft) {
             $where .= " AND $invoices_table.status!='draft' ";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $invoices_table.project_id=$project_id";
         }
 
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($start_date && $end_date) {
             $where .= " AND ($invoices_table.due_date BETWEEN '$start_date' AND '$end_date') ";
         }
 
-        $next_recurring_start_date = get_array_value($options, "next_recurring_start_date");
-        $next_recurring_end_date = get_array_value($options, "next_recurring_end_date");
+        $next_recurring_start_date = $this->_get_clean_value($options, "next_recurring_start_date");
+        $next_recurring_end_date = $this->_get_clean_value($options, "next_recurring_end_date");
         if ($next_recurring_start_date && $next_recurring_end_date) {
             $where .= " AND ($invoices_table.next_recurring_date BETWEEN '$next_recurring_start_date' AND '$next_recurring_end_date') ";
         } else if ($next_recurring_start_date) {
@@ -56,14 +56,14 @@ class Invoices_model extends Crud_model {
             $where .= " AND $invoices_table.next_recurring_date <= '$next_recurring_end_date' ";
         }
 
-        $recurring_invoice_id = get_array_value($options, "recurring_invoice_id");
+        $recurring_invoice_id = $this->_get_clean_value($options, "recurring_invoice_id");
         if ($recurring_invoice_id) {
             $where .= " AND $invoices_table.recurring_invoice_id=$recurring_invoice_id";
         }
 
         $now = get_my_local_time("Y-m-d");
         //  $options['status'] = "draft";
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
 
         $invoice_value_calculation_query = $this->_get_invoice_value_calculation_query($invoices_table);
 
@@ -84,22 +84,22 @@ class Invoices_model extends Crud_model {
         }
 
 
-        $recurring = get_array_value($options, "recurring");
+        $recurring = $this->_get_clean_value($options, "recurring");
         if ($recurring) {
             $where .= " AND $invoices_table.recurring=1";
         }
 
-        $currency = get_array_value($options, "currency");
+        $currency = $this->_get_clean_value($options, "currency");
         if ($currency) {
             $where .= $this->_get_clients_of_currency_query($currency, $invoices_table, $clients_table);
         }
 
-        $exclude_due_reminder_date = get_array_value($options, "exclude_due_reminder_date");
+        $exclude_due_reminder_date = $this->_get_clean_value($options, "exclude_due_reminder_date");
         if ($exclude_due_reminder_date) {
             $where .= " AND ($invoices_table.due_reminder_date IS NULL OR $invoices_table.due_reminder_date !='$exclude_due_reminder_date') ";
         }
 
-        $exclude_recurring_reminder_date = get_array_value($options, "exclude_recurring_reminder_date");
+        $exclude_recurring_reminder_date = $this->_get_clean_value($options, "exclude_recurring_reminder_date");
         if ($exclude_recurring_reminder_date) {
             $where .= " AND ($invoices_table.recurring_reminder_date IS NULL OR $invoices_table.recurring_reminder_date !='$exclude_recurring_reminder_date') ";
         }
@@ -228,24 +228,24 @@ class Invoices_model extends Crud_model {
         $invoices_where = "";
         $invoice_date_where = "";
 
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($start_date && $end_date) {
             $invoice_date_where .= " AND ($invoices_table.bill_date BETWEEN '$start_date' AND '$end_date')";
         } else {
             $invoice_date_where .= " AND YEAR($invoices_table.bill_date)=$year";
         }
 
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $invoices_table.client_id=$client_id";
         } else {
-            $invoices_where = $this->_get_clients_of_currency_query(get_array_value($options, "currency"), $invoices_table, $clients_table);
+            $invoices_where = $this->_get_clients_of_currency_query($this->_get_clean_value($options, "currency"), $invoices_table, $clients_table);
 
             $payments_where = " AND $invoice_payments_table.invoice_id IN(SELECT $invoices_table.id FROM $invoices_table WHERE $invoices_table.deleted=0 $invoices_where)";
         }
 
-        $payments = get_array_value($options, "payments");
+        $payments = $this->_get_clean_value($options, "payments");
         if ($payments) {
             $payments = "SELECT SUM($invoice_payments_table.amount) AS total, MONTH($invoice_payments_table.payment_date) AS month
             FROM $invoice_payments_table
@@ -294,7 +294,7 @@ class Invoices_model extends Crud_model {
         $info = new \stdClass();
 
         $where = "";
-        $currency = get_array_value($options, "currency");
+        $currency = $this->_get_clean_value($options, "currency");
         if ($currency) {
             $where .= $this->_get_clients_of_currency_query($currency, $invoices_table, $clients_table);
         }
@@ -530,7 +530,7 @@ class Invoices_model extends Crud_model {
 
         $where = "";
         $now = get_my_local_time("Y-m-d");
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
 
         $invoice_value_calculation_query = $this->_get_invoice_value_calculation_query($invoices_table);
 
@@ -548,7 +548,7 @@ class Invoices_model extends Crud_model {
             $where .= " AND $invoices_table.status !='draft' AND $invoices_table.status!='cancelled' AND $invoices_table.due_date<'$now' AND TRUNCATE(IFNULL(payments_table.payment_received,0),2)<$invoice_value_calculation";
         }
 
-        $currency = get_array_value($options, "currency");
+        $currency = $this->_get_clean_value($options, "currency");
         if ($currency) {
             $where .= $this->_get_clients_of_currency_query($currency, $invoices_table, $clients_table);
         }

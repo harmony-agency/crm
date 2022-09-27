@@ -15,17 +15,17 @@ class Email_templates_model extends Crud_model {
         $email_templates_table = $this->db->prefixTable('email_templates');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $email_templates_table.id=$id";
         }
 
-        $template_name = get_array_value($options, "template_name");
+        $template_name = $this->_get_clean_value($options, "template_name");
         if ($template_name) {
             $where .= " AND $email_templates_table.template_name='$template_name'";
         }
 
-        $template_type = get_array_value($options, "template_type");
+        $template_type = $this->_get_clean_value($options, "template_type");
         if ($template_type) {
             $where .= " AND $email_templates_table.template_type='$template_type'";
         }

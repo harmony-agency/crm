@@ -20,39 +20,38 @@ class Expenses_model extends Crud_model {
         $clients_table = $this->db->prefixTable('clients');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $expenses_table.id=$id";
         }
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($start_date && $end_date) {
             $where .= " AND ($expenses_table.expense_date BETWEEN '$start_date' AND '$end_date') ";
         }
 
-        $category_id = get_array_value($options, "category_id");
+        $category_id = $this->_get_clean_value($options, "category_id");
         if ($category_id) {
             $where .= " AND $expenses_table.category_id=$category_id";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $expenses_table.project_id=$project_id";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND $expenses_table.user_id=$user_id";
         }
 
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $expenses_table.client_id=$client_id";
         }
 
-        $recurring = get_array_value($options, "recurring");
+        $recurring = $this->_get_clean_value($options, "recurring");
         if ($recurring) {
-            $recurring = $this->db->escapeString($recurring);
             $where .= " AND $expenses_table.recurring=1";
         }
 
@@ -86,30 +85,43 @@ class Expenses_model extends Crud_model {
     function get_income_expenses_info($options = array()) {
         $expenses_table = $this->db->prefixTable('expenses');
         $invoice_payments_table = $this->db->prefixTable('invoice_payments');
+        $invoices_table = $this->db->prefixTable('invoices');
         $taxes_table = $this->db->prefixTable('taxes');
+        $clients_table = $this->db->prefixTable('clients');
         $info = new \stdClass();
         
         $where_income = "";
         $where_expenses = "";
-        $year = get_array_value($options, "year");
+        $year = $this->_get_clean_value($options, "year");
         if($year){
             $where_expenses .= " AND YEAR($expenses_table.expense_date)='$year'";
             $where_income .= " AND YEAR($invoice_payments_table.payment_date)='$year'";
         }
 
-        $sql1 = "SELECT SUM($invoice_payments_table.amount) as total_income
+        $income_sql = "SELECT SUM($invoice_payments_table.amount) as total_income, 
+            (SELECT $clients_table.currency FROM $clients_table WHERE $clients_table.id=(
+                SELECT $invoices_table.client_id FROM $invoices_table WHERE $invoices_table.id=$invoice_payments_table.invoice_id
+                )
+            ) AS currency
         FROM $invoice_payments_table
-        WHERE $invoice_payments_table.deleted=0 $where_income";
-        $income = $this->db->query($sql1)->getRow();
+        WHERE $invoice_payments_table.deleted=0 AND $invoice_payments_table.invoice_id IN(SELECT $invoices_table.id FROM $invoices_table WHERE $invoices_table.deleted=0) $where_income
+        GROUP BY currency";
+        $income_result = $this->db->query($income_sql)->getResult();
 
-        $sql2 = "SELECT SUM($expenses_table.amount + IFNULL(tax_table.percentage,0)/100*IFNULL($expenses_table.amount,0) + IFNULL(tax_table2.percentage,0)/100*IFNULL($expenses_table.amount,0)) AS total_expenses
+        $expenses_sql = "SELECT SUM($expenses_table.amount + IFNULL(tax_table.percentage,0)/100*IFNULL($expenses_table.amount,0) + IFNULL(tax_table2.percentage,0)/100*IFNULL($expenses_table.amount,0)) AS total_expenses
         FROM $expenses_table
         LEFT JOIN (SELECT $taxes_table.id, $taxes_table.percentage FROM $taxes_table) AS tax_table ON tax_table.id = $expenses_table.tax_id
         LEFT JOIN (SELECT $taxes_table.id, $taxes_table.percentage FROM $taxes_table) AS tax_table2 ON tax_table2.id = $expenses_table.tax_id2
         WHERE $expenses_table.deleted=0 $where_expenses";
-        $expenses = $this->db->query($sql2)->getRow();
+        $expenses = $this->db->query($expenses_sql)->getRow();
+        
+        //prepare income
+        $total_income = 0;
+        foreach ($income_result as $income){
+            $total_income += get_converted_amount($income->currency, $income->total_income);
+        }
 
-        $info->income = $income->total_income;
+        $info->income = $total_income;
         $info->expneses = $expenses->total_expenses;
         return $info;
     }
@@ -151,8 +163,8 @@ class Expenses_model extends Crud_model {
         $taxes_table = $this->db->prefixTable('taxes');
         $where = "";
 
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($start_date && $end_date) {
             $where .= " AND ($expenses_table.expense_date BETWEEN '$start_date' AND '$end_date') ";
         }

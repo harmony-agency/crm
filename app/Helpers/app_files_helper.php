@@ -373,13 +373,15 @@ if (!function_exists('get_source_url_of_file')) {
         $file_id = get_array_value($file_info, "file_id");
         $service_type = get_array_value($file_info, "service_type");
 
-        if (defined('PLUGIN_CUSTOM_STORAGE') && $service_type && $service_type !== "google") {
+        if ($service_type && $service_type !== "google") {
             try {
-                return app_hooks()->apply_filters('app_filter_get_source_url_of_file', array(
-                            "file_info" => $file_info,
-                            "view_type" => $view_type,
-                            "show_full_size_thumbnail" => $show_full_size_thumbnail
+                $source_url = app_hooks()->apply_filters('app_filter_get_source_url_of_file', array(
+                    "file_info" => $file_info,
+                    "view_type" => $view_type,
+                    "show_full_size_thumbnail" => $show_full_size_thumbnail
                 ));
+
+                return is_string($source_url) ? $source_url : "";
             } catch (\Exception $ex) {
                 log_message('error', '[ERROR] {exception}', ['exception' => $ex]);
                 exit();

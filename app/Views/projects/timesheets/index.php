@@ -33,7 +33,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var optionVisibility = false;
-<?php if ($login_user->user_type === "staff" && get_array_value($login_user->permissions, "timesheet_manage_permission")) { ?>
+<?php if ($login_user->user_type === "staff" && ($login_user->is_admin || get_array_value($login_user->permissions, "timesheet_manage_permission"))) { ?>
             optionVisibility = true;
 <?php } ?>
 

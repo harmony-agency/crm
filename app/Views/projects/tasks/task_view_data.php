@@ -211,7 +211,7 @@ if ($total_sub_tasks) {
                     <?php echo form_open(get_uri("projects/save_checklist_item"), array("id" => "checklist_form", "class" => "general-form", "role" => "form")); ?>
                     <div class="col-md-12 mb15 b-t">
                         <div class="pb10 pt10">
-                            <strong><?php echo app_lang("checklist"); ?></strong>
+                            <strong class="float-start mr10"><?php echo app_lang("checklist"); ?></strong><span class="chcklists_status_count">0</span><span>/</span><span class="chcklists_count"></span>
                         </div>
                         <input type="hidden" name="task_id" value="<?php echo $task_id; ?>" />
                         <input type="hidden" id="is_checklist_group" name="is_checklist_group" value="" />

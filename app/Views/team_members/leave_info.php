@@ -14,8 +14,8 @@ if (isset($page_type) && $page_type === "full") {
                 ?>
             </h4>
         </li>
-        <li><a id="monthly-leaves-button"  role="presentation"  href="javascript:;" data-bs-target="#team_member-monthly-leaves"><?php echo app_lang("monthly"); ?></a></li>
-        <li><a role="presentation" href="<?php echo_uri("team_members/yearly_leaves/"); ?>" data-bs-target="#team_member-yearly-leaves"><?php echo app_lang('yearly'); ?></a></li>
+        <li><a id="monthly-leaves-button" role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#team_member-monthly-leaves"><?php echo app_lang("monthly"); ?></a></li>
+        <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/yearly_leaves/"); ?>" data-bs-target="#team_member-yearly-leaves"><?php echo app_lang('yearly'); ?></a></li>
         <?php if ($login_user->id === $applicant_id) { ?>
             <div class="tab-title clearfix no-border">
                 <div class="title-button-group">

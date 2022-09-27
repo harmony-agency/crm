@@ -16,13 +16,12 @@ class Verification_model extends Crud_model {
 
         $where = "";
 
-        $code = get_array_value($options, "code");
+        $code = $this->_get_clean_value($options, "code");
         if ($code) {
-            $code = $this->db->escapeString($code);
             $where .= " AND $verification_table.code='$code'";
         }
 
-        $type = get_array_value($options, "type");
+        $type = $this->_get_clean_value($options, "type");
         if ($type) {
             $where .= " AND $verification_table.type='$type'";
         }

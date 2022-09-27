@@ -37,11 +37,23 @@
                             ?>
                             <label for="can_edit_projects"><?php echo app_lang("can_edit_projects"); ?></label>
                         </div>
+                        <div id="can_edit_only_own_created_projects_section" class="<?php echo $can_edit_projects ? "hide" : ""; ?>">
+                            <?php
+                            echo form_checkbox("can_edit_only_own_created_projects", "1", $can_edit_only_own_created_projects ? true : false, "id='can_edit_only_own_created_projects' class='manage_project_section form-check-input'");
+                            ?>
+                            <label for="can_edit_only_own_created_projects"><?php echo app_lang("can_edit_only_own_created_projects"); ?></label>
+                        </div>
                         <div>
                             <?php
                             echo form_checkbox("can_delete_projects", "1", $can_delete_projects ? true : false, "id='can_delete_projects' class='manage_project_section form-check-input'");
                             ?>
                             <label for="can_delete_projects"><?php echo app_lang("can_delete_projects"); ?></label>
+                        </div>
+                        <div id="can_delete_only_own_created_projects_section" class="<?php echo $can_delete_projects ? "hide" : ""; ?>">
+                            <?php
+                            echo form_checkbox("can_delete_only_own_created_projects", "1", $can_delete_only_own_created_projects ? true : false, "id='can_delete_only_own_created_projects' class='manage_project_section form-check-input'");
+                            ?>
+                            <label for="can_delete_only_own_created_projects"><?php echo app_lang("can_delete_only_own_created_projects"); ?></label>
                         </div>
                         <div>
                             <?php
@@ -995,6 +1007,17 @@
             if ($(this).is(":checked")) {
                 $(manageAssignedTasks).prop("checked", false);
                 $(manageAssignedTasksSection).addClass("hide");
+                if ($(this).attr("id") === "can_edit_projects") {
+                    $("#can_edit_only_own_created_projects_section").addClass("hide");
+                } else if ($(this).attr("id") === "can_delete_projects") {
+                    $("#can_delete_only_own_created_projects_section").addClass("hide");
+                }
+            } else {
+                if ($(this).attr("id") === "can_edit_projects") {
+                    $("#can_edit_only_own_created_projects_section").removeClass("hide");
+                } else if ($(this).attr("id") === "can_delete_projects") {
+                    $("#can_delete_only_own_created_projects_section").removeClass("hide");
+                }
             }
         });
 
@@ -1015,7 +1038,6 @@
 
             toggle_specific_dropdown();
         });
-
         $("#client_groups_specific_dropdown").select2({
             multiple: true,
             data: <?php echo ($client_groups_dropdown); ?>

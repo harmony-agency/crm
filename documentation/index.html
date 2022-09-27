@@ -108,6 +108,7 @@
 
                                 <li class="main menu-item" data-id="help_and_support"><a href="#help_and_support" title="Help & Support">Help & Support</a></li>
                                 <li class="main menu-item" data-id="upgrading_guide"><a href="#upgrading_guide" title="Upgrading Guide">Upgrading Guide</a></li>
+                                <li class="main menu-item" data-id="migration_guide"><a href="#migration" title="Migration">Migration</a></li>
                                 <li class="main menu-item" data-id="application_structure"><a href="#application_structure" title="Application Structure">Application Structure</a></li>
                                 <li class="main menu-item" data-id="language"><a href="#language" title="Language">Language</a></li>
                                 <li class="main menu-item" data-id="development"><a href="#development" title="Development">Development</a></li>
@@ -165,8 +166,6 @@
                                                 <li>Latest mysqlnd PHP Extension</li>
                                                 <li>Latest xml PHP Extension</li>
                                                 <li>zlib.output_compression should be disabled</li>
-                                                <li>date.timezone setting in php.ini (Set any timezone in date.timezone. Example: date.timezone = "America/New_York" )</li>
-
                                             </ul>
                                             <br>
                                             <h5>Quick Installation Guide</h5>
@@ -881,13 +880,7 @@
                                                 <img alt="rise-notifications" src="assets/images/notifications.png"></p>
                                             <div class="alert alert-warning" id='notifications-not-working'>Notifications are not working?</div>
                                             <p>
-                                                Please make sure you are using latest version of <a href="https://www.openssl.org/source/" target="_blank">OpenSSL.</a> You can check the OpenSSL version and released date in your server from phpinfo. If you don't know how to check the phpinfo just add a php file (phpinfo.php) in your server inside the RISE directory:
-                                                <textarea style='display:block; height: 70px; width: 300px; resize: none;'>
-    <?php 
-     phpinfo(); 
-    ?>
-                                                </textarea>
-                                                Then browse the file from your browser. Like as <code>http://yourdomain.com/phpinfo.php.</code> If you can't update the OpenSSL, please contact to your hosting service provider.
+                                                Please make sure you are using latest version of <a href="https://www.openssl.org/source/" target="_blank">OpenSSL.</a> You can check the OpenSSL version and released date from Settings>App settings>Updates>Php Info button.
                                             </p>
                                             <p>Please also keep in mind that you'll not get notifications for your own actions.</p>
                                         </div>
@@ -1257,6 +1250,29 @@
                                                             There is a very&nbsp;easy way to update your application.</p>
                                                         <p>
                                                             To install any updates go to <strong>Settings&gt;Updates&nbsp;</strong>of the application. The download will be start automatically once any new update is available. Once the download is completed you can install the updates by clicking on the link. That&rsquo;s&nbsp;all!</p>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                
+                                            <section id="migration">
+                                                <div class="card card-default">
+                                                    <div class="page-title clearfix">
+                                                        <h2 class="text-body">Migration Guide</h2>
+                                                    </div>
+                                                    <div class="p20">
+                                                        <p>
+                                                            If you want to change your server, please follow the following steps:</p>
+                                                        <p>
+                                                        <ul>
+                                                            <li>Copy all files to the new server.</li>
+                                                            <li>Export the database from phpMyAdmin and import in the new server.</li>
+                                                            <li>Update the database credentials in <pre style="display:inline">/app/Config/Database.php</pre>.</li>
+                                                            <li>Change the base url <pre style="display:inline">/app/Config/App.php</pre> line#70 (Optional).</li>
+                                                            
+                                                            <li>Check if there is everything OK in the new server.</li>
+                                                            <li>Remove the installation from old server.</li>
+                                                        </ul>
+                                                        <p>
                                                     </div>
                                                 </div>
                                             </section>

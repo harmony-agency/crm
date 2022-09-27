@@ -19,38 +19,38 @@ class Invoice_payments_model extends Crud_model {
 
         $where = "";
 
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $invoice_payments_table.id=$id";
         }
 
-        $invoice_id = get_array_value($options, "invoice_id");
+        $invoice_id = $this->_get_clean_value($options, "invoice_id");
         if ($invoice_id) {
             $where .= " AND $invoice_payments_table.invoice_id=$invoice_id";
         }
 
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $invoices_table.client_id=$client_id";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $invoices_table.project_id=$project_id";
         }
 
-        $payment_method_id = get_array_value($options, "payment_method_id");
+        $payment_method_id = $this->_get_clean_value($options, "payment_method_id");
         if ($payment_method_id) {
             $where .= " AND $invoice_payments_table.payment_method_id=$payment_method_id";
         }
 
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($start_date && $end_date) {
             $where .= " AND ($invoice_payments_table.payment_date BETWEEN '$start_date' AND '$end_date') ";
         }
 
-        $currency = get_array_value($options, "currency");
+        $currency = $this->_get_clean_value($options, "currency");
         if ($currency) {
             $where .= $this->_get_clients_of_currency_query($currency, $invoices_table, $clients_table);
         }
@@ -122,8 +122,8 @@ class Invoice_payments_model extends Crud_model {
 
         $where = "";
 
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($start_date && $end_date) {
             $where .= " AND ($payments_table.payment_date BETWEEN '$start_date' AND '$end_date') ";
         }
@@ -144,8 +144,8 @@ class Invoice_payments_model extends Crud_model {
 
         $where = "";
 
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($start_date && $end_date) {
             $where .= " AND ($payments_table.payment_date BETWEEN '$start_date' AND '$end_date') ";
         }

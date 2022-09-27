@@ -12,8 +12,8 @@ class Project_members_model extends Crud_model {
     }
 
     function save_member($data = array(), $id = 0) {
-        $user_id = get_array_value($data, "user_id");
-        $project_id = get_array_value($data, "project_id");
+        $user_id = $this->_get_clean_value($data, "user_id");
+        $project_id = $this->_get_clean_value($data, "project_id");
         if (!$user_id || !$project_id) {
             return false;
         }
@@ -43,18 +43,18 @@ class Project_members_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $project_members_table.id=$id";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $project_members_table.project_id=$project_id";
         }
 
-        $user_type = get_array_value($options, "user_type");
-        $show_user_wise = get_array_value($options, "show_user_wise");
+        $user_type = $this->_get_clean_value($options, "user_type");
+        $show_user_wise = $this->_get_clean_value($options, "show_user_wise");
         if ($show_user_wise) {
             if ($user_type == "client_contacts") {
                 $where .= " AND $project_members_table.user_id IN (SELECT $users_table.id FROM $users_table WHERE $users_table.deleted=0 AND $users_table.user_type='client')";

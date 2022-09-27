@@ -16,11 +16,11 @@ class Estimate_items_model extends Crud_model {
         $estimates_table = $this->db->prefixTable('estimates');
         $clients_table = $this->db->prefixTable('clients');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $estimate_items_table.id=$id";
         }
-        $estimate_id = get_array_value($options, "estimate_id");
+        $estimate_id = $this->_get_clean_value($options, "estimate_id");
         if ($estimate_id) {
             $where .= " AND $estimate_items_table.estimate_id=$estimate_id";
         }

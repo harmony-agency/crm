@@ -11,9 +11,9 @@
             <div class="card">
 
                 <ul id="ticket-type-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
-                    <li><a  role="presentation"  href="javascript:;" data-bs-target="#ticket-types-tab"> <?php echo app_lang('ticket_types'); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("settings/tickets/"); ?>" data-bs-target="#tickets-tab"><?php echo app_lang('tickets'); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("settings/imap_settings/"); ?>" data-bs-target="#imap_settings-tab"><?php echo app_lang('imap_settings'); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#ticket-types-tab"> <?php echo app_lang('ticket_types'); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("settings/tickets/"); ?>" data-bs-target="#tickets-tab"><?php echo app_lang('tickets'); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("settings/imap_settings/"); ?>" data-bs-target="#imap_settings-tab"><?php echo app_lang('imap_settings'); ?></a></li>
                     <div class="tab-title clearfix no-border">
                         <div class="title-button-group">
                             <?php echo modal_anchor(get_uri("ticket_types/modal_form"), "<i data-feather='plus-circle' class='icon-16'></i> " . app_lang('add_ticket_type'), array("class" => "btn btn-default", "title" => app_lang('add_ticket_type'))); ?>

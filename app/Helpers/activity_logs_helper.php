@@ -58,7 +58,7 @@ if (!function_exists('get_change_logs')) {
                 $htmlDiff = new \Caxy\HtmlDiff\HtmlDiff(nl2br($from_value), nl2br($to_value));
                 $changes = $htmlDiff->build();
                 $changes = is_null($changes) ? "" : $changes;
-                $changes = mb_convert_encoding($changes, 'UTF-8', 'HTML-ENTITIES');
+                $changes = mb_convert_encoding($changes, 'HTML-ENTITIES', 'UTF-8');
             } else if (get_array_value($schema_info, "type") === "foreign_key") {
                 $linked_model = get_array_value($schema_info, "linked_model");
                 if ($from_value && $linked_model) {

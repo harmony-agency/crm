@@ -18,52 +18,52 @@ class Timesheets_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
         $clients_table = $this->db->prefixTable('clients');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $timesheet_table.id=$id";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $timesheet_table.project_id=$project_id";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND $timesheet_table.user_id=$user_id";
         }
 
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
         if ($status === "none_open") {
             $where .= " AND $timesheet_table.status !='open'";
         } else if ($status) {
             $where .= " AND $timesheet_table.status='$status'";
         }
 
-        $task_id = get_array_value($options, "task_id");
+        $task_id = $this->_get_clean_value($options, "task_id");
         if ($task_id) {
             $where .= " AND $timesheet_table.task_id=$task_id";
         }
 
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $timesheet_table.project_id IN(SELECT $projects_table.id FROM $projects_table WHERE $projects_table.client_id=$client_id)";
         }
 
         $offset = convert_seconds_to_time_format(get_timezone_offset());
 
-        $start_date = get_array_value($options, "start_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
         if ($start_date) {
             $where .= " AND DATE(ADDTIME($timesheet_table.start_time,'$offset'))>='$start_date'";
         }
 
-        $end_date = get_array_value($options, "end_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($end_date) {
             $where .= " AND DATE(ADDTIME($timesheet_table.end_time,'$offset'))<='$end_date'";
         }
 
 
-        $allowed_members = get_array_value($options, "allowed_members");
+        $allowed_members = $this->_get_clean_value($options, "allowed_members");
         if (is_array($allowed_members) && count($allowed_members)) {
             $allowed_members = join(",", $allowed_members);
             $where .= " AND $timesheet_table.user_id IN($allowed_members)";
@@ -96,7 +96,7 @@ class Timesheets_model extends Crud_model {
             "client" => "timesheet_client_company_name",
         );
 
-        $order_by = get_array_value($available_order_by_list, get_array_value($options, "order_by"));
+        $order_by = get_array_value($available_order_by_list, $this->_get_clean_value($options, "order_by"));
 
         $order = "";
 
@@ -116,6 +116,7 @@ class Timesheets_model extends Crud_model {
             $where .= " OR $timesheet_table.note LIKE '%$search_by%' ESCAPE '!' ";
             $where .= " OR $projects_table.title LIKE '%$search_by%' ESCAPE '!' ";
             $where .= " OR CONCAT($users_table.first_name, ' ', $users_table.last_name) LIKE '%$search_by%' ESCAPE '!' ";
+            $where .= $this->get_custom_field_search_query($timesheet_table, "timesheets", $search_by);
 
             $where .= " )";
         }
@@ -153,51 +154,51 @@ class Timesheets_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
         $clients_table = $this->db->prefixTable('clients');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $timesheet_table.id=$id";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $timesheet_table.project_id=$project_id";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND $timesheet_table.user_id=$user_id";
         }
 
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
         if ($status === "none_open") {
             $where .= " AND $timesheet_table.status !='open'";
         } else if ($status) {
             $where .= " AND $timesheet_table.status='$status'";
         }
 
-        $task_id = get_array_value($options, "task_id");
+        $task_id = $this->_get_clean_value($options, "task_id");
         if ($task_id) {
             $where .= " AND $timesheet_table.task_id=$task_id";
         }
 
         $offset = convert_seconds_to_time_format(get_timezone_offset());
 
-        $start_date = get_array_value($options, "start_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
         if ($start_date) {
             $where .= " AND DATE(ADDTIME($timesheet_table.start_time,'$offset'))>='$start_date'";
         }
 
-        $end_date = get_array_value($options, "end_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($end_date) {
             $where .= " AND DATE(ADDTIME($timesheet_table.end_time,'$offset'))<='$end_date'";
         }
 
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $timesheet_table.project_id IN(SELECT $projects_table.id FROM $projects_table WHERE $projects_table.client_id=$client_id)";
         }
 
-        $allowed_members = get_array_value($options, "allowed_members");
+        $allowed_members = $this->_get_clean_value($options, "allowed_members");
         if (is_array($allowed_members) && count($allowed_members)) {
             $allowed_members = join(",", $allowed_members);
             $where .= " AND $timesheet_table.user_id IN($allowed_members)";
@@ -208,7 +209,7 @@ class Timesheets_model extends Crud_model {
 
         //group by
         $group_by_option = "$timesheet_table.user_id, $timesheet_table.task_id, $timesheet_table.project_id";
-        $group_by = get_array_value($options, "group_by");
+        $group_by = $this->_get_clean_value($options, "group_by");
 
         if ($group_by === "member") {
             $group_by_option = "$timesheet_table.user_id";
@@ -218,9 +219,9 @@ class Timesheets_model extends Crud_model {
             $group_by_option = "$timesheet_table.project_id";
         }
 
-        $custom_field_filter = get_array_value($options, "custom_field_filter");
+        $custom_field_filter = $this->_get_clean_value($options, "custom_field_filter");
         $custom_field_query_info = $this->prepare_custom_field_query_string("timesheets", "", $timesheet_table, $custom_field_filter);
-        $custom_fields_where = get_array_value($custom_field_query_info, "where_string");
+        $custom_fields_where = $this->_get_clean_value($custom_field_query_info, "where_string");
 
         $sql = "SELECT new_summary_table.user_id, new_summary_table.total_duration, CONCAT($users_table.first_name, ' ',$users_table.last_name) AS logged_by_user, $users_table.image as logged_by_avatar,
                        $tasks_table.id AS task_id,  $tasks_table.title AS task_title,  $projects_table.id AS project_id,  $projects_table.title AS project_title,
@@ -245,11 +246,11 @@ class Timesheets_model extends Crud_model {
     }
 
     function process_timer($data) {
-        $status = get_array_value($data, "status"); //user wants to set this status
-        $project_id = get_array_value($data, "project_id");
-        $user_id = get_array_value($data, "user_id");
-        $note = get_array_value($data, "note");
-        $task_id = get_array_value($data, "task_id");
+        $status = $this->_get_clean_value($data, "status"); //user wants to set this status
+        $project_id = $this->_get_clean_value($data, "project_id");
+        $user_id = $this->_get_clean_value($data, "user_id");
+        $note = $this->_get_clean_value($data, "note");
+        $task_id = $this->_get_clean_value($data, "task_id");
 
         //check if timer record already exists
         $where = array("project_id" => $project_id, "user_id" => $user_id, "status" => "open", "deleted" => 0);
@@ -308,26 +309,26 @@ class Timesheets_model extends Crud_model {
         $where = "";
         $offset = convert_seconds_to_time_format(get_timezone_offset());
 
-        $start_date = get_array_value($options, "start_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
         if ($start_date) {
             $where .= " AND DATE(ADDTIME($timesheet_table.start_time,'$offset'))>='$start_date'";
         }
-        $end_date = get_array_value($options, "end_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($end_date) {
             $where .= " AND DATE(ADDTIME($timesheet_table.start_time,'$offset'))<='$end_date'";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND $timesheet_table.user_id=$user_id";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $timesheet_table.project_id=$project_id";
         }
 
-        $allowed_members = get_array_value($options, "allowed_members");
+        $allowed_members = $this->_get_clean_value($options, "allowed_members");
         if (is_array($allowed_members) && count($allowed_members)) {
             $allowed_members = join(",", $allowed_members);
             $where .= " AND $timesheet_table.user_id IN($allowed_members)";
@@ -401,14 +402,14 @@ class Timesheets_model extends Crud_model {
         $attendance_where = "";
         $timesheet_where = "";
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $attendance_where .= " AND $attendnace_table.user_id=$user_id";
             $timesheet_where .= " AND $timesheet_table.user_id=$user_id";
         }
 
-        $project_id = get_array_value($options, "project_id");
-        $allowed_members = get_array_value($options, "allowed_members");
+        $project_id = $this->_get_clean_value($options, "project_id");
+        $allowed_members = $this->_get_clean_value($options, "allowed_members");
         if ($project_id) {
             $timesheet_where .= " AND $timesheet_table.project_id=$project_id";
 
@@ -420,7 +421,7 @@ class Timesheets_model extends Crud_model {
             $timesheet_where .= $this->get_timesheet_own_project_memeber_only_query($timesheet_table);
         }
 
-        $task_id = get_array_value($options, "task_id");
+        $task_id = $this->_get_clean_value($options, "task_id");
         if ($task_id) {
             $timesheet_where .= " AND $timesheet_table.task_id=$task_id";
         }

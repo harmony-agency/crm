@@ -16,7 +16,7 @@ class Lead_status_model extends Crud_model {
         $clients_table = $this->db->prefixTable('clients');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $lead_status_table.id=$id";
         }

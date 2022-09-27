@@ -128,7 +128,7 @@ class Clients_model extends Crud_model {
             "client_groups" => "client_groups"
         );
 
-        $order_by = get_array_value($available_order_by_list, get_array_value($options, "order_by"));
+        $order_by = get_array_value($available_order_by_list, $this->_get_clean_value($options, "order_by"));
 
         $order = "";
 
@@ -150,6 +150,9 @@ class Clients_model extends Crud_model {
             if ($leads_only) {
                 $where .= " OR owner_details.owner_name LIKE '%$search_by%' ESCAPE '!' ";
                 $where .= " OR $lead_status_table.title LIKE '%$search_by%' ESCAPE '!' ";
+                $where .= $this->get_custom_field_search_query($clients_table, "leads", $search_by);
+            } else {
+                $where .= $this->get_custom_field_search_query($clients_table, "clients", $search_by);
             }
 
             $where .= " )";
@@ -354,17 +357,17 @@ class Clients_model extends Crud_model {
 
         $where = "";
 
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
         if ($status) {
             $where .= " AND $clients_table.lead_status_id='$status'";
         }
 
-        $owner_id = get_array_value($options, "owner_id");
+        $owner_id = $this->_get_clean_value($options, "owner_id");
         if ($owner_id) {
             $where .= " AND $clients_table.owner_id='$owner_id'";
         }
 
-        $source = get_array_value($options, "source");
+        $source = $this->_get_clean_value($options, "source");
         if ($source) {
             $where .= " AND $clients_table.lead_source_id='$source'";
         }
@@ -406,7 +409,7 @@ class Clients_model extends Crud_model {
         $clients_table = $this->db->prefixTable('clients');
 
         $where = "";
-        $show_own_clients_only_user_id = get_array_value($options, "show_own_clients_only_user_id");
+        $show_own_clients_only_user_id = $this->_get_clean_value($options, "show_own_clients_only_user_id");
         if ($show_own_clients_only_user_id) {
             $where .= " AND ($clients_table.created_by=$show_own_clients_only_user_id OR $clients_table.owner_id=$show_own_clients_only_user_id)";
         }
@@ -415,7 +418,7 @@ class Clients_model extends Crud_model {
             $search = $this->db->escapeLikeString($search);
         }
 
-        $client_groups = get_array_value($options, "client_groups");
+        $client_groups = $this->_get_clean_value($options, "client_groups");
         $where .= $this->prepare_allowed_client_groups_query($clients_table, $client_groups);
 
         $sql = "SELECT $clients_table.id, $clients_table.company_name AS title
@@ -442,17 +445,17 @@ class Clients_model extends Crud_model {
 
         $where = "";
 
-        $show_own_clients_only_user_id = get_array_value($options, "show_own_clients_only_user_id");
+        $show_own_clients_only_user_id = $this->_get_clean_value($options, "show_own_clients_only_user_id");
         if ($show_own_clients_only_user_id) {
             $where .= " AND $clients_table.created_by=$show_own_clients_only_user_id";
         }
 
-        $filter = get_array_value($options, "filter");
+        $filter = $this->_get_clean_value($options, "filter");
         if ($filter) {
             $where .= $this->make_quick_filter_query($filter, $clients_table, $projects_table, $invoices_table, $taxes_table, $invoice_payments_table, $invoice_items_table, $estimates_table, $estimate_requests_table, $tickets_table, $orders_table, $proposals_table);
         }
 
-        $client_groups = get_array_value($options, "client_groups");
+        $client_groups = $this->_get_clean_value($options, "client_groups");
         $where .= $this->prepare_allowed_client_groups_query($clients_table, $client_groups);
 
         $sql = "SELECT COUNT($clients_table.id) AS total

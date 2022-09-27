@@ -17,17 +17,17 @@ class Pin_comments_model extends Crud_model {
         $project_comments_table = $this->db->prefixTable('project_comments');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $pin_comments_table.id=$id";
         }
 
-        $pinned_by = get_array_value($options, "pinned_by");
+        $pinned_by = $this->_get_clean_value($options, "pinned_by");
         if ($pinned_by) {
             $where .= " AND $pin_comments_table.pinned_by=$pinned_by";
         }
 
-        $task_id = get_array_value($options, "task_id");
+        $task_id = $this->_get_clean_value($options, "task_id");
         if ($task_id) {
             $where .= " AND $project_comments_table.task_id=$task_id";
         }

@@ -12,8 +12,8 @@
             <div class="card">
 
                 <ul data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
-                    <li><a  role="presentation"  href="javascript:;" data-bs-target="#order-settings-tab"> <?php echo app_lang('order_settings'); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("order_status"); ?>" data-bs-target="#order-status-settings-tab"><?php echo app_lang('order_status'); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#order-settings-tab"> <?php echo app_lang('order_settings'); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("order_status"); ?>" data-bs-target="#order-status-settings-tab"><?php echo app_lang('order_status'); ?></a></li>
                     <div class="tab-title clearfix no-border">
                         <div class="title-button-group">
                             <?php echo modal_anchor(get_uri("order_status/modal_form"), "<i data-feather='plus-circle' class='icon-16'></i> " . app_lang('add_order_status'), array("class" => "btn btn-default hide", "title" => app_lang('add_order_status'), "id" => "order-status-add-btn")); ?>

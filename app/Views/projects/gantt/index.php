@@ -34,7 +34,7 @@ if (!$project_id) {
 
                 $gantt_group_by = array_merge($milestones_and_members_group_by, $project_group_by);
 
-                echo form_dropdown("gantt-group-by", $gantt_group_by, array(), "class='select2 w200 mr10 reload-gantt' id='gantt-group-by'");
+                echo form_dropdown("gantt-group-by", $gantt_group_by, array(), "class='select2 w150 mr10 reload-gantt' id='gantt-group-by'");
             }
             ?>
             <?php
@@ -80,7 +80,7 @@ if (!$project_id) {
             echo form_input(array(
                 "id" => "gantt-view-dropdown",
                 "name" => "gantt-view-dropdown",
-                "class" => "select2 w200 ml10",
+                "class" => "select2 w150 ml10",
                 "value" => get_cookie("gantt_view_of_user_" . $login_user->id) ? get_cookie("gantt_view_of_user_" . $login_user->id) : "Day"
             ));
             ?>

@@ -1326,7 +1326,7 @@ class Settings extends Security_Controller {
 
     function save_localization_settings() {
 
-        $settings = array("language", "timezone", "date_format", "time_format", "first_day_of_week", "weekends", "default_currency", "currency_symbol", "currency_position", "decimal_separator", "no_of_decimals", "rtl", "conversion_rate_currency");
+        $settings = array("language", "timezone", "date_format", "time_format", "first_day_of_week", "weekends", "default_currency", "currency_symbol", "currency_position", "decimal_separator", "no_of_decimals", "conversion_rate_currency");
 
         foreach ($settings as $setting) {
             $value = $this->request->getPost($setting);

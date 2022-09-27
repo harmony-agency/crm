@@ -16,12 +16,12 @@ class File_category_model extends Crud_model {
 
         $where = "";
 
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $file_category_table.id=$id";
         }
 
-        $type = get_array_value($options, "type");
+        $type = $this->_get_clean_value($options, "type");
         if ($type) {
             $where .= " AND $file_category_table.type='$type'";
         }

@@ -51,19 +51,19 @@ class Activity_logs_model extends Model {
         $tasks_table = $this->db->prefixTable('tasks');
 
         $where = "";
-        $limit = get_array_value($options, "limit");
+        $limit = $this->_get_clean_value($options, "limit");
         $limit = $limit ? $limit : "20";
-        $offset = get_array_value($options, "offset");
+        $offset = $this->_get_clean_value($options, "offset");
         $offset = $offset ? $offset : "0";
 
         $extra_join_info = "";
         $extra_select = "";
 
-        $log_for = get_array_value($options, "log_for");
+        $log_for = $this->_get_clean_value($options, "log_for");
         if ($log_for) {
             $where .= " AND $activity_logs_table.log_for='$log_for'";
 
-            $log_for_id = get_array_value($options, "log_for_id");
+            $log_for_id = $this->_get_clean_value($options, "log_for_id");
             if ($log_for_id) {
                 $where .= " AND $activity_logs_table.log_for_id=$log_for_id";
             } else {
@@ -76,8 +76,8 @@ class Activity_logs_model extends Model {
             }
         }
 
-        $log_type = get_array_value($options, "log_type");
-        $log_type_id = get_array_value($options, "log_type_id");
+        $log_type = $this->_get_clean_value($options, "log_type");
+        $log_type_id = $this->_get_clean_value($options, "log_type_id");
         if ($log_type && $log_type_id) {
             $where .= " AND $activity_logs_table.log_type='$log_type' AND $activity_logs_table.log_type_id=$log_type_id";
         }
@@ -85,14 +85,14 @@ class Activity_logs_model extends Model {
         //don't show all project's log for none admin users
         $project_join = "";
         $project_where = "";
-        $user_id = get_array_value($options, "user_id");
-        $is_admin = get_array_value($options, "is_admin");
-        $user_type = get_array_value($options, "user_type");
+        $user_id = $this->_get_clean_value($options, "user_id");
+        $is_admin = $this->_get_clean_value($options, "is_admin");
+        $user_type = $this->_get_clean_value($options, "user_type");
         if (!$is_admin && $user_id && $user_type !== "client") {
             $project_join = " LEFT JOIN (SELECT $project_members_table.user_id, $project_members_table.project_id FROM $project_members_table WHERE $project_members_table.user_id=$user_id AND $project_members_table.deleted=0 GROUP BY $project_members_table.project_id) AS project_members_table ON project_members_table.project_id= $activity_logs_table.log_for_id AND log_for='project' ";
             $project_where = " AND project_members_table.user_id=$user_id";
 
-            $show_assigned_tasks_only = get_array_value($options, "show_assigned_tasks_only");
+            $show_assigned_tasks_only = $this->_get_clean_value($options, "show_assigned_tasks_only");
             if ($show_assigned_tasks_only) {
                 //this is restricted only for tasks related logs
                 //task created/updated/deleted
@@ -105,7 +105,7 @@ class Activity_logs_model extends Model {
 
         //show client's own projects activity
         if ($user_type == "client") {
-            $client_id = get_array_value($options, "client_id");
+            $client_id = $this->_get_clean_value($options, "client_id");
 
             if ($client_id) {
                 $project_join = " LEFT JOIN (SELECT $projects_table.client_id, $projects_table.id FROM $projects_table WHERE $projects_table.client_id=$client_id AND $projects_table.deleted=0 GROUP BY $projects_table.id) AS projects_table ON projects_table.id= $activity_logs_table.log_for_id AND log_for='project' ";
@@ -148,11 +148,21 @@ class Activity_logs_model extends Model {
             }
             return $fields;
         }
-    }
+    } 
 
     function update_where($data = array(), $where = array()) {
         if (count($where)) {
             return $this->db_builder->update($data, $where);
+        }
+    }
+
+    protected function _get_clean_value($options, $key) {
+
+        $value = get_array_value($options, $key);
+        if ($value && is_string($value)) {
+            return $this->db->escapeString($value);
+        } else {
+            return $value;
         }
     }
 

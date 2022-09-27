@@ -15,19 +15,19 @@ class Todo_model extends Crud_model {
         $todo_table = $this->db->prefixTable('to_do');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $todo_table.id=$id";
         }
 
 
-        $created_by = get_array_value($options, "created_by");
+        $created_by = $this->_get_clean_value($options, "created_by");
         if ($created_by) {
             $where .= " AND $todo_table.created_by=$created_by";
         }
 
 
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
         if ($status) {
             $where .= " AND FIND_IN_SET($todo_table.status,'$status')";
         }

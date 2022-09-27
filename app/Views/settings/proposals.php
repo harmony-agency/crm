@@ -11,8 +11,8 @@
             <div class="no-border clearfix ">
 
                 <ul data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
-                    <li><a role="presentation" href="javascript:;" data-bs-target="#proposal-settings"><?php echo app_lang("proposal_settings"); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("proposal_templates"); ?>" data-bs-target="#proposal-templates"><?php echo app_lang("proposal_templates"); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#proposal-settings"><?php echo app_lang("proposal_settings"); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("proposal_templates"); ?>" data-bs-target="#proposal-templates"><?php echo app_lang("proposal_templates"); ?></a></li>
                 </ul>
 
                 <div class="tab-content">

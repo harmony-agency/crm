@@ -87,17 +87,17 @@ class Payment_methods_model extends Crud_model {
         $payment_methods_table = $this->db->prefixTable('payment_methods');
         
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $payment_methods_table.id=$id";
         }
         
-        $online_payable = get_array_value($options, "online_payable");
+        $online_payable = $this->_get_clean_value($options, "online_payable");
         if ($online_payable) {
             $where = " AND $payment_methods_table.online_payable=$online_payable";
         }
         
-        $available_on_invoice = get_array_value($options, "available_on_invoice");
+        $available_on_invoice = $this->_get_clean_value($options, "available_on_invoice");
         if ($available_on_invoice) {
             $where = " AND $payment_methods_table.available_on_invoice=$available_on_invoice";
         }

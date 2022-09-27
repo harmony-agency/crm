@@ -14,7 +14,7 @@ class Item_categories_model extends Crud_model {
     function get_details($options = array()) {
         $item_categories_table = $this->db->prefixTable('item_categories');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $item_categories_table.id=$id";
         }

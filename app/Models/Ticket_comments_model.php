@@ -18,22 +18,22 @@ class Ticket_comments_model extends Crud_model {
         $where = "";
         $sort = "ASC";
 
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $ticket_comments_table.id=$id";
         }
 
-        $ticket_id = get_array_value($options, "ticket_id");
+        $ticket_id = $this->_get_clean_value($options, "ticket_id");
         if ($ticket_id) {
             $where .= " AND $ticket_comments_table.ticket_id=$ticket_id";
         }
 
-        $sort_decending = get_array_value($options, "sort_as_decending");
+        $sort_decending = $this->_get_clean_value($options, "sort_as_decending");
         if ($sort_decending) {
             $sort = "DESC";
         }
 
-        $is_note = get_array_value($options, "is_note");
+        $is_note = $this->_get_clean_value($options, "is_note");
         if (!is_null($is_note)) {
             $where .= " AND $ticket_comments_table.is_note=$is_note";
         }

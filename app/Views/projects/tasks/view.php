@@ -36,14 +36,6 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            //remove task details view when it's already opened to prevent selector duplication
-            if ($(".task-preview").length) {
-                $("#page-content").remove();
-                $('#ajaxModal').on('hidden.bs.modal', function () {
-                    location.reload();
-                });
-            }
-
             //store existing url to retrieve back on modal close
             if (!window.existingUrl) {
                 window.existingUrl = window.location.href;
@@ -72,7 +64,7 @@
         <?php
         if ($can_edit_tasks) {
             echo modal_anchor(get_uri("projects/task_modal_form"), "<i data-feather='copy' class='icon-16'></i> " . app_lang('clone_task'), array("class" => "btn btn-default float-start", "data-post-is_clone" => true, "data-post-id" => $model_info->id, "title" => app_lang('clone_task')));
-            echo modal_anchor(get_uri("projects/task_modal_form/"), "<i data-feather='edit-2' class='icon-16'></i> " . app_lang('edit_task'), array("class" => "btn btn-default", "data-post-id" => $model_info->id, "title" => app_lang('edit_task')));
+            echo modal_anchor(get_uri("projects/task_modal_form"), "<i data-feather='edit-2' class='icon-16'></i> " . app_lang('edit_task'), array("class" => "btn btn-default", "data-post-id" => $model_info->id, "title" => app_lang('edit_task')));
         }
         ?>
         <button type="button" class="btn btn-default" data-bs-dismiss="modal"><span data-feather="x" class="icon-16"></span> <?php echo app_lang('close'); ?></button>
@@ -140,12 +132,34 @@ $task_link = anchor(get_uri("projects/task_view/$model_info->id"), '<i data-feat
             feather.replace();
         });
 
+        //count checklists
+        function count_checklists() {
+            var checklists = $(".checklist-items .checklist-item-row").length;
+            $(".chcklists_count").text(checklists);
+
+            //reload kanban
+            $("#reload-kanban-button:visible").trigger("click");
+        }
+
+        var checklists = $(".checklist-items .checklist-item-row").length;
+        $(".delete-checklist-item").click(function () {
+            checklists--;
+            $(".chcklists_count").text(checklists);
+        });
+
+        count_checklists();
+
+        var checklist_complete = $(".checklist-items .checkbox-checked").length;
+        $(".chcklists_status_count").text(checklist_complete);
+
         $("#checklist_form").appForm({
             isModal: false,
             onSuccess: function (response) {
                 $("#checklist-add-item").val("");
                 $("#checklist-add-item").focus();
                 $("#checklist-items").append(response.data);
+
+                count_checklists();
             }
         });
 
@@ -153,6 +167,15 @@ $task_link = anchor(get_uri("projects/task_view/$model_info->id"), '<i data-feat
             var status_checkbox = $(this).find("span");
             status_checkbox.removeClass("checkbox-checked");
             status_checkbox.addClass("inline-loader");
+
+            if ($(this).attr('data-value') == 0) {
+                checklist_complete--;
+                $(".chcklists_status_count").text(checklist_complete);
+            } else {
+                checklist_complete++;
+                $(".chcklists_status_count").text(checklist_complete);
+            }
+
             $.ajax({
                 url: '<?php echo_uri("projects/save_checklist_item_status") ?>/' + $(this).attr('data-id'),
                 type: 'POST',
@@ -161,6 +184,8 @@ $task_link = anchor(get_uri("projects/task_view/$model_info->id"), '<i data-feat
                 success: function (response) {
                     if (response.success) {
                         status_checkbox.closest("div").html(response.data);
+                        //reload kanban
+                        $("#reload-kanban-button:visible").trigger("click");
                     }
                 }
             });

@@ -48,14 +48,13 @@ class Announcements_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
-            $id = $this->db->escapeString($id);
             $where .= " AND $announcements_table.id=$id";
         }
 
-        $client_group_ids = get_array_value($options, "client_group_ids");
-        $user_type = get_array_value($options, "user_type");
+        $client_group_ids = $this->_get_clean_value($options, "client_group_ids");
+        $user_type = $this->_get_clean_value($options, "user_type");
         $where .= $this->prepare_share_with_query($announcements_table, $user_type, $client_group_ids);
 
         $sql = "SELECT $announcements_table.*, CONCAT($users_table.first_name, ' ', $users_table.last_name) AS created_by_user, $users_table.image AS created_by_avatar
@@ -77,8 +76,8 @@ class Announcements_model extends Crud_model {
         $announcements_table = $this->db->prefixTable('announcements');
 
         $where = "";
-        $client_group_ids = get_array_value($options, "client_group_ids");
-        $user_type = get_array_value($options, "user_type");
+        $client_group_ids = $this->_get_clean_value($options, "client_group_ids");
+        $user_type = $this->_get_clean_value($options, "user_type");
         $where .= $this->prepare_share_with_query($announcements_table, $user_type, $client_group_ids);
 
         $sql = "SELECT $announcements_table.id, $announcements_table.title

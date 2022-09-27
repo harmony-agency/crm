@@ -16,14 +16,13 @@ class Dashboards_model extends Crud_model {
 
         $where = "";
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND $dashboard_table.user_id=$user_id";
         }
 
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
-            $id = $this->db->escapeString($id);
             $where .= " AND $dashboard_table.id= $id";
         }
 

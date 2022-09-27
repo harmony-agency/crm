@@ -11,8 +11,8 @@
             filterDropdown: [
                 {name: "specific_user_id", class: "w150", options: <?php echo $team_members_dropdown; ?>},
                 {name: "milestone_id", class: "w150", options: [{id: "", text: "- <?php echo app_lang('milestone'); ?> -"}], dependency: ["project_id"], dataSource: '<?php echo_uri("projects/get_milestones_for_filter") ?>'}, //milestone is dependent on project
-                {name: "project_id", class: "w200", options: <?php echo $projects_dropdown; ?>, dependent: ["milestone_id"]}, //reset milestone on changing of project  
                 {name: "priority_id", class: "w150", options: <?php echo $priorities_dropdown; ?>},
+                {name: "project_id", class: "w200", options: <?php echo $projects_dropdown; ?>, dependent: ["milestone_id"]}, //reset milestone on changing of project  
                 {name: "quick_filter", class: "w200", showHtml: true, options: <?php echo view("projects/tasks/quick_filters_dropdown"); ?>}
                 , <?php echo $custom_field_filters; ?>
             ],

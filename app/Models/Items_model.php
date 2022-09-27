@@ -17,7 +17,7 @@ class Items_model extends Crud_model {
         $item_categories_table = $this->db->prefixTable('item_categories');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $items_table.id=$id";
         }
@@ -28,26 +28,26 @@ class Items_model extends Crud_model {
             $where .= " AND ($items_table.title LIKE '%$search%' ESCAPE '!' OR $items_table.description LIKE '%$search%' ESCAPE '!')";
         }
 
-        $show_in_client_portal = get_array_value($options, "show_in_client_portal");
+        $show_in_client_portal = $this->_get_clean_value($options, "show_in_client_portal");
         if ($show_in_client_portal) {
             $where .= " AND $items_table.show_in_client_portal=1";
         }
 
-        $category_id = get_array_value($options, "category_id");
+        $category_id = $this->_get_clean_value($options, "category_id");
         if ($category_id) {
             $where .= " AND $items_table.category_id=$category_id";
         }
 
         $extra_select = "";
-        $login_user_id = get_array_value($options, "login_user_id");
+        $login_user_id = $this->_get_clean_value($options, "login_user_id");
         if ($login_user_id) {
             $extra_select = ", (SELECT COUNT($order_items_table.id) FROM $order_items_table WHERE $order_items_table.deleted=0 AND $order_items_table.order_id=0 AND $order_items_table.created_by=$login_user_id AND $order_items_table.item_id=$items_table.id) AS added_to_cart";
         }
 
         $limit_query = "";
-        $limit = get_array_value($options, "limit");
+        $limit = $this->_get_clean_value($options, "limit");
         if ($limit) {
-            $offset = get_array_value($options, "offset");
+            $offset = $this->_get_clean_value($options, "offset");
             $limit_query = "LIMIT $offset, $limit";
         }
 

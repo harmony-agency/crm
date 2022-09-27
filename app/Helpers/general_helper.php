@@ -242,16 +242,17 @@ if (!function_exists('active_menu')) {
                 }
 
                 //compare with some special links
-                if (substr($uri_string, 0, 25) === "projects/all_tasks_kanban" && substr($menu_url,0,18) === "projects/all_tasks") {
+                //if we use .htaccess, then there will be extra / before the uri_string
+                if ((substr($uri_string, 0, 25) === "projects/all_tasks_kanban" || substr($uri_string, 0, 26) === "/projects/all_tasks_kanban") && substr($menu_url, 0, 18) === "projects/all_tasks") {
                     $found_special_active_key = $key;
                 }
 
-                if (substr($uri_string,0,18) === "projects/all_gantt" && substr($menu_url,0,18) === "projects/all_tasks" ) {
+                if ((substr($uri_string, 0, 18) === "projects/all_gantt" || substr($uri_string, 0, 19) === "/projects/all_gantt") && substr($menu_url, 0, 18) === "projects/all_tasks") {
                     $found_special_active_key = $key;
                 }
-                
-                
-                if (substr($uri_string,0,18) === "projects/all_tasks" && substr($menu_url,0,18) === "projects/all_tasks" ) {
+
+
+                if ((substr($uri_string, 0, 18) === "projects/all_tasks" || substr($uri_string, 0, 19) === "/projects/all_tasks") && substr($menu_url, 0, 18) === "projects/all_tasks") {
                     $found_special_active_key = $key;
                 }
 
@@ -276,7 +277,7 @@ if (!function_exists('active_menu')) {
                             }
 
                             //compare with some special links
-                            if (substr($uri_string,0, 25) === "projects/all_tasks_kanban" && substr($menu_url,0,18) === "projects/all_tasks") {
+                            if (substr($uri_string, 0, 25) === "projects/all_tasks_kanban" && substr($menu_url, 0, 18) === "projects/all_tasks") {
                                 $found_special_active_key = $key;
                             }
                         }
@@ -582,6 +583,7 @@ if (!function_exists('get_members_from_mention')) {
 if (!function_exists('send_app_mail')) {
 
     function send_app_mail($to, $subject, $message, $optoins = array(), $convert_message_to_html = true) {
+        
         $email_config = Array(
             'charset' => 'utf-8',
             'mailType' => 'html'
@@ -1241,7 +1243,9 @@ if (!function_exists('log_notification')) {
             }
 
             foreach ($options as $key => $value) {
-                $value = urlencode($value);
+                if ($value) {
+                    $value = urlencode($value);
+                }
                 $data[$key] = $value;
             }
 
@@ -1263,7 +1267,10 @@ if (!function_exists('log_notification')) {
 
 
             foreach ($options as $key => $value) {
-                $value = urlencode($value);
+                if ($value) {
+                    $value = urlencode($value);
+                }
+
                 $req .= "&$key=$value";
             }
 

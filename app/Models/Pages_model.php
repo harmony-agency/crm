@@ -16,17 +16,15 @@ class Pages_model extends Crud_model {
 
         $where = "";
 
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $pages_table.id=$id";
         }
 
 
 
-        $slug = get_array_value($options, "slug");
-
+        $slug = $this->_get_clean_value($options, "slug");
         if ($slug) {
-            $slug = $this->db->escapeString($slug);
             $where = " AND $pages_table.slug='$slug'";
         }
 

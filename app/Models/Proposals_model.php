@@ -19,17 +19,17 @@ class Proposals_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $proposals_table.id=$id";
         }
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $proposals_table.client_id=$client_id";
         }
 
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($start_date && $end_date) {
             $where .= " AND ($proposals_table.proposal_date BETWEEN '$start_date' AND '$end_date') ";
         }
@@ -50,12 +50,12 @@ class Proposals_model extends Crud_model {
             - $discount_amount
            )";
 
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
         if ($status) {
             $where .= " AND $proposals_table.status='$status'";
         }
 
-        $exclude_draft = get_array_value($options, "exclude_draft");
+        $exclude_draft = $this->_get_clean_value($options, "exclude_draft");
         if ($exclude_draft) {
             $where .= " AND $proposals_table.status!='draft' ";
         }

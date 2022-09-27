@@ -15,54 +15,53 @@ class Custom_fields_model extends Crud_model {
         $custom_fields_table = $this->db->prefixTable('custom_fields');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $custom_fields_table.id=$id";
         }
 
 
-        $related_to = get_array_value($options, "related_to");
+        $related_to = $this->_get_clean_value($options, "related_to");
         if ($related_to) {
-            $related_to = $this->db->escapeString($related_to);
             $where .= " AND $custom_fields_table.related_to='$related_to'";
         }
 
-        $add_filter = get_array_value($options, "add_filter");
+        $add_filter = $this->_get_clean_value($options, "add_filter");
         if ($add_filter) {
             $where .= " AND $custom_fields_table.add_filter=1";
         }
 
-        $show_in_table = get_array_value($options, "show_in_table");
+        $show_in_table = $this->_get_clean_value($options, "show_in_table");
         if ($show_in_table) {
             $where .= " AND $custom_fields_table.show_in_table=1";
         }
 
-        $show_in_invoice = get_array_value($options, "show_in_invoice");
+        $show_in_invoice = $this->_get_clean_value($options, "show_in_invoice");
         if ($show_in_invoice) {
             $where .= " AND $custom_fields_table.show_in_invoice=1";
         }
 
-        $show_in_estimate = get_array_value($options, "show_in_estimate");
+        $show_in_estimate = $this->_get_clean_value($options, "show_in_estimate");
         if ($show_in_estimate) {
             $where .= " AND $custom_fields_table.show_in_estimate=1";
         }
 
-        $show_in_contract = get_array_value($options, "show_in_contract");
+        $show_in_contract = $this->_get_clean_value($options, "show_in_contract");
         if ($show_in_contract) {
             $where .= " AND $custom_fields_table.show_in_contract=1";
         }
 
-        $show_in_proposal = get_array_value($options, "show_in_proposal");
+        $show_in_proposal = $this->_get_clean_value($options, "show_in_proposal");
         if ($show_in_proposal) {
             $where .= " AND $custom_fields_table.show_in_proposal=1";
         }
 
-        $show_in_order = get_array_value($options, "show_in_order");
+        $show_in_order = $this->_get_clean_value($options, "show_in_order");
         if ($show_in_order) {
             $where .= " AND $custom_fields_table.show_in_order=1";
         }
 
-        $show_in_embedded_form = get_array_value($options, "show_in_embedded_form");
+        $show_in_embedded_form = $this->_get_clean_value($options, "show_in_embedded_form");
         if ($show_in_embedded_form) {
             $where .= " AND $custom_fields_table.show_in_embedded_form=1";
         }

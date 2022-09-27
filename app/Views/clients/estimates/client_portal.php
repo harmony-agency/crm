@@ -2,9 +2,9 @@
     <div class="card clearfix">
 
         <ul id="client-estimate-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
-            <li><a role="presentation"  href="javascript:;" data-bs-target="#esimates-tab"><?php echo app_lang("estimates"); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#esimates-tab"><?php echo app_lang("estimates"); ?></a></li>
             <?php if (isset($can_request_estimate) && $can_request_estimate) { ?>
-                <li><a role="presentation" href="<?php echo_uri("estimate_requests/estimate_requests_for_client/" . $client_id); ?>" data-bs-target="#esimate-requests-tab"><?php echo app_lang('estimate_requests'); ?></a></li>
+                <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("estimate_requests/estimate_requests_for_client/" . $client_id); ?>" data-bs-target="#esimate-requests-tab"><?php echo app_lang('estimate_requests'); ?></a></li>
                 <div class="tab-title clearfix no-border">
 
                     <div class="title-button-group">

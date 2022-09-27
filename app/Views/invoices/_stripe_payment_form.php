@@ -1,5 +1,5 @@
 <?php
-$form_action = isset($contact_user_id) ? get_uri("pay_invoice/get_stripe_payment_intent_session") : get_uri("invoice_payments/get_stripe_payment_intent_session");
+$form_action = isset($contact_user_id) ? get_uri("pay_invoice/get_stripe_checkout_session") : get_uri("invoice_payments/get_stripe_checkout_session");
 echo form_open("", array("id" => "stripe-checkout-form", "class" => "float-start", "role" => "form"));
 ?>
 <input type="hidden" name="invoice_id" value="<?php echo $invoice_id; ?>" />

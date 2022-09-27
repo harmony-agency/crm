@@ -756,7 +756,7 @@ class Clients extends Security_Controller {
 
     function save_my_preferences() {
         //setting preferences
-        $settings = array("notification_sound_volume", "disable_push_notification", "disable_keyboard_shortcuts", "personal_rtl_support", "reminder_sound_volume", "reminder_snooze_length");
+        $settings = array("notification_sound_volume", "disable_push_notification", "disable_keyboard_shortcuts", "reminder_sound_volume", "reminder_snooze_length");
 
         if (!get_setting("disable_topbar_menu_customization")) {
             array_push($settings, "hidden_topbar_menus");

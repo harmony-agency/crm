@@ -68,7 +68,7 @@ class Pay_invoice extends App_Controller {
         }
     }
 
-    function get_stripe_payment_intent_session() {
+    function get_stripe_checkout_session() {
         if (!get_setting("client_can_pay_invoice_without_login")) {
             app_redirect("forbidden");
         }
@@ -76,7 +76,7 @@ class Pay_invoice extends App_Controller {
         $stripe = new Stripe();
 
         try {
-            $session = $stripe->get_stripe_payment_intent_session($this->request->getPost("input_data"));
+            $session = $stripe->get_stripe_checkout_session($this->request->getPost("input_data"));
             if ($session->id) {
                 echo json_encode(array("success" => true, "session_id" => $session->id, "publishable_key" => $stripe->get_publishable_key()));
             } else {

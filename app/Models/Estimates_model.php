@@ -20,18 +20,17 @@ class Estimates_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $estimates_table.id=$id";
         }
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
-            $client_id = $this->db->escapeString($client_id);
             $where .= " AND $estimates_table.client_id=$client_id";
         }
 
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($start_date && $end_date) {
             $where .= " AND ($estimates_table.estimate_date BETWEEN '$start_date' AND '$end_date') ";
         }
@@ -52,22 +51,22 @@ class Estimates_model extends Crud_model {
             - $discount_amount
            )";
 
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
         if ($status) {
             $where .= " AND $estimates_table.status='$status'";
         }
 
-        $exclude_draft = get_array_value($options, "exclude_draft");
+        $exclude_draft = $this->_get_clean_value($options, "exclude_draft");
         if ($exclude_draft) {
             $where .= " AND $estimates_table.status!='draft' ";
         }
 
-        $clients_only = get_array_value($options, "clients_only");
+        $clients_only = $this->_get_clean_value($options, "clients_only");
         if ($clients_only) {
             $where .= " AND $estimates_table.client_id IN(SELECT $clients_table.id FROM $clients_table WHERE $clients_table.deleted=0 AND $clients_table.is_lead=0)";
         }
 
-        $show_own_estimates_only_user_id = get_array_value($options, "show_own_estimates_only_user_id");
+        $show_own_estimates_only_user_id = $this->_get_clean_value($options, "show_own_estimates_only_user_id");
         if ($show_own_estimates_only_user_id) {
             $where .= " AND $estimates_table.created_by=$show_own_estimates_only_user_id";
         }
@@ -188,7 +187,7 @@ class Estimates_model extends Crud_model {
 
         $where = "";
         
-        $estimate_where = $this->_get_clients_of_currency_query(get_array_value($options, "currency_symbol"), $estimates_table, $clients_table);
+        $estimate_where = $this->_get_clients_of_currency_query($this->_get_clean_value($options, "currency_symbol"), $estimates_table, $clients_table);
 
         $estimate_value_calculation_query = $this->_get_estimate_value_calculation_query($estimates_table);
 

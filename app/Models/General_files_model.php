@@ -15,19 +15,17 @@ class General_files_model extends Crud_model {
         $general_files_table = $this->db->prefixTable('general_files');
         $users_table = $this->db->prefixTable('users');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
-            $id = $this->db->escapeString($id);
             $where = " AND $general_files_table.id=$id";
         }
 
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
-            $client_id = $this->db->escapeString($client_id);
             $where = " AND $general_files_table.client_id=$client_id";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where = " AND $general_files_table.user_id = $user_id";
         }

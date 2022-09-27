@@ -25,11 +25,25 @@ class Projects extends Security_Controller {
         $this->Task_priority_model = model("App\Models\Task_priority_model");
     }
 
-    private function can_delete_projects() {
+    private function can_delete_projects($project_id = 0) {
         if ($this->login_user->user_type == "staff") {
             if ($this->can_manage_all_projects()) {
                 return true;
-            } else if (get_array_value($this->login_user->permissions, "can_delete_projects") == "1") {
+            }
+
+            $can_delete_projects = get_array_value($this->login_user->permissions, "can_delete_projects");
+            $can_delete_only_own_created_projects = get_array_value($this->login_user->permissions, "can_delete_only_own_created_projects");
+
+            if ($can_delete_projects) {
+                return true;
+            }
+
+            if ($project_id) {
+                $project_info = $this->Projects_model->get_one($project_id);
+                if ($can_delete_only_own_created_projects && $project_info->created_by === $this->login_user->id) {
+                    return true;
+                }
+            } else if ($can_delete_only_own_created_projects) { //no project given and the user has partial access
                 return true;
             }
         }
@@ -323,7 +337,7 @@ class Projects extends Security_Controller {
         $client_id = $this->request->getPost('client_id');
 
         if ($project_id) {
-            if (!$this->can_edit_projects()) {
+            if (!$this->can_edit_projects($project_id)) {
                 app_redirect("forbidden");
             }
         } else {
@@ -367,7 +381,7 @@ class Projects extends Security_Controller {
         $id = $this->request->getPost('id');
 
         if ($id) {
-            if (!$this->can_edit_projects()) {
+            if (!$this->can_edit_projects($id)) {
                 app_redirect("forbidden");
             }
         } else {
@@ -494,6 +508,7 @@ class Projects extends Security_Controller {
         ini_set('max_execution_time', 300); //300 seconds 
 
         $project_id = $this->request->getPost('project_id');
+        $project_start_date = $this->request->getPost('start_date');
 
         if (!$this->can_create_projects()) {
             app_redirect("forbidden");
@@ -507,6 +522,7 @@ class Projects extends Security_Controller {
         $copy_milestones = $this->request->getPost("copy_milestones");
         $move_all_tasks_to_to_do = $this->request->getPost("move_all_tasks_to_to_do");
         $copy_tasks_start_date_and_deadline = $this->request->getPost("copy_tasks_start_date_and_deadline");
+        $change_the_tasks_start_date_and_deadline_based_on_project_start_date = $this->request->getPost("change_the_tasks_start_date_and_deadline_based_on_project_start_date");
 
         //prepare new project data
         $now = get_current_utc_time();
@@ -514,7 +530,7 @@ class Projects extends Security_Controller {
             "title" => $this->request->getPost('title'),
             "description" => $this->request->getPost('description'),
             "client_id" => $this->request->getPost('client_id'),
-            "start_date" => $this->request->getPost('start_date'),
+            "start_date" => $project_start_date,
             "deadline" => $this->request->getPost('deadline'),
             "price" => unformat_currency($this->request->getPost('price')),
             "created_date" => $now,
@@ -554,6 +570,8 @@ class Projects extends Security_Controller {
             }
         }
 
+        //old project info
+        $old_project_info = $this->Projects_model->get_one($project_id);
 
         //we'll keep all new task ids vs old task ids. by this way, we'll add the checklist easily 
         $task_ids = array();
@@ -562,7 +580,7 @@ class Projects extends Security_Controller {
         //first, save tasks whose are not sub tasks 
         $tasks = $this->Tasks_model->get_all_where(array("project_id" => $project_id, "deleted" => 0, "parent_task_id" => 0))->getResult();
         foreach ($tasks as $task) {
-            $task_data = $this->_prepare_new_task_data_on_cloning_project($new_project_id, $milestones_array, $task, $copy_same_assignee_and_collaborators, $copy_tasks_start_date_and_deadline, $move_all_tasks_to_to_do);
+            $task_data = $this->_prepare_new_task_data_on_cloning_project($new_project_id, $milestones_array, $task, $copy_same_assignee_and_collaborators, $copy_tasks_start_date_and_deadline, $move_all_tasks_to_to_do, $change_the_tasks_start_date_and_deadline_based_on_project_start_date, $old_project_info, $project_start_date);
 
             //add new task
             $new_taks_id = $this->Tasks_model->ci_save($task_data);
@@ -577,7 +595,7 @@ class Projects extends Security_Controller {
         //secondly, save sub tasks
         $tasks = $this->Tasks_model->get_all_where(array("project_id" => $project_id, "deleted" => 0, "parent_task_id !=" => 0))->getResult();
         foreach ($tasks as $task) {
-            $task_data = $this->_prepare_new_task_data_on_cloning_project($new_project_id, $milestones_array, $task, $copy_same_assignee_and_collaborators, $copy_tasks_start_date_and_deadline, $move_all_tasks_to_to_do);
+            $task_data = $this->_prepare_new_task_data_on_cloning_project($new_project_id, $milestones_array, $task, $copy_same_assignee_and_collaborators, $copy_tasks_start_date_and_deadline, $move_all_tasks_to_to_do, $change_the_tasks_start_date_and_deadline_based_on_project_start_date, $old_project_info, $project_start_date);
             //add parent task
             $task_data["parent_task_id"] = $task_ids[$task->parent_task_id];
 
@@ -692,7 +710,7 @@ class Projects extends Security_Controller {
         }
     }
 
-    private function _prepare_new_task_data_on_cloning_project($new_project_id, $milestones_array, $task, $copy_same_assignee_and_collaborators, $copy_tasks_start_date_and_deadline, $move_all_tasks_to_to_do) {
+    private function _prepare_new_task_data_on_cloning_project($new_project_id, $milestones_array, $task, $copy_same_assignee_and_collaborators, $copy_tasks_start_date_and_deadline, $move_all_tasks_to_to_do, $change_the_tasks_start_date_and_deadline_based_on_project_start_date, $old_project_info, $project_start_date) {
         //prepare new task data. 
         $task->project_id = $new_project_id;
         $milestone_id = get_array_value($milestones_array, $task->milestone_id);
@@ -704,17 +722,31 @@ class Projects extends Security_Controller {
             $task->collaborators = "";
         }
 
-        if (!$copy_tasks_start_date_and_deadline) {
-            $task->start_date = NULL;
-            $task->deadline = NULL;
-        }
-
         $task_data = (array) $task;
         unset($task_data["id"]); //remove id from existing data
 
         if ($move_all_tasks_to_to_do) {
             $task_data["status"] = "to_do";
             $task_data["status_id"] = 1;
+        }
+
+        if (!$copy_tasks_start_date_and_deadline && !$change_the_tasks_start_date_and_deadline_based_on_project_start_date) {
+            $task->start_date = NULL;
+            $task->deadline = NULL;
+        } else if ($change_the_tasks_start_date_and_deadline_based_on_project_start_date) {
+            $old_project_start_date = $old_project_info->start_date;
+            $old_task_start_date = $task->start_date;
+            $old_task_end_date = $task->deadline;
+            $task_start_date_diff = abs(strtotime($old_task_start_date ? $old_task_start_date : "") - strtotime($old_project_start_date ? $old_project_start_date : ""));
+            $task_end_date_diff = abs(strtotime($old_task_end_date ? $old_task_end_date : "") - strtotime($old_project_start_date ? $old_project_start_date : ""));
+
+            // 1 day = 24 hours
+            // 24 * 60 * 60 = 86400 seconds
+            $start_date_day_diff = $task_start_date_diff / 86400;
+            $end_date_day_diff = $task_end_date_diff / 86400;
+
+            $task_data["start_date"] = add_period_to_date($project_start_date, $start_date_day_diff, "days");
+            $task_data["deadline"] = add_period_to_date($project_start_date, $end_date_day_diff, "days");
         }
 
         return $task_data;
@@ -737,12 +769,11 @@ class Projects extends Security_Controller {
     /* delete a project */
 
     function delete() {
+        $id = $this->request->getPost('id');
 
-        if (!$this->can_delete_projects()) {
+        if (!$this->can_delete_projects($id)) {
             app_redirect("forbidden");
         }
-
-        $id = $this->request->getPost('id');
 
         if ($this->Projects_model->delete_project_and_sub_items($id)) {
             log_notification("project_deleted", array("project_id" => $id));
@@ -895,11 +926,11 @@ class Projects extends Security_Controller {
         }
 
         $optoins = "";
-        if ($this->can_edit_projects()) {
+        if ($this->can_edit_projects($data->id)) {
             $optoins .= modal_anchor(get_uri("projects/modal_form"), "<i data-feather='edit' class='icon-16'></i>", array("class" => "edit", "title" => app_lang('edit_project'), "data-post-id" => $data->id));
         }
 
-        if ($this->can_delete_projects()) {
+        if ($this->can_delete_projects($data->id)) {
             $optoins .= js_anchor("<i data-feather='x' class='icon-16'></i>", array('title' => app_lang('delete_project'), "class" => "delete", "data-id" => $data->id, "data-action-url" => get_uri("projects/delete"), "data-action" => "delete-confirmation"));
         }
 
@@ -1132,7 +1163,7 @@ class Projects extends Security_Controller {
             $view_data['show_activity'] = false;
             $view_data['show_overview'] = false;
             $view_data['activity_logs_params'] = array();
-            
+
             $this->init_project_permission_checker($project_id);
             $this->init_project_settings($project_id);
             $view_data["show_timesheet_info"] = $this->can_view_timesheet($project_id);
@@ -1392,9 +1423,18 @@ class Projects extends Security_Controller {
         $tasks_dropdown = array("" => "-");
         $tasks_dropdown_json = array(array("id" => "", "text" => "- " . app_lang("task") . " -"));
 
+        $show_assigned_tasks_only_user_id = $this->show_assigned_tasks_only_user_id();
+        if (!$show_assigned_tasks_only_user_id) {
+            $timesheet_manage_permission = get_array_value($this->login_user->permissions, "timesheet_manage_permission");
+            if (!$timesheet_manage_permission || $timesheet_manage_permission === "own") {
+                //show only own tasks when the permission is no/own
+                $show_assigned_tasks_only_user_id = $this->login_user->id;
+            }
+        }
+
         $options = array(
             "project_id" => $project_id,
-            "show_assigned_tasks_only_user_id" => $this->show_assigned_tasks_only_user_id()
+            "show_assigned_tasks_only_user_id" => $show_assigned_tasks_only_user_id
         );
 
         $tasks = $this->Tasks_model->get_details($options)->getResult();
@@ -3392,8 +3432,14 @@ class Projects extends Security_Controller {
         }
         $custom_fields = $this->Custom_fields_model->get_available_fields_for_table("tasks", $this->login_user->is_admin, $this->login_user->user_type);
 
-        $status = $this->request->getPost('status_id') ? implode(",", $this->request->getPost('status_id')) : "";
         $milestone_id = $this->request->getPost('milestone_id');
+
+        $quick_filter = $this->request->getPost('quick_filter');
+        if ($quick_filter) {
+            $status = "";
+        } else {
+            $status = $this->request->getPost('status_id') ? implode(",", $this->request->getPost('status_id')) : "";
+        }
 
         $options = array(
             "project_id" => $project_id,
@@ -3405,7 +3451,7 @@ class Projects extends Security_Controller {
             "custom_fields" => $custom_fields,
             "unread_status_user_id" => $this->login_user->id,
             "show_assigned_tasks_only_user_id" => $this->show_assigned_tasks_only_user_id(),
-            "quick_filter" => $this->request->getPost('quick_filter'),
+            "quick_filter" => $quick_filter,
             "custom_field_filter" => $this->prepare_custom_field_filter_values("tasks", $this->login_user->is_admin, $this->login_user->user_type)
         );
 
@@ -3436,7 +3482,6 @@ class Projects extends Security_Controller {
     function my_tasks_list_data($is_widget = 0) {
         $this->access_only_team_members();
 
-        $status = $this->request->getPost('status_id') ? implode(",", $this->request->getPost('status_id')) : "";
         $project_id = $this->request->getPost('project_id');
 
         $this->init_project_permission_checker($project_id);
@@ -3444,6 +3489,13 @@ class Projects extends Security_Controller {
         $specific_user_id = $this->request->getPost('specific_user_id');
 
         $custom_fields = $this->Custom_fields_model->get_available_fields_for_table("tasks", $this->login_user->is_admin, $this->login_user->user_type);
+
+        $quick_filter = $this->request->getPost('quick_filter');
+        if ($quick_filter) {
+            $status = "";
+        } else {
+            $status = $this->request->getPost('status_id') ? implode(",", $this->request->getPost('status_id')) : "";
+        }
 
         $options = array(
             "specific_user_id" => $specific_user_id,
@@ -3456,7 +3508,7 @@ class Projects extends Security_Controller {
             "status_ids" => $status,
             "unread_status_user_id" => $this->login_user->id,
             "show_assigned_tasks_only_user_id" => $this->show_assigned_tasks_only_user_id(),
-            "quick_filter" => $this->request->getPost("quick_filter"),
+            "quick_filter" => $quick_filter,
             "custom_field_filter" => $this->prepare_custom_field_filter_values("tasks", $this->login_user->is_admin, $this->login_user->user_type)
         );
 
@@ -4364,6 +4416,10 @@ class Projects extends Security_Controller {
         $this->access_only_team_members();
         if ($project_id) {
             $view_data['project_id'] = $project_id;
+
+            $view_data["custom_field_headers"] = $this->Custom_fields_model->get_custom_field_headers_for_table("expenses", $this->login_user->is_admin, $this->login_user->user_type);
+            $view_data["custom_field_filters"] = $this->Custom_fields_model->get_custom_field_filters("expenses", $this->login_user->is_admin, $this->login_user->user_type);
+
             return $this->template->view("projects/expenses/index", $view_data);
         }
     }

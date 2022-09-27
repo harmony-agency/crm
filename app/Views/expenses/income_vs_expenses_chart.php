@@ -2,8 +2,8 @@
     <div class="card clearfix">
         <ul id="income-vs-expenses-chart-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white inner clearfix" role="tablist">
             <li class="title-tab"><h4 class="pl15 pt10 pr15"><?php echo app_lang("income_vs_expenses"); ?></h4></li>
-            <li><a id="income-vs-expenses-chart-button" role="presentation"  href="javascript:;" data-bs-target="#income-vs-expenses-chart-tab"><?php echo app_lang("chart"); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("expenses/income_vs_expenses_summary/"); ?>" data-bs-target="#income-vs-expenses-summary"><?php echo app_lang("summary"); ?></a></li>
+            <li><a id="income-vs-expenses-chart-button" role="presentation"  data-bs-toggle="tab"  href="javascript:;" data-bs-target="#income-vs-expenses-chart-tab"><?php echo app_lang("chart"); ?></a></li>
+            <li><a role="presentation"  data-bs-toggle="tab" href="<?php echo_uri("expenses/income_vs_expenses_summary/"); ?>" data-bs-target="#income-vs-expenses-summary"><?php echo app_lang("summary"); ?></a></li>
         </ul>
 
         <div class="tab-content">

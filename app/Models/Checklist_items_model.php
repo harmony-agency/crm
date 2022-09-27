@@ -16,7 +16,7 @@ class Checklist_items_model extends Crud_model {
 
         $where = "";
 
-        $task_id = get_array_value($options, "task_id");
+        $task_id = $this->_get_clean_value($options, "task_id");
         if ($task_id) {
             $where .= " AND $checklist_items_table.task_id=$task_id";
         }

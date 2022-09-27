@@ -254,6 +254,12 @@ img:not(.fairsketch-logo){
     border-radius: 8px;
 }
 
+
+section {
+    margin-bottom: 50px;
+}
+
+
 ::-webkit-scrollbar {
     width: 8px;
 }

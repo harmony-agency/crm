@@ -1,7 +1,7 @@
 <div class="card no-border bg-transparent clearfix">
 
     <ul id="email-template-tab" data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title scrollable-tabs" role="tablist">
-        <li class="email-template-tabs"><a role="presentation" href="<?php echo echo_uri("email_templates/different_language_form/" . $model_info->id); ?>" data-bs-target="#email-template-form-default" data-reload="1"  data-name="<?php echo $model_info->template_name; ?>" class="email-template-form-tab"><?php echo app_lang("default"); ?></a></li>
+        <li class="email-template-tabs"><a role="presentation" data-bs-toggle="tab" href="<?php echo echo_uri("email_templates/different_language_form/" . $model_info->id); ?>" data-bs-target="#email-template-form-default" data-reload="1"  data-name="<?php echo $model_info->template_name; ?>" class="email-template-form-tab"><?php echo app_lang("default"); ?></a></li>
         <?php
         if ($different_language_templates) {
             foreach ($different_language_templates AS $different_language_template) {

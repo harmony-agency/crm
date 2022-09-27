@@ -102,13 +102,13 @@ class Users_model extends Crud_model {
         $roles_table = $this->db->prefixTable('roles');
 
         $where = "";
-        $id = get_array_value($options, "id");
-        $status = get_array_value($options, "status");
-        $user_type = get_array_value($options, "user_type");
-        $client_id = get_array_value($options, "client_id");
-        $exclude_user_id = get_array_value($options, "exclude_user_id");
-        $first_name = get_array_value($options, "first_name");
-        $last_name = get_array_value($options, "last_name");
+        $id = $this->_get_clean_value($options, "id");
+        $status = $this->_get_clean_value($options, "status");
+        $user_type = $this->_get_clean_value($options, "user_type");
+        $client_id = $this->_get_clean_value($options, "client_id");
+        $exclude_user_id = $this->_get_clean_value($options, "exclude_user_id");
+        $first_name = $this->_get_clean_value($options, "first_name");
+        $last_name = $this->_get_clean_value($options, "last_name");
 
         if ($id) {
             $where .= " AND $users_table.id=$id";
@@ -136,7 +136,6 @@ class Users_model extends Crud_model {
         }
 
         if ($client_id) {
-            $client_id = $this->db->escapeString($client_id);
             $where .= " AND $users_table.client_id=$client_id";
         }
 
@@ -144,22 +143,22 @@ class Users_model extends Crud_model {
             $where .= " AND $users_table.id!=$exclude_user_id";
         }
 
-        $non_admin_users_only = get_array_value($options, "non_admin_users_only");
+        $non_admin_users_only = $this->_get_clean_value($options, "non_admin_users_only");
         if ($non_admin_users_only) {
             $where .= " AND $users_table.is_admin=0";
         }
 
-        $show_own_clients_only_user_id = get_array_value($options, "show_own_clients_only_user_id");
+        $show_own_clients_only_user_id = $this->_get_clean_value($options, "show_own_clients_only_user_id");
         if ($user_type == "client" && $show_own_clients_only_user_id) {
             $where .= " AND $users_table.client_id IN(SELECT $clients_table.id FROM $clients_table WHERE $clients_table.deleted=0 AND $clients_table.created_by=$show_own_clients_only_user_id)";
         }
 
-        $quick_filter = get_array_value($options, "quick_filter");
+        $quick_filter = $this->_get_clean_value($options, "quick_filter");
         if ($quick_filter) {
             $where .= $this->make_quick_filter_query($quick_filter, $users_table);
         }
 
-        $client_groups = get_array_value($options, "client_groups");
+        $client_groups = $this->_get_clean_value($options, "client_groups");
         if ($client_groups) {
             $client_groups_where = $this->prepare_allowed_client_groups_query($clients_table, $client_groups);
             if ($client_groups_where) {
@@ -191,7 +190,7 @@ class Users_model extends Crud_model {
             "skype" => $users_table . ".skype",
         );
 
-        $order_by = get_array_value($available_order_by_list, get_array_value($options, "order_by"));
+        $order_by = get_array_value($available_order_by_list, $this->_get_clean_value($options, "order_by"));
 
         $order = "ORDER BY $users_table.first_name";
 
@@ -211,6 +210,7 @@ class Users_model extends Crud_model {
             $where .= " OR $users_table.skype LIKE '%$search_by%' ESCAPE '!' ";
             $where .= " OR $clients_table.company_name LIKE '%$search_by%' ESCAPE '!' ";
             $where .= " OR CONCAT($users_table.first_name, ' ', $users_table.last_name) LIKE '%$search_by%' ESCAPE '!' ";
+            $where .= $this->get_custom_field_search_query($users_table, "client_contacts", $search_by);
             $where .= " )";
         }
 
@@ -279,7 +279,7 @@ class Users_model extends Crud_model {
         parent::use_table("team_member_job_info");
 
         //check if job info already exists
-        $where = array("user_id" => get_array_value($data, "user_id"));
+        $where = array("user_id" => $this->_get_clean_value($data, "user_id"));
         $exists = parent::get_one_where($where);
         if ($exists->user_id) {
             //job info found. update the record
@@ -377,22 +377,22 @@ class Users_model extends Crud_model {
 
         $where = "";
 
-        $user_type = get_array_value($options, "user_type");
+        $user_type = $this->_get_clean_value($options, "user_type");
         if ($user_type) {
             $where .= " AND $users_table.user_type='$user_type'";
         }
 
-        $exclude_user_id = get_array_value($options, "exclude_user_id");
+        $exclude_user_id = $this->_get_clean_value($options, "exclude_user_id");
         if ($exclude_user_id) {
             $where .= " AND $users_table.id!=$exclude_user_id";
         }
 
-        $show_own_clients_only_user_id = get_array_value($options, "show_own_clients_only_user_id");
+        $show_own_clients_only_user_id = $this->_get_clean_value($options, "show_own_clients_only_user_id");
         if ($user_type == "client" && $show_own_clients_only_user_id) {
             $where .= " AND $users_table.client_id IN(SELECT $clients_table.id FROM $clients_table WHERE $clients_table.deleted=0 AND $clients_table.created_by=$show_own_clients_only_user_id)";
         }
 
-        $client_groups = get_array_value($options, "client_groups");
+        $client_groups = $this->_get_clean_value($options, "client_groups");
         if ($client_groups) {
             $client_groups_where = $this->prepare_allowed_client_groups_query($clients_table, $client_groups);
             if ($client_groups_where) {
@@ -413,17 +413,17 @@ class Users_model extends Crud_model {
         $clients_table = $this->db->prefixTable('clients');
 
         $where = "";
-        $show_own_clients_only_user_id = get_array_value($options, "show_own_clients_only_user_id");
+        $show_own_clients_only_user_id = $this->_get_clean_value($options, "show_own_clients_only_user_id");
         if ($show_own_clients_only_user_id) {
             $where .= " AND $users_table.client_id IN(SELECT $clients_table.id FROM $clients_table WHERE $clients_table.deleted=0 AND $clients_table.created_by=$show_own_clients_only_user_id)";
         }
 
-        $last_online = get_array_value($options, "last_online");
+        $last_online = $this->_get_clean_value($options, "last_online");
         if ($last_online) {
             $where .= " AND DATE($users_table.last_online)>='$last_online'";
         }
 
-        $client_groups = get_array_value($options, "client_groups");
+        $client_groups = $this->_get_clean_value($options, "client_groups");
         if ($client_groups) {
             $client_groups_where = $this->prepare_allowed_client_groups_query($clients_table, $client_groups);
             if ($client_groups_where) {

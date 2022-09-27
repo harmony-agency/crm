@@ -20,22 +20,22 @@ class Contracts_model extends Crud_model {
         $projects_table = $this->db->prefixTable('projects');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $contracts_table.id=$id";
         }
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $contracts_table.client_id=$client_id";
         }
 
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($start_date && $end_date) {
             $where .= " AND ($contracts_table.contract_date BETWEEN '$start_date' AND '$end_date') ";
         }
         
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $contracts_table.project_id=$project_id";
         }
@@ -56,12 +56,12 @@ class Contracts_model extends Crud_model {
             - $discount_amount
            )";
 
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
         if ($status) {
             $where .= " AND $contracts_table.status='$status'";
         }
 
-        $exclude_draft = get_array_value($options, "exclude_draft");
+        $exclude_draft = $this->_get_clean_value($options, "exclude_draft");
         if ($exclude_draft) {
             $where .= " AND $contracts_table.status!='draft' ";
         }

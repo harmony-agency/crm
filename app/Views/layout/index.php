@@ -1,10 +1,6 @@
 <?php
-$Users_model = model("App\Models\Users_model");
-$login_user_id = $Users_model->login_user_id();
-$personal_rtl_support = get_setting('user_' . $login_user_id . '_personal_rtl_support');
-
 $dir = 'ltr';
-if ((get_setting("rtl") && !$personal_rtl_support) || $personal_rtl_support == "yes") {
+if (app_lang("text_direction") == "rtl") {
     $dir = 'rtl';
 }
 
@@ -51,7 +47,7 @@ $left_menu_minimized = get_cookie("left_menu_minimized");
                     if (isset($content_view) && $content_view != "") {
                         echo view($content_view);
                     }
-                    
+
                     app_hooks()->do_action('app_hook_layout_main_view_extension');
                     ?>
                 </div>

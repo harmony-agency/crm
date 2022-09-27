@@ -11,11 +11,11 @@
             <div class="card">
 
                 <ul data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
-                    <li><a  role="presentation"  href="javascript:;" data-bs-target="#task-status-tab"> <?php echo app_lang('task_status'); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("task_priority"); ?>" data-bs-target="#task-priority-tab"><?php echo app_lang('task_priority'); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("settings/tasks/"); ?>" data-bs-target="#task-settings-tab"><?php echo app_lang('task_settings'); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("checklist_template"); ?>" data-bs-target="#task-checklist-template-tab"><?php echo app_lang('checklist_template'); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("checklist_groups"); ?>" data-bs-target="#task-checklist-group-tab"><?php echo app_lang('checklist_group'); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#task-status-tab"> <?php echo app_lang('task_status'); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("task_priority"); ?>" data-bs-target="#task-priority-tab"><?php echo app_lang('task_priority'); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("settings/tasks/"); ?>" data-bs-target="#task-settings-tab"><?php echo app_lang('task_settings'); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("checklist_template"); ?>" data-bs-target="#task-checklist-template-tab"><?php echo app_lang('checklist_template'); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("checklist_groups"); ?>" data-bs-target="#task-checklist-group-tab"><?php echo app_lang('checklist_group'); ?></a></li>
 
                     <div class="tab-title clearfix no-border">
                         <div class="title-button-group">

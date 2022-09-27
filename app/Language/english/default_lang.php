@@ -5,6 +5,7 @@
 /* language locale */
 $lang["language_locale"] = "en"; //locale code
 $lang["language_locale_long"] = "en-US"; //long locale code
+$lang["text_direction"] = "ltr"; //supported value ltr/rtl
 
 /* common */
 $lang["add"] = "Add";
@@ -2273,5 +2274,14 @@ $lang["new_tickets_in_last_30_days"] = "New tickets in last 30 days";
 $lang["individual"] = "Individual";
 
 $lang["total_after_discount"] = "Total After Discount";
+
+/* Version 3.3 */
+
+$lang["change_the_tasks_start_date_and_deadline_based_on_project_start_date"] = "Change the tasks start date and deadline based on project start date";
+
+$lang["can_edit_only_own_created_projects"] = "Can edit only own created projects";
+$lang["can_delete_only_own_created_projects"] = "Can delete only own created projects";
+
+$lang["checklist_status"] = "Checklist status";
 
 return $lang;

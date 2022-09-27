@@ -28,49 +28,49 @@
     <ul id="team-member-view-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs scrollable-tabs rounded-0" role="tablist">
 
         <?php if ($show_timeline) { ?>
-            <li><a  role="presentation"  href="javascript:;" data-bs-target="#tab-timeline"> <?php echo app_lang('timeline'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#tab-timeline"> <?php echo app_lang('timeline'); ?></a></li>
         <?php } ?>
 
         <?php if ($show_general_info) { ?>
-            <li><a  role="presentation" href="<?php echo_uri("team_members/general_info/" . $user_info->id); ?>" data-bs-target="#tab-general-info"> <?php echo app_lang('general_info'); ?></a></li>
+            <li><a  role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/general_info/" . $user_info->id); ?>" data-bs-target="#tab-general-info"> <?php echo app_lang('general_info'); ?></a></li>
         <?php } ?>
 
         <?php if ($show_general_info) { ?>
-            <li><a  role="presentation" href="<?php echo_uri("team_members/social_links/" . $user_info->id); ?>" data-bs-target="#tab-social-links"> <?php echo app_lang('social_links'); ?></a></li>
+            <li><a  role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/social_links/" . $user_info->id); ?>" data-bs-target="#tab-social-links"> <?php echo app_lang('social_links'); ?></a></li>
         <?php } ?>
 
         <?php if ($show_job_info) { ?>
-            <li><a  role="presentation" href="<?php echo_uri("team_members/job_info/" . $user_info->id); ?>" data-bs-target="#tab-job-info"> <?php echo app_lang('job_info'); ?></a></li>
+            <li><a  role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/job_info/" . $user_info->id); ?>" data-bs-target="#tab-job-info"> <?php echo app_lang('job_info'); ?></a></li>
         <?php } ?>
 
         <?php if ($show_account_settings) { ?>
-            <li><a role="presentation" href="<?php echo_uri("team_members/account_settings/" . $user_info->id); ?>" data-bs-target="#tab-account-settings"> <?php echo app_lang('account_settings'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/account_settings/" . $user_info->id); ?>" data-bs-target="#tab-account-settings"> <?php echo app_lang('account_settings'); ?></a></li>
         <?php } ?>
 
         <?php if ($login_user->id == $user_info->id) { ?>
-            <li><a role="presentation" href="<?php echo_uri("team_members/my_preferences/" . $user_info->id); ?>" data-bs-target="#tab-my-preferences"> <?php echo app_lang('my_preferences'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/my_preferences/" . $user_info->id); ?>" data-bs-target="#tab-my-preferences"> <?php echo app_lang('my_preferences'); ?></a></li>
         <?php } ?>
         <?php if ($login_user->id == $user_info->id) { ?>
-            <li><a role="presentation" href="<?php echo_uri("left_menus/index/user"); ?>" data-bs-target="#tab-user-left-menu"> <?php echo app_lang('left_menu'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("left_menus/index/user"); ?>" data-bs-target="#tab-user-left-menu"> <?php echo app_lang('left_menu'); ?></a></li>
         <?php } ?>
 
         <?php if ($show_general_info) { ?>
-            <li><a  role="presentation" href="<?php echo_uri("team_members/files/" . $user_info->id); ?>" data-bs-target="#tab-files"> <?php echo app_lang('files'); ?></a></li>
+            <li><a  role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/files/" . $user_info->id); ?>" data-bs-target="#tab-files"> <?php echo app_lang('files'); ?></a></li>
         <?php } ?>
 
         <?php if ($show_projects) { ?>
-            <li><a role="presentation" href="<?php echo_uri("team_members/projects_info/" . $user_info->id); ?>" data-bs-target="#tab-projects-info"><?php echo app_lang('projects'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/projects_info/" . $user_info->id); ?>" data-bs-target="#tab-projects-info"><?php echo app_lang('projects'); ?></a></li>
         <?php } ?> 
 
         <?php if ($show_attendance) { ?>
-            <li><a role="presentation" href="<?php echo_uri("team_members/attendance_info/" . $user_info->id); ?>" data-bs-target="#tab-attendance-info"> <?php echo app_lang('attendance'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/attendance_info/" . $user_info->id); ?>" data-bs-target="#tab-attendance-info"> <?php echo app_lang('attendance'); ?></a></li>
         <?php } ?>
 
         <?php if ($show_leave) { ?>
-            <li><a role="presentation" href="<?php echo_uri("team_members/leave_info/" . $user_info->id); ?>" data-bs-target="#tab-leave-info"><?php echo app_lang('leaves'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/leave_info/" . $user_info->id); ?>" data-bs-target="#tab-leave-info"><?php echo app_lang('leaves'); ?></a></li>
         <?php } ?>
         <?php if ($show_expense_info) { ?>
-            <li><a role="presentation" href="<?php echo_uri("team_members/expense_info/" . $user_info->id); ?>" data-bs-target="#tab-expense-info"><?php echo app_lang('expenses'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/expense_info/" . $user_info->id); ?>" data-bs-target="#tab-expense-info"><?php echo app_lang('expenses'); ?></a></li>
         <?php } ?>
 
         <?php
@@ -79,7 +79,7 @@
         $hook_tabs = is_array($hook_tabs) ? $hook_tabs : array();
         foreach ($hook_tabs as $hook_tab) {
             ?>
-            <li><a role="presentation" href="<?php echo get_array_value($hook_tab, 'url') ?>" data-bs-target="#<?php echo get_array_value($hook_tab, 'target') ?>"><?php echo get_array_value($hook_tab, 'title') ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo get_array_value($hook_tab, 'url') ?>" data-bs-target="#<?php echo get_array_value($hook_tab, 'target') ?>"><?php echo get_array_value($hook_tab, 'title') ?></a></li>
             <?php
         }
         ?>
@@ -87,7 +87,7 @@
     </ul>
 
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade active pl15 pr15 mb15" id="tab-timeline">
+        <div role="tabpanel" class="tab-pane fade pl15 pr15 mb15" id="tab-timeline">
             <?php echo timeline_widget(array("limit" => 20, "offset" => 0, "is_first_load" => true, "user_id" => $user_info->id)); ?>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="tab-general-info"></div>

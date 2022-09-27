@@ -2,8 +2,8 @@
     <div class="card clearfix">
         <ul id="order-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
             <li class="title-tab"><h4 class="pl15 pt10 pr15"><?php echo app_lang('orders'); ?></h4></li>
-            <li><a id="monthly-order-button"  role="presentation" href="javascript:;" data-bs-target="#monthly-orders"><?php echo app_lang("monthly"); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("orders/yearly/"); ?>" data-bs-target="#yearly-orders"><?php echo app_lang('yearly'); ?></a></li>
+            <li><a id="monthly-order-button"  role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#monthly-orders"><?php echo app_lang("monthly"); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("orders/yearly/"); ?>" data-bs-target="#yearly-orders"><?php echo app_lang('yearly'); ?></a></li>
 
             <div class="tab-title clearfix no-border">
                 <div class="title-button-group">

@@ -15,7 +15,7 @@ class Leave_types_model extends Crud_model {
         $leave_types_table = $this->db->prefixTable('leave_types');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $leave_types_table.id=$id";
         }

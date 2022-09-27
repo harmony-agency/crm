@@ -98,25 +98,6 @@
                 </div>
             <?php } ?>
 
-            <div class="form-group">
-                <div class="row">
-                    <label for="personal_rtl_support" class="col-md-2"><?php echo app_lang("rtl"); ?></label>
-                    <div class="col-md-10">
-                        <?php
-                        $personal_rtl_support = get_setting('user_' . $user_id . '_personal_rtl_support');
-
-                        echo form_dropdown(
-                                "personal_rtl_support", array(
-                            "" => app_lang("default"),
-                            "no" => app_lang("no"),
-                            "yes" => app_lang("yes")
-                                ), $personal_rtl_support, "class='select2 mini'"
-                        );
-                        ?>
-                    </div>
-                </div>
-            </div>
-
             <?php if (!get_setting("disable_topbar_menu_customization")) { ?>
                 <div class="form-group">
                     <div class="row">

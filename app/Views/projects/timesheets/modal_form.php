@@ -109,7 +109,7 @@
                     ));
                     ?>
                 </div>
-                <label for="in_time" class=" col-md-2 col-sm-2"><?php echo app_lang('start_time'); ?></label>
+                <label for="start_time" class=" col-md-2 col-sm-2"><?php echo app_lang('start_time'); ?></label>
                 <div class=" col-md-3 col-sm-3  form-group">
                     <?php
                     echo form_input(array(
@@ -217,7 +217,10 @@
     $(document).ready(function () {
         $("#timelog-form").appForm({
             onSuccess: function (result) {
-                $("#project-timesheet-table").appTable({newData: result.data, dataId: result.id});
+                var table = $(".dataTable:visible").attr("id");
+                if (table === "project-timesheet-table" || table === "all-project-timesheet-table") {
+                    $("#" + table).appTable({newData: result.data, dataId: result.id});
+                }
             }
         });
 

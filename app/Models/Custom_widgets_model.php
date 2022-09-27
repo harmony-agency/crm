@@ -16,12 +16,12 @@ class Custom_widgets_model extends Crud_model {
 
         $where = "";
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND $custom_widgets_table.user_id=$user_id";
         }
 
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $custom_widgets_table.id= $id";
         }

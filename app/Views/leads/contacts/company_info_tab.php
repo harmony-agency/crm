@@ -1,7 +1,7 @@
 <div class="tab-content">
     <?php echo form_open(get_uri("leads/save/"), array("id" => "company-form", "class" => "general-form dashed-row white", "role" => "form")); ?>
     <div class="card">
-        <div class=" card-header">
+        <div class="card-header no-border-top-radius">
             <h4> <?php echo app_lang('client_info'); ?></h4>
         </div>
         <div class="card-body">

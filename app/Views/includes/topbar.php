@@ -48,7 +48,7 @@
                     if ($login_user->user_type == "staff") {
                         load_js(array("assets/js/awesomplete/awesomplete.min.js"));
                         ?>
-                        <li class="nav-item hidden-sm" title="<?php echo app_lang('search') . ' (/)'; ?>" data-bs-toggle="tooltip" data-placement="left">
+                        <li class="nav-item hidden-sm" title="<?php echo app_lang('search') . ' (/)'; ?>">
                             <?php echo modal_anchor(get_uri("search/search_modal_form"), "<i data-feather='search' class='icon'></i>", array("class" => "nav-link", "data-modal-title" => app_lang('search') . ' (/)', "data-post-hide-header" => true, "data-modal-close" => "1", "id" => "global-search-btn")); ?>
                         </li>
                     <?php } ?>
@@ -234,6 +234,16 @@
             //and reload page after closing modal
             if ($("#task-reminders").length) {
                 $("#task-reminders").html("");
+            }
+        });
+
+        $("body").on("click", ".notification-dropdown a[data-act='ajax-modal'], #js-quick-add-task, #js-quick-add-multiple-task, #task-details-edit-btn", function () {
+            if ($(".task-preview").length) {
+                //remove task details view when it's already opened to prevent selector duplication
+                $("#page-content").remove();
+                $('#ajaxModal').on('hidden.bs.modal', function () {
+                    location.reload();
+                });
             }
         });
 

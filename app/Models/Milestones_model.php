@@ -43,12 +43,12 @@ class Milestones_model extends Crud_model {
         $milestones_table = $this->db->prefixTable('milestones');
         $tasks_table = $this->db->prefixTable('tasks');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $milestones_table.id=$id";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where = " AND $milestones_table.project_id=$project_id";
         }

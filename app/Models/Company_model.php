@@ -15,12 +15,12 @@ class Company_model extends Crud_model {
         $company_table = $this->db->prefixTable('company');
         
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $company_table.id=$id";
         }
         
-        $is_default = get_array_value($options, "is_default");
+        $is_default = $this->_get_clean_value($options, "is_default");
         if ($is_default) {
             $where = " AND $company_table.is_default=1";
         }

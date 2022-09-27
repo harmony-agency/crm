@@ -55,7 +55,7 @@ if ($total_invoices) {
                         </div>
                     </div>
                     <div class="w15p text-center"><?php echo $overdue_invoices; ?></div>
-                    <div class="w25p text-end"><?php echo $currency_symbol . $invoices_info->overdue; ?></div>
+                    <div class="w25p text-end"><?php echo to_currency($invoices_info->overdue, $currency_symbol); ?></div>
                 </div>
             </a>
             <a href="<?php echo get_uri('invoices/index/custom#not_paid'); ?>" data-filter="not_paid" class="text-default">
@@ -69,7 +69,7 @@ if ($total_invoices) {
                         </div>
                     </div>
                     <div class="w15p text-center"><?php echo $not_paid_invoices; ?></div>
-                    <div class="w25p text-end"><?php echo $currency_symbol . $invoices_info->not_paid; ?></div>
+                    <div class="w25p text-end"><?php echo to_currency($invoices_info->not_paid, $currency_symbol); ?></div>
                 </div>
             </a>
             <a href="<?php echo get_uri('invoices/index/custom#partially_paid'); ?>" data-filter="partially_paid" class="text-default">
@@ -83,7 +83,7 @@ if ($total_invoices) {
                         </div>
                     </div>
                     <div class="w15p text-center"><?php echo $partially_paid_invoices; ?></div>
-                    <div class="w25p text-end"><?php echo $currency_symbol . $invoices_info->partially_paid_total; ?></div>
+                    <div class="w25p text-end"><?php echo to_currency($invoices_info->partially_paid_total, $currency_symbol); ?></div>
                 </div>
             </a>
             <a href="<?php echo get_uri('invoices/index/custom#fully_paid'); ?>" data-filter="fully_paid" class="text-default">
@@ -97,7 +97,7 @@ if ($total_invoices) {
                         </div>
                     </div>
                     <div class="w15p text-center"><?php echo $fully_paid_invoices; ?></div>
-                    <div class="w25p text-end"><?php echo $currency_symbol . $invoices_info->fully_paid_total; ?></div>
+                    <div class="w25p text-end"><?php echo to_currency($invoices_info->fully_paid_total, $currency_symbol); ?></div>
                 </div>
             </a>
             <a href="<?php echo get_uri('invoices/index/custom#draft'); ?>" data-filter="draft" class="text-default">
@@ -111,7 +111,7 @@ if ($total_invoices) {
                         </div>
                     </div>
                     <div class="w15p text-center"><?php echo $draft_invoices; ?></div>
-                    <div class="w25p text-end"><?php echo $currency_symbol . $invoices_info->draft_total; ?></div>
+                    <div class="w25p text-end"><?php echo to_currency($invoices_info->draft_total, $currency_symbol); ?></div>
                 </div>
             </a>
 
@@ -120,7 +120,7 @@ if ($total_invoices) {
                     <div class="row">
                         <div class='col-md-5 col-5 ps-4'>
                             <div><?php echo app_lang("total_invoiced"); ?></div>
-                            <div class="strong mt10"><?php echo $currency_symbol . $invoices_info->invoices_total; ?></div>
+                            <div class="strong mt10"><?php echo to_currency($invoices_info->invoices_total, $currency_symbol); ?></div>
                         </div>
                         <div class="col-md-7 col-7">
                             <div><?php echo app_lang("last_12_months"); ?></div>

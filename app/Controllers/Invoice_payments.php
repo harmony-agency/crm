@@ -292,11 +292,11 @@ class Invoice_payments extends Security_Controller {
         }
     }
 
-    function get_stripe_payment_intent_session() {
+    function get_stripe_checkout_session() {
         $this->access_only_clients();
         $stripe = new Stripe();
         try {
-            $session = $stripe->get_stripe_payment_intent_session($this->request->getPost("input_data"), $this->login_user->id);
+            $session = $stripe->get_stripe_checkout_session($this->request->getPost("input_data"), $this->login_user->id);
             if ($session->id) {
                 echo json_encode(array("success" => true, "session_id" => $session->id, "publishable_key" => $stripe->get_publishable_key()));
             } else {

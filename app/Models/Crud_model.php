@@ -428,8 +428,13 @@ class Crud_model extends Model {
         if ($value) {
             return $this->db->escapeString($value);
         } else {
-            return "";
+            return $value; //false, 0, null
         }
+    }
+
+    protected function get_custom_field_search_query($table, $related_to_type, $search_by) {
+        $custom_field_values_table = $this->db->prefixTable('custom_field_values');
+        return " OR $table.id IN( SELECT $custom_field_values_table.related_to_id FROM $custom_field_values_table WHERE $custom_field_values_table.deleted=0 AND $custom_field_values_table.related_to_type='$related_to_type' AND $custom_field_values_table.value LIKE '%$search_by%' ESCAPE '!' ) ";
     }
 
 }

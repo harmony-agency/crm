@@ -31,7 +31,7 @@
                             $in_time .= "</span>";
                             echo "<div class='clearfix row'>";
                             echo "<div class='col-md-7 col-sm-7'>";
-                            echo "<small class='text-off block float-start'>" . anchor(get_uri("projects/view/" . $project_timer[0]), $project_timer[1]) . "</small>";
+                            echo "<small class='text-off block float-start'>" . anchor(get_uri("projects/view/" . $project_timer[0]), $project_timer[1]? $project_timer[1]:"-") . "</small>";
                             echo "</div>";
                             echo "<div  class='col-md-5 col-sm-5'>";
                             echo "<span class='float-end'>" . $in_time . "</span>";

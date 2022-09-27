@@ -288,6 +288,8 @@
             }
         });
 
+        AppHelper.code = "<?php echo get_setting('item_purchase_code'); ?>";
+
         var uploadUrl = "<?php echo get_uri("settings/upload_file"); ?>";
         var validationUrl = "<?php echo get_uri("settings/validate_file"); ?>";
 
@@ -316,6 +318,5 @@
                 $("#default-theme-color").val("F2F2F2");
             }
         });
-
     });
 </script>

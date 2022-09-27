@@ -53,7 +53,7 @@ $theme-color-dark: #00838f;
         a{
             &:hover, &:focus, &:active {
                 color: $theme-color !important;
-            } 
+            }
         }
         .active, &.active {
             color: $theme-color !important;
@@ -167,5 +167,11 @@ a {
     }
     &::-webkit-scrollbar-thumb:active {
         background: rgba(0, 159, 179, 0.6);
+    }
+}
+
+@media (min-width: 991px) {
+    .sidebar{
+        background: $theme-color;
     }
 }

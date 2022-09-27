@@ -15,7 +15,7 @@ class Lead_source_model extends Crud_model {
         $lead_source_table = $this->db->prefixTable('lead_source');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $lead_source_table.id=$id";
         }

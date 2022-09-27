@@ -28,7 +28,7 @@ class Stripe_redirect extends App_Controller {
         }
 
         $stripe = new Stripe();
-        $payment = $stripe->is_valid_ipn($stripe_ipn_info->payment_intent);
+        $payment = $stripe->is_valid_ipn($stripe_ipn_info->session_id);
         if (!$payment) {
             show_404();
         }

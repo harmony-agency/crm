@@ -260,6 +260,10 @@ i.online{
         background-color: $btn-default-hovar-bg;
         border-color: $btn-default-hovar-bg;
     }
+
+    &:active, &:focus{
+        border-color: $btn-default-hovar-bg;
+    }
 }
 
 .btn-primary {
@@ -1058,6 +1062,10 @@ body.modal-open {
             border-bottom: 2px solid $navy-blue !important;
             border-radius: 0;
             cursor: default;
+
+            &:focus{
+                outline: none;
+            }
         }
     }
 
@@ -3739,4 +3747,28 @@ input[type="color"]::-webkit-color-swatch {
 
 .bottom-25{
     bottom: 25px !important;
+}
+
+.message-send-button{
+    position: absolute;
+    padding: 10px;
+    right: 0;
+    display: none;
+    svg{
+        transform: rotate(45deg);
+    }
+}
+
+.btn-group{
+    .btn{
+        &.active{
+            border-color:  #f2f4f6 !important;
+        }
+    }
+}
+
+.email-template-form{
+    .modal-body{
+        padding: 1rem;
+    }
 }

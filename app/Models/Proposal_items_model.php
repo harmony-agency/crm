@@ -16,11 +16,11 @@ class Proposal_items_model extends Crud_model {
         $proposals_table = $this->db->prefixTable('proposals');
         $clients_table = $this->db->prefixTable('clients');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $proposal_items_table.id=$id";
         }
-        $proposal_id = get_array_value($options, "proposal_id");
+        $proposal_id = $this->_get_clean_value($options, "proposal_id");
         if ($proposal_id) {
             $where .= " AND $proposal_items_table.proposal_id=$proposal_id";
         }

@@ -13,9 +13,21 @@
         }
 
         $task_labels = "";
+        $task_checklist_status = "";
+        $checklist_label_color = "#6690F4";
+
+        if ($task->total_checklist_checked <= 0) {
+            $checklist_label_color = "#E18A00";
+        } else if ($task->total_checklist_checked == $task->total_checklist) {
+            $checklist_label_color = "#01B392";
+        }
 
         if ($task->priority_id) {
             $task_labels .= "<div class='meta float-start mr5'><span class='sub-task-icon priority-badge' data-bs-toggle='tooltip' title='" . app_lang("priority") . ": " . $task->priority_title . "' style='background: $task->priority_color'><i data-feather='$task->priority_icon' class='icon-14'></i></span></div>";
+        }
+
+        if ($task->total_checklist) {
+            $task_checklist_status .= "<div class='meta float-start badge rounded-pill' style='background-color:$checklist_label_color'><span data-bs-toggle='tooltip' title='" . app_lang("checklist_status") . "'><i data-feather='check' class='icon-14'></i> $task->total_checklist_checked/$task->total_checklist</span></div>";
         }
 
         $task_labels_data = make_labels_view_data($task->labels_list);
@@ -25,7 +37,7 @@
         }
 
         if ($task_labels_data) {
-            $task_labels .= "<div class='meta float-start'>$task_labels_data</div>";
+            $task_labels .= "<div class='meta float-start mr5'>$task_labels_data</div>";
         }
 
         $unread_comments_class = "";
@@ -83,7 +95,7 @@
         $item = $exising_items . modal_anchor(get_uri("projects/task_view"), "<span class='avatar'>" .
                         "<img src='" . get_avatar($task->assigned_to_avatar) . "'>" .
                         "</span>" . $sub_task_icon . $task_id . $task->title . $toggle_sub_task_icon . $batch_operation_checkbox . "<div class='clearfix'>" . $start_date . $end_date . "</div>" . $project_name . $client_name . $kanban_custom_fields_data .
-                        $task_labels, array("class" => "kanban-item d-block $disable_dragging $unread_comments_class", "data-id" => $task->id, "data-project_id" => $task->project_id, "data-sort" => $task->new_sort, "data-post-id" => $task->id, "title" => app_lang('task_info') . " #$task->id", "data-modal-lg" => "1"));
+                        $task_labels . $task_checklist_status, array("class" => "kanban-item d-block $disable_dragging $unread_comments_class", "data-id" => $task->id, "data-project_id" => $task->project_id, "data-sort" => $task->new_sort, "data-post-id" => $task->id, "title" => app_lang('task_info') . " #$task->id", "data-modal-lg" => "1"));
 
         $columns_data[$task->status_id] = $item;
     }

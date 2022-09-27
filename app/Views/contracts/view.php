@@ -66,9 +66,9 @@ load_js(array(
         <div class="mt15">
             <div class="card no-border clearfix ">
                 <ul data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
-                    <li><a role="presentation" href="javascript:;" data-bs-target="#contract-items"><?php echo app_lang("contract") . " " . app_lang("items"); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("contracts/editor/" . $contract_info->id); ?>" data-bs-target="#contract-editor"><?php echo app_lang("contract_editor"); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("contracts/preview/" . $contract_info->id . "/0/1"); ?>" data-bs-target="#contract-preview" data-reload="true"><?php echo app_lang("preview"); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#contract-items"><?php echo app_lang("contract") . " " . app_lang("items"); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("contracts/editor/" . $contract_info->id); ?>" data-bs-target="#contract-editor"><?php echo app_lang("contract_editor"); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("contracts/preview/" . $contract_info->id . "/0/1"); ?>" data-bs-target="#contract-preview" data-reload="true"><?php echo app_lang("preview"); ?></a></li>
                 </ul>
 
                 <div class="tab-content">

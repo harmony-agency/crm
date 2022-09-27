@@ -23,12 +23,12 @@ class Notification_settings_model extends Crud_model {
         $team_table = $this->db->prefixTable('team');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $notification_settings_table.id=$id";
         }
 
-        $category = get_array_value($options, "category");
+        $category = $this->_get_clean_value($options, "category");
         if ($category) {
             $where .= " AND $notification_settings_table.category='$category'";
         }

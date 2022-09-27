@@ -16,11 +16,11 @@ class Invoice_items_model extends Crud_model {
         $invoices_table = $this->db->prefixTable('invoices');
         $clients_table = $this->db->prefixTable('clients');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $invoice_items_table.id=$id";
         }
-        $invoice_id = get_array_value($options, "invoice_id");
+        $invoice_id = $this->_get_clean_value($options, "invoice_id");
         if ($invoice_id) {
             $where .= " AND $invoice_items_table.invoice_id=$invoice_id";
         }
@@ -64,12 +64,12 @@ class Invoice_items_model extends Crud_model {
             $where .= " AND $items_table.title LIKE '%$item_name%' ESCAPE '!'";
         }
 
-        $item_id = get_array_value($options, "item_id");
+        $item_id = $this->_get_clean_value($options, "item_id");
         if ($item_id) {
             $where .= " AND $items_table.id=$item_id";
         }
 
-        $user_type = get_array_value($options, "user_type");
+        $user_type = $this->_get_clean_value($options, "user_type");
         if ($user_type && $user_type === "client") {
             $where = " AND $items_table.show_in_client_portal=1";
         }

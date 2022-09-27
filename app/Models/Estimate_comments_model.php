@@ -17,17 +17,17 @@ class Estimate_comments_model extends Crud_model {
         $where = "";
         $sort = "ASC";
 
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $estimate_comments_table.id=$id";
         }
 
-        $estimate_id = get_array_value($options, "estimate_id");
+        $estimate_id = $this->_get_clean_value($options, "estimate_id");
         if ($estimate_id) {
             $where .= " AND $estimate_comments_table.estimate_id=$estimate_id";
         }
 
-        $sort_decending = get_array_value($options, "sort_as_decending");
+        $sort_decending = $this->_get_clean_value($options, "sort_as_decending");
         if ($sort_decending) {
             $sort = "DESC";
         }

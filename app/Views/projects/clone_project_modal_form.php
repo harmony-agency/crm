@@ -146,12 +146,22 @@
                 <span class="float-start ml15"> <?php echo app_lang('copy_same_assignee_and_collaborators'); ?> </span>
             </label>
         </div>
+
         <div class="form-group">
             <label for="copy_tasks_start_date_and_deadline"class=" col-md-12">
                 <?php
                 echo form_checkbox("copy_tasks_start_date_and_deadline", "1", false, "id='copy_tasks_start_date_and_deadline'  class='float-start form-check-input'");
                 ?>    
                 <span class="float-start ml15"> <?php echo app_lang('copy_tasks_start_date_and_deadline'); ?> </span>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="change_the_tasks_start_date_and_deadline_based_on_project_start_date"class=" col-md-12">
+                <?php
+                echo form_checkbox("change_the_tasks_start_date_and_deadline_based_on_project_start_date", "1", false, "id='change_the_tasks_start_date_and_deadline_based_on_project_start_date'  class='float-start form-check-input'");
+                ?>    
+                <span class="float-start ml15"> <?php echo app_lang('change_the_tasks_start_date_and_deadline_based_on_project_start_date'); ?> </span>
             </label>
         </div>
 
@@ -204,5 +214,22 @@
         $("#project_labels").select2({
             tags: <?php echo json_encode($label_suggestions); ?>
         });
+
+        $("#copy_tasks_start_date_and_deadline").click(function () {
+            if (this.checked) {
+                $("#change_the_tasks_start_date_and_deadline_based_on_project_start_date").attr("disabled", true);
+            } else {
+                $("#change_the_tasks_start_date_and_deadline_based_on_project_start_date").removeAttr("disabled");
+            }
+        });
+
+        $("#change_the_tasks_start_date_and_deadline_based_on_project_start_date").click(function () {
+            if (this.checked) {
+                $("#copy_tasks_start_date_and_deadline").attr("disabled", true);
+            } else {
+                $("#copy_tasks_start_date_and_deadline").removeAttr("disabled");
+            }
+        });
+
     });
 </script>    

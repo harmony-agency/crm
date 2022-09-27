@@ -15,7 +15,7 @@ class Checklist_groups_model extends Crud_model {
         $checklist_groups_table = $this->db->prefixTable('checklist_groups');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $checklist_groups_table.id=$id";
         }
@@ -47,7 +47,7 @@ class Checklist_groups_model extends Crud_model {
         $checklist_groups_table = $this->db->prefixTable('checklist_groups');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $checklist_items_table.id=$id";
         }

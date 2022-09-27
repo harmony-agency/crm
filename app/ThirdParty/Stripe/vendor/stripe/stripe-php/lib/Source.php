@@ -1,5 +1,7 @@
 <?php
 
+// File generated from our OpenAPI spec
+
 namespace Stripe;
 
 /**
@@ -33,7 +35,7 @@ namespace Stripe;
  * @property \Stripe\StripeObject $ideal
  * @property \Stripe\StripeObject $klarna
  * @property bool $livemode Has the value <code>true</code> if the object exists in live mode or the value <code>false</code> if the object exists in test mode.
- * @property null|\Stripe\StripeObject $metadata Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+ * @property null|\Stripe\StripeObject $metadata Set of <a href="https://stripe.com/docs/api/metadata">key-value pairs</a> that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
  * @property \Stripe\StripeObject $multibanco
  * @property null|\Stripe\StripeObject $owner Information about the owner of the payment instrument that may be used or required by particular source types.
  * @property \Stripe\StripeObject $p24
@@ -89,7 +91,7 @@ class Source extends ApiResource
 
         $id = $this['id'];
         if (!$id) {
-            $class = \get_class($this);
+            $class = static::class;
             $msg = "Could not determine which URL to request: {$class} instance "
              . "has invalid ID: {$id}";
 
@@ -114,37 +116,22 @@ class Source extends ApiResource
     }
 
     /**
-     * @deprecated sourceTransactions is deprecated. Please use Source::allSourceTransactions instead.
-     *
-     * @param null|array $params
-     * @param null|array|string $opts
-     *
-     * @throws \Stripe\Exception\ApiErrorException if the request fails
-     *
-     * @return \Stripe\Collection the list of source transactions
-     */
-    public function sourceTransactions($params = null, $opts = null)
-    {
-        $url = $this->instanceUrl() . '/source_transactions';
-        list($response, $opts) = $this->_request('get', $url, $params, $opts);
-        $obj = \Stripe\Util\Util::convertToStripeObject($response, $opts);
-        $obj->setLastResponse($response);
-
-        return $obj;
-    }
-
-    /**
      * @param string $id
      * @param null|array $params
      * @param null|array|string $opts
      *
      * @throws \Stripe\Exception\ApiErrorException if the request fails
      *
-     * @return \Stripe\Collection the list of source transactions
+     * @return \Stripe\Collection<\Stripe\SourceTransaction> list of SourceTransactions
      */
     public static function allSourceTransactions($id, $params = null, $opts = null)
     {
-        return self::_allNestedResources($id, '/source_transactions', $params, $opts);
+        $url = static::resourceUrl($id) . '/source_transactions';
+        list($response, $opts) = static::_staticRequest('get', $url, $params, $opts);
+        $obj = \Stripe\Util\Util::convertToStripeObject($response->json, $opts);
+        $obj->setLastResponse($response);
+
+        return $obj;
     }
 
     /**
@@ -153,7 +140,7 @@ class Source extends ApiResource
      *
      * @throws \Stripe\Exception\ApiErrorException if the request fails
      *
-     * @return Source the verified source
+     * @return \Stripe\Source the verified source
      */
     public function verify($params = null, $opts = null)
     {

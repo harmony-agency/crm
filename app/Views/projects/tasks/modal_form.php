@@ -401,7 +401,7 @@
                     } else {
                         //save and show
                         $taskViewLink.attr("data-action-url", "<?php echo get_uri("projects/task_view"); ?>");
-                        $taskViewLink.attr("data-title", taskShowText + "#" + result.id);
+                        $taskViewLink.attr("data-title", taskShowText + " #" + result.id);
                         $taskViewLink.attr("data-post-id", result.id);
                     }
 

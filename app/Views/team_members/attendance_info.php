@@ -11,10 +11,10 @@ if (isset($page_type) && $page_type === "full") {
                     echo app_lang("attendance");
                 }
                 ?></h4></li>
-        <li><a id="monthly-attendance-button"  role="presentation"  href="javascript:;" data-bs-target="#team_member-monthly-attendance"><?php echo app_lang("monthly"); ?></a></li>
-        <li><a role="presentation" href="<?php echo_uri("team_members/weekly_attendance/"); ?>" data-bs-target="#team_member-weekly-attendance"><?php echo app_lang('weekly'); ?></a></li>    
-        <li><a role="presentation" href="<?php echo_uri("team_members/custom_range_attendance/"); ?>" data-bs-target="#team_member-custom-range-attendance"><?php echo app_lang('custom'); ?></a></li>    
-        <li><a role="presentation" href="<?php echo_uri("team_members/attendance_summary/" . $user_id); ?>" data-bs-target="#team_member-attendance-summary"><?php echo app_lang('summary'); ?></a></li>   
+        <li><a id="monthly-attendance-button"  role="presentation" data-bs-toggle="tab"  href="javascript:;" data-bs-target="#team_member-monthly-attendance"><?php echo app_lang("monthly"); ?></a></li>
+        <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/weekly_attendance/"); ?>" data-bs-target="#team_member-weekly-attendance"><?php echo app_lang('weekly'); ?></a></li>    
+        <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/custom_range_attendance/"); ?>" data-bs-target="#team_member-custom-range-attendance"><?php echo app_lang('custom'); ?></a></li>    
+        <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("team_members/attendance_summary/" . $user_id); ?>" data-bs-target="#team_member-attendance-summary"><?php echo app_lang('summary'); ?></a></li>   
 
         <?php if (isset($show_clock_in_out)) { ?>
             <li><a role="presentation" href="<?php echo_uri("attendance/clock_in_out"); ?>" data-bs-target="#clock-in-out"><?php echo app_lang('clock_in_out'); ?></a></li>

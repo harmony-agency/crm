@@ -14,7 +14,7 @@ class Client_groups_model extends Crud_model {
     function get_details($options = array()) {
         $client_groups_table = $this->db->prefixTable('client_groups');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $client_groups_table.id=$id";
         }

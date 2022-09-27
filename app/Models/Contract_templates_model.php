@@ -15,7 +15,7 @@ class Contract_templates_model extends Crud_model {
         $contract_templates_table = $this->db->prefixTable('contract_templates');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $contract_templates_table.id=$id";
         }

@@ -15,7 +15,7 @@ class Task_priority_model extends Crud_model {
         $task_priority_table = $this->db->prefixTable('task_priority');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $task_priority_table.id=$id";
         }

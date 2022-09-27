@@ -2,9 +2,9 @@
     <div class="card clearfix">
         <ul id="payment-summary-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white inner" role="tablist">
             <li class="title-tab"><h4 class="pl15 pt10 pr15"><?php echo app_lang("payments_summary"); ?></h4></li>
-            <li><a id="yearly-summary-button"  role="presentation"  href="javascript:;" data-bs-target="#yearly-payment-summary"><?php echo app_lang("yearly_summary"); ?></a></li>
+            <li><a id="yearly-summary-button"  role="presentation" data-bs-toggle="tab"  href="javascript:;" data-bs-target="#yearly-payment-summary"><?php echo app_lang("yearly_summary"); ?></a></li>
             <?php if ($can_access_clients) { ?>
-                <li><a role="presentation" href="<?php echo_uri("invoice_payments/clients_payment_summary/"); ?>" data-bs-target="#clients-payment-summary"><?php echo app_lang('clients_summary'); ?></a></li>
+                <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("invoice_payments/clients_payment_summary/"); ?>" data-bs-target="#clients-payment-summary"><?php echo app_lang('clients_summary'); ?></a></li>
             <?php } ?>
         </ul>
 

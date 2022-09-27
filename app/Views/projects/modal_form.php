@@ -24,19 +24,23 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="row">
-                <label for="project_type" class=" col-md-3"><?php echo app_lang('project_type'); ?></label>
-                <div class=" col-md-9">
-                    <?php
-                    echo form_dropdown("project_type", array(
-                        "client_project" => app_lang("client_project"),
-                        "internal_project" => app_lang("internal_project"),
-                            ), array($model_info->project_type ? $model_info->project_type : "client_project"), "class='select2 validate-hidden' data-rule-required='true', data-msg-required='" . app_lang('field_required') . "' id='project-type-dropdown'");
-                    ?>
+        <?php if ($client_id || $login_user->user_type == "client") { ?>
+            <input type="hidden" name="project_type" value="client_project" />
+        <?php } else { ?>
+            <div class="form-group">
+                <div class="row">
+                    <label for="project_type" class=" col-md-3"><?php echo app_lang('project_type'); ?></label>
+                    <div class=" col-md-9">
+                        <?php
+                        echo form_dropdown("project_type", array(
+                            "client_project" => app_lang("client_project"),
+                            "internal_project" => app_lang("internal_project"),
+                                ), array($model_info->project_type ? $model_info->project_type : "client_project"), "class='select2 validate-hidden' data-rule-required='true', data-msg-required='" . app_lang('field_required') . "' id='project-type-dropdown'");
+                        ?>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php } ?>
 
         <?php if ($client_id) { ?>
             <input type="hidden" name="client_id" value="<?php echo $client_id; ?>" />
@@ -166,7 +170,7 @@
     </div>
 
     <button type="button" class="btn btn-default" data-bs-dismiss="modal"><span data-feather="x" class="icon-16"></span> <?php echo app_lang('close'); ?></button>
-    <?php if (!$model_info->id) { ?>
+    <?php if (!$model_info->id && $login_user->user_type != "client") { ?>
         <button type="button" id="save-and-continue-button" class="btn btn-info text-white"><span data-feather="check-circle" class="icon-16"></span> <?php echo app_lang('save_and_continue'); ?></button>
     <?php } ?>
     <button type="submit" class="btn btn-primary"><span data-feather="check-circle" class="icon-16"></span> <?php echo app_lang('save'); ?></button>
@@ -224,9 +228,8 @@
         });
 
 
-        $("#project-type-dropdown").select2().on("change", function () {
-            var value = $(this).val();
-            if (value === "internal_project") {
+        function validateClientDropdown() {
+            if ($("#project-type-dropdown").val() === "internal_project") {
                 $("#clients-dropdown").addClass("hide");
                 $("#clients-dropdown").find(".select2").removeClass("validate-hidden");
                 $("#clients-dropdown").find(".select2").removeAttr("data-rule-required");
@@ -235,6 +238,15 @@
                 $("#clients-dropdown").find(".select2").addClass("validate-hidden");
                 $("#clients-dropdown").find(".select2").attr("data-rule-required", true);
             }
+        }
+
+
+        $("#project-type-dropdown").select2().on("change", function () {
+            validateClientDropdown();
+        });
+
+        setTimeout(function () {
+            validateClientDropdown();
         });
 
     });

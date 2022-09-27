@@ -53,44 +53,44 @@ class Attendance_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $attendnace_table.id=$id";
         }
         $offset = convert_seconds_to_time_format(get_timezone_offset());
 
-        $start_date = get_array_value($options, "start_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
         if ($start_date) {
             $where .= " AND DATE(ADDTIME($attendnace_table.in_time,'$offset'))>='$start_date'";
         }
-        $end_date = get_array_value($options, "end_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($end_date) {
             $where .= " AND DATE(ADDTIME($attendnace_table.in_time,'$offset'))<='$end_date'";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND $attendnace_table.user_id=$user_id";
         }
 
-        $access_type = get_array_value($options, "access_type");
+        $access_type = $this->_get_clean_value($options, "access_type");
 
         if (!$id && $access_type !== "all") {
 
-            $allowed_members = get_array_value($options, "allowed_members");
+            $allowed_members = $this->_get_clean_value($options, "allowed_members");
             if (is_array($allowed_members) && count($allowed_members)) {
                 $allowed_members = join(",", $allowed_members);
             } else {
                 $allowed_members = '0';
             }
-            $login_user_id = get_array_value($options, "login_user_id");
+            $login_user_id = $this->_get_clean_value($options, "login_user_id");
             if ($login_user_id) {
                 $allowed_members .= "," . $login_user_id;
             }
             $where .= " AND $attendnace_table.user_id IN($allowed_members)";
         }
 
-        $only_clocked_in_members = get_array_value($options, "only_clocked_in_members");
+        $only_clocked_in_members = $this->_get_clean_value($options, "only_clocked_in_members");
         if ($only_clocked_in_members) {
             $where .= " AND $attendnace_table.status = 'incomplete'";
         }
@@ -110,31 +110,31 @@ class Attendance_model extends Crud_model {
         $where = "";
         $offset = convert_seconds_to_time_format(get_timezone_offset());
 
-        $start_date = get_array_value($options, "start_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
         if ($start_date) {
             $where .= " AND DATE(ADDTIME($attendnace_table.in_time,'$offset'))>='$start_date'";
         }
-        $end_date = get_array_value($options, "end_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($end_date) {
             $where .= " AND DATE(ADDTIME($attendnace_table.in_time,'$offset'))<='$end_date'";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND $attendnace_table.user_id=$user_id";
         }
 
-        $access_type = get_array_value($options, "access_type");
+        $access_type = $this->_get_clean_value($options, "access_type");
 
         if ($access_type !== "all") {
 
-            $allowed_members = get_array_value($options, "allowed_members");
+            $allowed_members = $this->_get_clean_value($options, "allowed_members");
             if (is_array($allowed_members) && count($allowed_members)) {
                 $allowed_members = join(",", $allowed_members);
             } else {
                 $allowed_members = '0';
             }
-            $login_user_id = get_array_value($options, "login_user_id");
+            $login_user_id = $this->_get_clean_value($options, "login_user_id");
             if ($login_user_id) {
                 $allowed_members .= "," . $login_user_id;
             }
@@ -148,7 +148,7 @@ class Attendance_model extends Crud_model {
         $extra_group_by = "";
         $extra_select = "";
         $sort_by = "";
-        if (get_array_value($options, "summary_details")) {
+        if ($this->_get_clean_value($options, "summary_details")) {
             $extra_select = ", start_date ";
             $extra_inner_select = ", MAX(DATE(ADDTIME($attendnace_table.in_time,'$offset'))) AS start_date ";
             $extra_group_by = ", DATE(ADDTIME($attendnace_table.in_time,'$offset')) ";
@@ -197,16 +197,16 @@ class Attendance_model extends Crud_model {
         $where = "";
         $offset = convert_seconds_to_time_format(get_timezone_offset());
 
-        $start_date = get_array_value($options, "start_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
         if ($start_date) {
             $where .= " AND DATE(ADDTIME($attendnace_table.in_time,'$offset'))>='$start_date'";
         }
-        $end_date = get_array_value($options, "end_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
         if ($end_date) {
             $where .= " AND DATE(ADDTIME($attendnace_table.in_time,'$offset'))<='$end_date'";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND $attendnace_table.user_id=$user_id";
         }
@@ -223,16 +223,16 @@ class Attendance_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
 
         $where = "";
-        $access_type = get_array_value($options, "access_type");
+        $access_type = $this->_get_clean_value($options, "access_type");
         if ($access_type !== "all") {
 
-            $allowed_members = get_array_value($options, "allowed_members");
+            $allowed_members = $this->_get_clean_value($options, "allowed_members");
             if (is_array($allowed_members) && count($allowed_members)) {
                 $allowed_members = join(",", $allowed_members);
             } else {
                 $allowed_members = '0';
             }
-            $login_user_id = get_array_value($options, "login_user_id");
+            $login_user_id = $this->_get_clean_value($options, "login_user_id");
             if ($login_user_id) {
                 $allowed_members .= "," . $login_user_id;
             }
@@ -252,13 +252,12 @@ class Attendance_model extends Crud_model {
 
         $where = "";
 
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
-            $id = $this->db->escapeString($id);
             $where .= " AND $users_table.id=$id";
         }
 
-        $where_in = get_array_value($options, "where_in");
+        $where_in = $this->_get_clean_value($options, "where_in");
         if ($where_in) {
             $where_in_implode = implode(',', $where_in);
             $where .= " AND $users_table.id IN($where_in_implode)";

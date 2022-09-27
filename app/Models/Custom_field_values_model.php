@@ -18,50 +18,49 @@ class Custom_field_values_model extends Crud_model {
         $custom_fields_table = $this->db->prefixTable('custom_fields');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $custom_fields_table.id=$id";
         }
 
 
-        $related_to_type = get_array_value($options, "related_to_type");
+        $related_to_type = $this->_get_clean_value($options, "related_to_type");
         if ($related_to_type) {
             $where .= " AND $custom_field_values_table.related_to_type='$related_to_type'";
         }
 
-        $related_to_id = get_array_value($options, "related_to_id");
+        $related_to_id = $this->_get_clean_value($options, "related_to_id");
         if ($related_to_id) {
-            $related_to_id = $this->db->escapeString($related_to_id);
             $where .= " AND $custom_field_values_table.related_to_id='$related_to_id'";
         }
 
-        $show_in_invoice = get_array_value($options, "show_in_invoice");
+        $show_in_invoice = $this->_get_clean_value($options, "show_in_invoice");
         if ($show_in_invoice) {
             $where .= " AND $custom_fields_table.show_in_invoice=1";
         }
 
-        $show_in_estimate = get_array_value($options, "show_in_estimate");
+        $show_in_estimate = $this->_get_clean_value($options, "show_in_estimate");
         if ($show_in_estimate) {
             $where .= " AND $custom_fields_table.show_in_estimate=1";
         }
 
-        $show_in_contract = get_array_value($options, "show_in_contract");
+        $show_in_contract = $this->_get_clean_value($options, "show_in_contract");
         if ($show_in_contract) {
             $where .= " AND $custom_fields_table.show_in_contract=1";
         }
 
-        $show_in_proposal = get_array_value($options, "show_in_proposal");
+        $show_in_proposal = $this->_get_clean_value($options, "show_in_proposal");
         if ($show_in_proposal) {
             $where .= " AND $custom_fields_table.show_in_proposal=1";
         }
 
-        $show_in_order = get_array_value($options, "show_in_order");
+        $show_in_order = $this->_get_clean_value($options, "show_in_order");
         if ($show_in_order) {
             $where .= " AND $custom_fields_table.show_in_order=1";
         }
 
-        $is_admin = get_array_value($options, "is_admin");
-        $check_admin_restriction = get_array_value($options, "check_admin_restriction");
+        $is_admin = $this->_get_clean_value($options, "is_admin");
+        $check_admin_restriction = $this->_get_clean_value($options, "check_admin_restriction");
         if ($check_admin_restriction && !$is_admin) {
             $where .= " AND $custom_fields_table.visible_to_admins_only=0";
         }
@@ -76,7 +75,7 @@ class Custom_field_values_model extends Crud_model {
     }
 
     private function upsert_custom_field($data, $save_to_related_type = "") {
-        $custom_field_info = $this->Custom_fields_model->get_one(get_array_value($data, "custom_field_id"));
+        $custom_field_info = $this->Custom_fields_model->get_one($this->_get_clean_value($data, "custom_field_id"));
 
         $data = array(
             "title" => $custom_field_info->title,
@@ -116,13 +115,13 @@ class Custom_field_values_model extends Crud_model {
         }
 
         $existing = $this->get_one_where(
-                array("related_to_type" => get_array_value($data, "related_to_type"),
-                    "related_to_id" => get_array_value($data, "related_to_id"),
-                    "custom_field_id" => get_array_value($data, "custom_field_id"),
+                array("related_to_type" => $this->_get_clean_value($data, "related_to_type"),
+                    "related_to_id" => $this->_get_clean_value($data, "related_to_id"),
+                    "custom_field_id" => $this->_get_clean_value($data, "custom_field_id"),
                     "deleted" => 0)
         );
 
-        $custom_field_info = $this->Custom_fields_model->get_one(get_array_value($data, "custom_field_id"));
+        $custom_field_info = $this->Custom_fields_model->get_one($this->_get_clean_value($data, "custom_field_id"));
 
         $changes = array(
             "field_type" => $custom_field_info->field_type,
@@ -137,10 +136,10 @@ class Custom_field_values_model extends Crud_model {
             $save_id = $this->ci_save($data, $existing->id); //update
 
             if ($save_id) {
-                if ($existing->value != get_array_value($data, "value")) {
+                if ($existing->value != $this->_get_clean_value($data, "value")) {
                     //updated, but has changed values
                     $changes["from"] = $existing->value;
-                    $changes["to"] = get_array_value($data, "value");
+                    $changes["to"] = $this->_get_clean_value($data, "value");
                     return array("operation" => "update", "save_id" => $save_id, "changes" => $changes);
                 } else {
                     //updated but changed the default input fields for first time

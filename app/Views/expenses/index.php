@@ -2,12 +2,12 @@
     <div class="card clearfix">
         <ul id="expenses-tabs" data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
             <li class="title-tab"><h4 class="pl15 pt10 pr15"><?php echo app_lang("expenses"); ?></h4></li>
-            <li><a id="monthly-expenses-button"  role="presentation"  href="javascript:;" data-bs-target="#monthly-expenses"><?php echo app_lang("monthly"); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("expenses/yearly/"); ?>" data-bs-target="#yearly-expenses"><?php echo app_lang('yearly'); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("expenses/custom/"); ?>" data-bs-target="#custom-expenses"><?php echo app_lang('custom'); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("expenses/recurring/"); ?>" data-bs-target="#recurring-expenses"><?php echo app_lang('recurring'); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("expenses/summary/"); ?>" data-bs-target="#expenses-summary"><?php echo app_lang('summary'); ?></a></li>
-            <li><a role="presentation" href="<?php echo_uri("expenses/yearly_chart/"); ?>" data-bs-target="#yearly-chart"><?php echo app_lang('chart'); ?></a></li>
+            <li><a id="monthly-expenses-button" role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#monthly-expenses"><?php echo app_lang("monthly"); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("expenses/yearly/"); ?>" data-bs-target="#yearly-expenses"><?php echo app_lang('yearly'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("expenses/custom/"); ?>" data-bs-target="#custom-expenses"><?php echo app_lang('custom'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("expenses/recurring/"); ?>" data-bs-target="#recurring-expenses"><?php echo app_lang('recurring'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("expenses/summary/"); ?>" data-bs-target="#expenses-summary"><?php echo app_lang('summary'); ?></a></li>
+            <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("expenses/yearly_chart/"); ?>" data-bs-target="#yearly-chart"><?php echo app_lang('chart'); ?></a></li>
             <div class="tab-title clearfix no-border">
                 <div class="title-button-group">
                     <?php echo modal_anchor(get_uri("expenses/import_expenses_modal_form"), "<i data-feather='upload' class='icon-16'></i> " . app_lang('import_expense'), array("class" => "btn btn-default mb0", "title" => app_lang('import_expense'))); ?>

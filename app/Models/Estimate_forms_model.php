@@ -15,7 +15,7 @@ class Estimate_forms_model extends Crud_model {
         $estimate_forms_table = $this->db->prefixTable('estimate_forms');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $estimate_forms_table.id=$id";
         }

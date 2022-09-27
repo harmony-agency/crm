@@ -33,45 +33,45 @@ class Leave_applications_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
         $leave_types_table = $this->db->prefixTable('leave_types');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $leave_applications_table.id=$id";
         }
 
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
         if ($status) {
             $where .= " AND $leave_applications_table.status='$status'";
         }
 
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
 
         if ($start_date && $end_date) {
             $where .= " AND ($leave_applications_table.start_date BETWEEN '$start_date' AND '$end_date') ";
         }
 
-        $applicant_id = get_array_value($options, "applicant_id");
+        $applicant_id = $this->_get_clean_value($options, "applicant_id");
         if ($applicant_id) {
             $where .= " AND $leave_applications_table.applicant_id=$applicant_id";
         }
 
         $today = get_today_date();
-        $on_leave_today = get_array_value($options, "on_leave_today");
+        $on_leave_today = $this->_get_clean_value($options, "on_leave_today");
         if ($on_leave_today) {
             $where .= " AND ('$today' BETWEEN $leave_applications_table.start_date AND $leave_applications_table.end_date)";
         }
 
-        $access_type = get_array_value($options, "access_type");
+        $access_type = $this->_get_clean_value($options, "access_type");
 
         if (!$id && $access_type !== "all") {
 
-            $allowed_members = get_array_value($options, "allowed_members");
+            $allowed_members = $this->_get_clean_value($options, "allowed_members");
             if (is_array($allowed_members) && count($allowed_members)) {
                 $allowed_members = join(",", $allowed_members);
             } else {
                 $allowed_members = '0';
             }
-            $login_user_id = get_array_value($options, "login_user_id");
+            $login_user_id = $this->_get_clean_value($options, "login_user_id");
             if ($login_user_id) {
                 $allowed_members .= "," . $login_user_id;
             }
@@ -100,34 +100,34 @@ class Leave_applications_model extends Crud_model {
         $where .= " AND $leave_applications_table.status='approved'";
 
 
-        $start_date = get_array_value($options, "start_date");
-        $end_date = get_array_value($options, "end_date");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $end_date = $this->_get_clean_value($options, "end_date");
 
         if ($start_date && $end_date) {
             $where .= " AND ($leave_applications_table.start_date BETWEEN '$start_date' AND '$end_date') ";
         }
 
-        $applicant_id = get_array_value($options, "applicant_id");
+        $applicant_id = $this->_get_clean_value($options, "applicant_id");
         if ($applicant_id) {
             $where .= " AND $leave_applications_table.applicant_id=$applicant_id";
         }
 
-        $leave_type_id = get_array_value($options, "leave_type_id");
+        $leave_type_id = $this->_get_clean_value($options, "leave_type_id");
         if ($leave_type_id) {
             $where .= " AND $leave_applications_table.leave_type_id=$leave_type_id";
         }
 
-        $access_type = get_array_value($options, "access_type");
+        $access_type = $this->_get_clean_value($options, "access_type");
 
         if ($access_type !== "all") {
 
-            $allowed_members = get_array_value($options, "allowed_members");
+            $allowed_members = $this->_get_clean_value($options, "allowed_members");
             if (is_array($allowed_members) && count($allowed_members)) {
                 $allowed_members = join(",", $allowed_members);
             } else {
                 $allowed_members = '0';
             }
-            $login_user_id = get_array_value($options, "login_user_id");
+            $login_user_id = $this->_get_clean_value($options, "login_user_id");
             if ($login_user_id) {
                 $allowed_members .= "," . $login_user_id;
             }

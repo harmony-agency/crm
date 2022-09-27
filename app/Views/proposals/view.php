@@ -58,9 +58,9 @@
         <div class="mt15">
             <div class="card no-border clearfix ">
                 <ul data-bs-toggle="ajax-tab" class="nav nav-tabs bg-white title" role="tablist">
-                    <li><a role="presentation" href="javascript:;" data-bs-target="#proposal-items"><?php echo app_lang("proposal") . " " . app_lang("items"); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("proposals/editor/" . $proposal_info->id); ?>" data-bs-target="#proposal-editor"><?php echo app_lang("proposal_editor"); ?></a></li>
-                    <li><a role="presentation" href="<?php echo_uri("proposals/preview/" . $proposal_info->id . "/0/1"); ?>" data-bs-target="#proposal-preview" data-reload="true"><?php echo app_lang("preview"); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="javascript:;" data-bs-target="#proposal-items"><?php echo app_lang("proposal") . " " . app_lang("items"); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("proposals/editor/" . $proposal_info->id); ?>" data-bs-target="#proposal-editor"><?php echo app_lang("proposal_editor"); ?></a></li>
+                    <li><a role="presentation" data-bs-toggle="tab" href="<?php echo_uri("proposals/preview/" . $proposal_info->id . "/0/1"); ?>" data-bs-target="#proposal-preview" data-reload="true"><?php echo app_lang("preview"); ?></a></li>
                 </ul>
 
                 <div class="tab-content">

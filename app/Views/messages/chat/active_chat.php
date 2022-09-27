@@ -20,7 +20,6 @@
 
             echo "<i id='js-active-chat-online-icon' class='online $hide_online_icon' data-user_id='$user_id'></i> ";
 
-
             if ($message_info->another_user_id === $login_user->id) {
                 echo $message_info->user_name;
             } else {
@@ -48,16 +47,17 @@
         <input type="hidden" name="message_id" value="<?php echo $message_id; ?>">
         <input type="hidden" name="last_message_id" value="">
         <span class="chat-file-upload-icon upload-file-button"><i data-feather="camera" class="icon-16"></i></span>
-            <?php
-            echo form_textarea(array(
-                "id" => "js-chat-message-textarea",
-                "name" => "reply_message",
-                "data-rule-required" => true,
-                "autofocus" => true,
-                "data-msg-required" => "",
-                "placeholder" => app_lang('write_a_message')
-            ));
-            ?>
+        <?php
+        echo form_textarea(array(
+            "id" => "js-chat-message-textarea",
+            "name" => "reply_message",
+            "data-rule-required" => true,
+            "autofocus" => true,
+            "data-msg-required" => "",
+            "placeholder" => app_lang('write_a_message')
+        ));
+        ?>
+        <span class="message-send-button"><i data-feather="send" class="icon-16"></i></span>
 
         <?php echo form_close(); ?>
     </div>
@@ -186,6 +186,10 @@
                         }, 8000);
                     });
         }
+
+        $(".message-send-button").click(function () {
+            $(this).trigger("submit");
+        });
 
     });
     function handle_mousedown(e) {

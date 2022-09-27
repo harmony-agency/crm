@@ -81,6 +81,8 @@ class Roles extends Security_Controller {
             $view_data['can_manage_all_projects'] = get_array_value($permissions, "can_manage_all_projects");
             $view_data['can_create_projects'] = get_array_value($permissions, "can_create_projects");
             $view_data['can_edit_projects'] = get_array_value($permissions, "can_edit_projects");
+            $view_data['can_edit_only_own_created_projects'] = get_array_value($permissions, "can_edit_only_own_created_projects");
+            $view_data['can_delete_only_own_created_projects'] = get_array_value($permissions, "can_delete_only_own_created_projects");
             $view_data['can_delete_projects'] = get_array_value($permissions, "can_delete_projects");
 
             $view_data['can_add_remove_project_members'] = get_array_value($permissions, "can_add_remove_project_members");
@@ -201,6 +203,8 @@ class Roles extends Security_Controller {
         $can_manage_all_projects = $this->request->getPost('can_manage_all_projects');
         $can_create_projects = $this->request->getPost('can_create_projects');
         $can_edit_projects = $this->request->getPost('can_edit_projects');
+        $can_edit_only_own_created_projects = $this->request->getPost('can_edit_only_own_created_projects');
+        $can_delete_only_own_created_projects = $this->request->getPost('can_delete_only_own_created_projects');
         $can_delete_projects = $this->request->getPost('can_delete_projects');
 
         $can_add_remove_project_members = $this->request->getPost('can_add_remove_project_members');
@@ -297,6 +301,8 @@ class Roles extends Security_Controller {
             "can_manage_all_projects" => $can_manage_all_projects,
             "can_create_projects" => $can_create_projects,
             "can_edit_projects" => $can_edit_projects,
+            "can_edit_only_own_created_projects" => $can_edit_only_own_created_projects,
+            "can_delete_only_own_created_projects" => $can_delete_only_own_created_projects,
             "can_delete_projects" => $can_delete_projects,
             "can_add_remove_project_members" => $can_add_remove_project_members,
             "can_create_tasks" => $can_create_tasks,

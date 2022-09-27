@@ -28,11 +28,12 @@
                 {title: '<?php echo app_lang("amount") ?>', "class": "text-right"},
                 {title: '<?php echo app_lang("tax") ?>', "class": "text-right"},
                 {title: '<?php echo app_lang("second_tax") ?>', "class": "text-right"},
-                {title: '<?php echo app_lang("total") ?>', "class": "text-right"},
+                {title: '<?php echo app_lang("total") ?>', "class": "text-right"}
+<?php echo $custom_field_headers; ?>,
                 {title: '<i data-feather="menu" class="icon-16"></i>', "class": "text-center option w100"}
             ],
-            printColumns: [1, 2, 3, 4, 6, 7, 8, 9],
-            xlsColumns: [1, 2, 3, 4, 6, 7, 8, 9],
+            printColumns: combineCustomFieldsColumns([1, 2, 3, 4, 6, 7, 8, 9], '<?php echo $custom_field_headers; ?>'),
+            xlsColumns: combineCustomFieldsColumns([1, 2, 3, 4, 6, 7, 8, 9], '<?php echo $custom_field_headers; ?>'),
             summation: [{column: 6, dataType: 'currency'}, {column: 7, dataType: 'currency'}, {column: 8, dataType: 'currency'}, {column: 9, dataType: 'currency'}]
         });
     });

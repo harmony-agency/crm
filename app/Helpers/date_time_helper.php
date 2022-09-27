@@ -286,23 +286,24 @@ if (!function_exists('format_to_relative_time')) {
  */
 if (!function_exists('format_to_date')) {
 
-    // Harmony Add Convert To jdate
-    include_once('jdf_helper.php');
-
-
     function format_to_date($date_time, $convert_to_local = true) {
+
         if (!$date_time) {
             return "";
+        } else {
+            //check the date string format is correct
+            $date_parts = explode("-", $date_time);
+            if (!(get_array_value($date_parts, 0) && get_array_value($date_parts, 1) && get_array_value($date_parts, 2))) {
+                return "";
+            }
         }
+
 
         if ($convert_to_local) {
             $date_time = convert_date_utc_to_local($date_time);
         }
         $target_date = new DateTime($date_time);
-        // return $target_date->format(get_setting('date_format'));
-
-        return jdate(get_setting('date_format'),strtotime($date_time) );
-
+        return $target_date->format(get_setting('date_format'));
     }
 
 }
@@ -317,6 +318,17 @@ if (!function_exists('format_to_date')) {
 if (!function_exists('format_to_time')) {
 
     function format_to_time($date_time, $convert_to_local = true) {
+        if (!$date_time) {
+            return "";
+        } else {
+            //check the date string format is correct
+            $date_parts = explode(":", $date_time);
+            if (!(get_array_value($date_parts, 0) && get_array_value($date_parts, 1))) {
+                return "";
+            }
+        }
+
+
         if ($convert_to_local) {
             $date_time = convert_date_utc_to_local($date_time);
         }

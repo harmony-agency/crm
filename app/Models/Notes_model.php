@@ -18,35 +18,35 @@ class Notes_model extends Crud_model {
         $where = "";
         $or_where = "";
         
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $notes_table.id=$id";
             $or_where = " $notes_table.is_public=1 AND $notes_table.deleted=0 AND $notes_table.id=$id"; //check public note 
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $notes_table.project_id=$project_id"; 
             $or_where = " $notes_table.is_public=1 AND $notes_table.deleted=0 AND $notes_table.project_id=$project_id "; //include public notes in projects
         }
 
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $notes_table.client_id=$client_id";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND $notes_table.user_id=$user_id";
         }
 
 
-        $created_by = get_array_value($options, "created_by");
+        $created_by = $this->_get_clean_value($options, "created_by");
         if ($created_by) {
             $where .= " AND $notes_table.created_by=$created_by";
         }
 
-        $my_notes = get_array_value($options, "my_notes");
+        $my_notes = $this->_get_clean_value($options, "my_notes");
         if ($my_notes) {
             $where .= " AND $notes_table.user_id=0 AND $notes_table.client_id=0 "; //don't include client's and team member's notes
         }

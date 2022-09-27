@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card no-border-top-radius">
     <div class="tab-title clearfix">
         <h4><?php echo app_lang('contacts'); ?></h4>
         <div class="title-button-group">

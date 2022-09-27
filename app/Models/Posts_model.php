@@ -16,12 +16,12 @@ class Posts_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
         $where = "";
 
-        $limit = get_array_value($options, "limit");
+        $limit = $this->_get_clean_value($options, "limit");
         $limit = $limit ? $limit : "20";
-        $offset = get_array_value($options, "offset");
+        $offset = $this->_get_clean_value($options, "offset");
         $offset = $offset ? $offset : "0";
 
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $posts_table.id=$id";
         }
@@ -29,7 +29,7 @@ class Posts_model extends Crud_model {
         //show the main posts in descending mode
         //but show the replies in ascedning mode
         $sort = " DESC";
-        $post_id = get_array_value($options, "post_id");
+        $post_id = $this->_get_clean_value($options, "post_id");
         if ($post_id) {
             $where .= " AND $posts_table.post_id=$post_id";
             $sort = "ASC";
@@ -37,12 +37,12 @@ class Posts_model extends Crud_model {
             $where .= " AND $posts_table.post_id=0";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND $posts_table.created_by=$user_id";
         }
         
-        $allowed_members = get_array_value($options, "allowed_members");
+        $allowed_members = $this->_get_clean_value($options, "allowed_members");
         if ($allowed_members) {
             $where .= " AND $posts_table.created_by IN($allowed_members)";
         }

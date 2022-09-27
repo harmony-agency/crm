@@ -15,17 +15,17 @@ class Task_status_model extends Crud_model {
         $task_status_table = $this->db->prefixTable('task_status');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $task_status_table.id=$id";
         }
 
-        $hide_from_kanban = get_array_value($options, "hide_from_kanban");
+        $hide_from_kanban = $this->_get_clean_value($options, "hide_from_kanban");
         if (!is_null($hide_from_kanban)) {
             $where .= " AND $task_status_table.hide_from_kanban=$hide_from_kanban";
         }
 
-        $exclude_status_ids = get_array_value($options, "exclude_status_ids");
+        $exclude_status_ids = $this->_get_clean_value($options, "exclude_status_ids");
         if ($exclude_status_ids) {
             $where .= " AND $task_status_table.id NOT IN($exclude_status_ids)";
         }

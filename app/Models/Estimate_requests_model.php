@@ -18,34 +18,32 @@ class Estimate_requests_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
-            $id = $this->db->escapeString($id);
             $where .= " AND $estimate_requests_table.id=$id";
         }
 
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
-            $client_id = $this->db->escapeString($client_id);
             $where .= " AND $estimate_requests_table.client_id=$client_id";
         }
 
-        $lead_id = get_array_value($options, "lead_id");
+        $lead_id = $this->_get_clean_value($options, "lead_id");
         if ($lead_id) {
             $where .= " AND $estimate_requests_table.lead_id=$lead_id";
         }
 
-        $assigned_to = get_array_value($options, "assigned_to");
+        $assigned_to = $this->_get_clean_value($options, "assigned_to");
         if ($assigned_to) {
             $where .= " AND $estimate_requests_table.assigned_to=$assigned_to";
         }
 
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
         if ($status) {
             $where .= " AND $estimate_requests_table.status='$status'";
         }
 
-        $clients_only = get_array_value($options, "clients_only");
+        $clients_only = $this->_get_clean_value($options, "clients_only");
         if ($clients_only) {
             $where .= " AND $estimate_requests_table.client_id IN(SELECT $clients_table.id FROM $clients_table WHERE $clients_table.deleted=0 AND $clients_table.is_lead=0)";
         }

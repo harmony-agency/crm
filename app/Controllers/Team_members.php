@@ -651,7 +651,7 @@ class Team_members extends Security_Controller {
 
     function save_my_preferences() {
         //setting preferences
-        $settings = array("notification_sound_volume", "disable_push_notification", "hidden_topbar_menus", "disable_keyboard_shortcuts", "recently_meaning", "personal_rtl_support", "reminder_sound_volume", "reminder_snooze_length");
+        $settings = array("notification_sound_volume", "disable_push_notification", "hidden_topbar_menus", "disable_keyboard_shortcuts", "recently_meaning", "reminder_sound_volume", "reminder_snooze_length");
 
         foreach ($settings as $setting) {
             $value = $this->request->getPost($setting);

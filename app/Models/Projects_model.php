@@ -18,35 +18,35 @@ class Projects_model extends Crud_model {
         $tasks_table = $this->db->prefixTable('tasks');
         $where = "";
 
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $projects_table.id=$id";
         }
 
-        $client_id = get_array_value($options, "client_id");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_id) {
             $where .= " AND $projects_table.client_id=$client_id AND $projects_table.project_type='client_project'";
         }
 
-        $status = get_array_value($options, "status");
+        $status = $this->_get_clean_value($options, "status");
         if ($status) {
             $where .= " AND $projects_table.status='$status'";
         }
 
-        $statuses = get_array_value($options, "statuses");
+        $statuses = $this->_get_clean_value($options, "statuses");
         if ($statuses) {
             $where .= " AND (FIND_IN_SET($projects_table.status, '$statuses')) ";
         }
 
 
-        $project_label = get_array_value($options, "project_label");
+        $project_label = $this->_get_clean_value($options, "project_label");
         if ($project_label) {
             $where .= " AND (FIND_IN_SET('$project_label', $projects_table.labels)) ";
         }
 
 
-        $deadline = get_array_value($options, "deadline");
-        $for_events_table = get_array_value($options, "for_events_table");
+        $deadline = $this->_get_clean_value($options, "deadline");
+        $for_events_table = $this->_get_clean_value($options, "for_events_table");
         if ($deadline && !$for_events_table) {
             $now = get_my_local_time("Y-m-d");
             if ($deadline === "expired") {
@@ -56,8 +56,8 @@ class Projects_model extends Crud_model {
             }
         }
 
-        $start_date = get_array_value($options, "start_date");
-        $start_date_for_events = get_array_value($options, "start_date_for_events");
+        $start_date = $this->_get_clean_value($options, "start_date");
+        $start_date_for_events = $this->_get_clean_value($options, "start_date_for_events");
         if ($start_date && $deadline) {
             if ($start_date_for_events) {
                 $where .= " AND ($projects_table.start_date BETWEEN '$start_date' AND '$deadline') ";
@@ -69,9 +69,9 @@ class Projects_model extends Crud_model {
 
         $extra_join = "";
         $extra_where = "";
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
 
-        $starred_projects = get_array_value($options, "starred_projects");
+        $starred_projects = $this->_get_clean_value($options, "starred_projects");
         if ($starred_projects) {
             $where .= " AND FIND_IN_SET(':$user_id:',$projects_table.starred_by) ";
         }
@@ -119,7 +119,7 @@ class Projects_model extends Crud_model {
 
         $extra_join = "";
         $extra_where = "";
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $extra_join = " LEFT JOIN (SELECT $project_members_table.user_id, $project_members_table.project_id FROM $project_members_table WHERE $project_members_table.user_id=$user_id AND $project_members_table.deleted=0 GROUP BY $project_members_table.project_id) AS project_members_table ON project_members_table.project_id= $projects_table.id ";
             $extra_where = " AND project_members_table.user_id=$user_id";
@@ -153,12 +153,12 @@ class Projects_model extends Crud_model {
 
         $where = "";
 
-        $milestone_id = get_array_value($options, "milestone_id");
+        $milestone_id = $this->_get_clean_value($options, "milestone_id");
         if ($milestone_id) {
             $where .= " AND $tasks_table.milestone_id=$milestone_id";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $tasks_table.project_id=$project_id";
         } else {
@@ -166,23 +166,22 @@ class Projects_model extends Crud_model {
             $where .= " AND $tasks_table.project_id IN(SELECT $projects_table.id FROM $projects_table WHERE $projects_table.deleted=0 AND $projects_table.status='open')";
         }
 
-        $assigned_to = get_array_value($options, "assigned_to");
+        $assigned_to = $this->_get_clean_value($options, "assigned_to");
         if ($assigned_to) {
             $where .= " AND $tasks_table.assigned_to=$assigned_to";
         }
 
-        $status_id = get_array_value($options, "status_id");
+        $status_id = $this->_get_clean_value($options, "status_id");
         if ($status_id) {
             $where .= " AND $tasks_table.status_id=$status_id";
         }
 
-        $status_ids = get_array_value($options, "status_ids");
+        $status_ids = $this->_get_clean_value($options, "status_ids");
         if ($status_ids) {
-            $status_ids = $this->db->escapeString($status_ids);
             $where .= " AND $tasks_table.status_id IN($status_ids)";
         }
 
-        $exclude_status = get_array_value($options, "exclude_status");
+        $exclude_status = $this->_get_clean_value($options, "exclude_status");
         if ($exclude_status) {
             $where .= " AND $tasks_table.status_id!=$exclude_status";
         }
@@ -190,13 +189,13 @@ class Projects_model extends Crud_model {
 
         $extra_join = "";
         $extra_where = "";
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $extra_join = " LEFT JOIN (SELECT $project_members_table.user_id, $project_members_table.project_id FROM $project_members_table WHERE $project_members_table.user_id=$user_id AND $project_members_table.deleted=0 GROUP BY $project_members_table.project_id) AS project_members_table ON project_members_table.project_id= $tasks_table.project_id ";
             $extra_where = " AND project_members_table.user_id=$user_id";
         }
 
-        $show_assigned_tasks_only_user_id = get_array_value($options, "show_assigned_tasks_only_user_id");
+        $show_assigned_tasks_only_user_id = $this->_get_clean_value($options, "show_assigned_tasks_only_user_id");
         if ($show_assigned_tasks_only_user_id) {
             $where .= " AND ($tasks_table.assigned_to=$show_assigned_tasks_only_user_id OR FIND_IN_SET('$show_assigned_tasks_only_user_id', $tasks_table.collaborators))";
         }
@@ -309,7 +308,7 @@ class Projects_model extends Crud_model {
         $where = "";
         $extra_join = "";
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $extra_join = " LEFT JOIN (SELECT $project_members_table.user_id, $project_members_table.project_id FROM $project_members_table WHERE $project_members_table.user_id=$user_id AND $project_members_table.deleted=0 GROUP BY $project_members_table.project_id) AS project_members_table ON project_members_table.project_id= $projects_table.id ";
             $where = " AND project_members_table.user_id=$user_id";
@@ -337,7 +336,7 @@ class Projects_model extends Crud_model {
         $where = "";
         $extra_join = "";
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $extra_join = " LEFT JOIN (SELECT $project_members_table.user_id, $project_members_table.project_id FROM $project_members_table WHERE $project_members_table.user_id=$user_id AND $project_members_table.deleted=0 GROUP BY $project_members_table.project_id) AS project_members_table ON project_members_table.project_id= $projects_table.id ";
             $where = " AND project_members_table.user_id=$user_id";

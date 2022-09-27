@@ -16,19 +16,18 @@ class Help_categories_model extends Crud_model {
         $help_articles_table = $this->db->prefixTable('help_articles');
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $help_categories_table.id=$id";
         }
 
-        $type = get_array_value($options, "type");
+        $type = $this->_get_clean_value($options, "type");
         if ($type) {
-            $type = $this->db->escapeString($type);
             $where .= " AND $help_categories_table.type='$type'";
         }
 
         
-        $only_active_categories = get_array_value($options, "only_active_categories");
+        $only_active_categories = $this->_get_clean_value($options, "only_active_categories");
         if ($only_active_categories) {
             $where .= " AND $help_categories_table.status='active'";
         }

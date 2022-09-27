@@ -708,7 +708,7 @@ class Tickets extends Security_Controller {
             //team member could modify only own templates
             if ($this->login_user->is_admin && (!$template_info->private || $template_info->created_by !== $this->login_user->id)) {
                 return true;
-            } else if ($template_info->private && $template_info->created_by == $this->login_user->id) {
+            } else if ($template_info->created_by == $this->login_user->id) {
                 return true;
             } else {
                 app_redirect("forbidden");
@@ -758,10 +758,13 @@ class Tickets extends Security_Controller {
             "title" => $this->request->getPost('title'),
             "description" => $this->request->getPost('description'),
             "ticket_type_id" => $this->request->getPost('ticket_type_id') ? $this->request->getPost('ticket_type_id') : 0,
-            "private" => $private,
-            "created_by" => $this->login_user->id,
-            "created_at" => $now
+            "private" => $private
         );
+
+        if (!$id) {
+            $ticket_template_data["created_by"] = $this->login_user->id;
+            $ticket_template_data["created_at"] = $now;
+        }
 
         $save_id = $this->Ticket_templates_model->ci_save($ticket_template_data, $id);
 

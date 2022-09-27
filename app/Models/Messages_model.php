@@ -19,20 +19,20 @@ class Messages_model extends Crud_model {
         $messages_table = $this->db->prefixTable('messages');
         $users_table = $this->db->prefixTable('users');
 
-        $mode = get_array_value($options, "mode");
+        $mode = $this->_get_clean_value($options, "mode");
 
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $messages_table.id=$id";
         }
 
-        $message_id = get_array_value($options, "message_id");
+        $message_id = $this->_get_clean_value($options, "message_id");
         if ($message_id) {
             $where .= " AND $messages_table.message_id=$message_id";
         }
 
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND ($messages_table.from_user_id=$user_id OR $messages_table.to_user_id=$user_id) ";
         }
@@ -48,22 +48,22 @@ class Messages_model extends Crud_model {
             $join_another = "$messages_table.from_user_id";
         }
 
-        $last_message_id = get_array_value($options, "last_message_id");
+        $last_message_id = $this->_get_clean_value($options, "last_message_id");
         if ($last_message_id) {
             $where .= " AND $messages_table.id>$last_message_id";
         }
 
 
-        $top_message_id = get_array_value($options, "top_message_id");
+        $top_message_id = $this->_get_clean_value($options, "top_message_id");
         if ($top_message_id) {
             $where .= " AND $messages_table.id<$top_message_id";
         }
 
 
 
-        $limit = get_array_value($options, "limit");
+        $limit = $this->_get_clean_value($options, "limit");
         $limit = $limit ? $limit : "30";
-        $offset = get_array_value($options, "offset");
+        $offset = $this->_get_clean_value($options, "offset");
         $offset = $offset ? $offset : "0";
 
         $sql = "SELECT * FROM (SELECT 0 AS reply_message_id, $messages_table.*, CONCAT($users_table.first_name, ' ', $users_table.last_name) AS user_name, $users_table.image AS user_image, $users_table.user_type, CONCAT(another_user.first_name, ' ', another_user.last_name) AS another_user_name, another_user.id AS another_user_id, another_user.last_online AS another_user_last_online
@@ -95,8 +95,8 @@ class Messages_model extends Crud_model {
         $messages_table = $this->db->prefixTable('messages');
         $users_table = $this->db->prefixTable('users');
 
-        $mode = get_array_value($options, "mode");
-        $user_id = get_array_value($options, "user_id");
+        $mode = $this->_get_clean_value($options, "mode");
+        $user_id = $this->_get_clean_value($options, "user_id");
 
         if ($user_id && $mode === "inbox") {
             $where_user = "to_user_id";
@@ -107,13 +107,13 @@ class Messages_model extends Crud_model {
         }
 
         $where = "";
-        $user_ids = get_array_value($options, "user_ids");
+        $user_ids = $this->_get_clean_value($options, "user_ids");
         if ($user_ids) {
             $where .= " AND $messages_table.$select_user IN($user_ids)";
         }
 
         $notification_sql = "";
-        $is_notification = get_array_value($options, "is_notification");
+        $is_notification = $this->_get_clean_value($options, "is_notification");
         if ($is_notification) {
             $notification_sql = " ORDER BY timestamp($messages_table.created_at) DESC LIMIT 10 ";
         }
@@ -140,15 +140,15 @@ class Messages_model extends Crud_model {
         $messages_table = $this->db->prefixTable('messages');
         $users_table = $this->db->prefixTable('users');
 
-        $login_user_id = get_array_value($options, "login_user_id");
+        $login_user_id = $this->_get_clean_value($options, "login_user_id");
 
         $where = "";
-        $user_id = get_array_value($options, "user_id");
+        $user_id = $this->_get_clean_value($options, "user_id");
         if ($user_id) {
             $where .= " AND ($messages_table.to_user_id=$user_id OR $messages_table.from_user_id=$user_id) ";
         }
 
-        $user_ids = get_array_value($options, "user_ids");
+        $user_ids = $this->_get_clean_value($options, "user_ids");
         if ($user_ids) {
             $where .= " AND ($messages_table.to_user_id IN($user_ids) OR $messages_table.from_user_id IN($user_ids))";
         }
@@ -237,11 +237,11 @@ class Messages_model extends Crud_model {
 
         $where = "";
 
-        $login_user_id = get_array_value($options, "login_user_id");
+        $login_user_id = $this->_get_clean_value($options, "login_user_id");
 
-        $all_members = get_array_value($options, "all_members");
-        $specific_members = get_array_value($options, "specific_members");
-        $member_to_clients = get_array_value($options, "member_to_clients");
+        $all_members = $this->_get_clean_value($options, "all_members");
+        $specific_members = $this->_get_clean_value($options, "specific_members");
+        $member_to_clients = $this->_get_clean_value($options, "member_to_clients");
         if ($all_members) {
             if ($member_to_clients) {
                 $where .= " AND ($users_table.user_type='staff' OR $users_table.user_type='client')";
@@ -266,8 +266,8 @@ class Messages_model extends Crud_model {
             $where .= " AND $users_table.user_type='client'";
         }
 
-        $client_to_members = get_array_value($options, "client_to_members");
-        $client_id = get_array_value($options, "client_id");
+        $client_to_members = $this->_get_clean_value($options, "client_to_members");
+        $client_id = $this->_get_clean_value($options, "client_id");
         if ($client_to_members) {
             if ($client_id) {
                 $where .= " AND (FIND_IN_SET($users_table.id, '$client_to_members') OR $users_table.client_id=$client_id)";

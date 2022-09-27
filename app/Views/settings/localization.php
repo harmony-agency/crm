@@ -210,10 +210,10 @@
                                     if ($conversion_rate && is_array($conversion_rate) && count($conversion_rate)) {
                                         $decimal_separator = get_setting("decimal_separator");
                                         foreach ($conversion_rate as $currency => $rate) {
-                                            if(!is_numeric($rate)){
+                                            if (!is_numeric($rate)) {
                                                 $rate = 0;
                                             }
-                                            
+
                                             $no_of_decimals = strlen(substr(strrchr($rate, "."), 1));
                                             if ($decimal_separator === ",") {
                                                 $rate = number_format($rate, $no_of_decimals, ",", ".");
@@ -280,21 +280,6 @@
                                 <?php echo js_anchor("<i data-feather='plus-circle' class='icon-16'></i> " . app_lang('add_more'), array("class" => "add-conversion-rate")); ?>
 
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <label for="rtl" class=" col-md-2"><?php echo app_lang('rtl'); ?></label>
-                            <div class="col-md-10">
-                                <?php
-                                echo form_dropdown(
-                                        "rtl", array(
-                                    "0" => app_lang("no"),
-                                    "1" => app_lang("yes")
-                                        ), get_setting('rtl'), "class='select2 mini'"
-                                );
-                                ?>
                             </div>
                         </div>
                     </div>

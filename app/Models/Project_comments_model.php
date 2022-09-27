@@ -78,33 +78,33 @@ class Project_comments_model extends Crud_model {
         $users_table = $this->db->prefixTable('users');
         $pin_comments_table = $this->db->prefixTable('pin_comments');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where = " AND $project_comments_table.id=$id";
         }
 
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where .= " AND $project_comments_table.project_id=$project_id AND $project_comments_table.task_id=0 AND $project_comments_table.file_id=0 and $project_comments_table.customer_feedback_id=0";
         }
 
-        $task_id = get_array_value($options, "task_id");
+        $task_id = $this->_get_clean_value($options, "task_id");
         if ($task_id) {
             $where .= " AND $project_comments_table.task_id=$task_id";
         }
 
-        $file_id = get_array_value($options, "file_id");
+        $file_id = $this->_get_clean_value($options, "file_id");
         if ($file_id) {
             $where .= " AND $project_comments_table.file_id=$file_id";
         }
 
-        $customer_feedback_id = get_array_value($options, "customer_feedback_id");
+        $customer_feedback_id = $this->_get_clean_value($options, "customer_feedback_id");
         if ($customer_feedback_id) {
             $where .= " AND $project_comments_table.customer_feedback_id=$customer_feedback_id";
         }
 
         $extra_select = "";
-        $login_user_id = get_array_value($options, "login_user_id");
+        $login_user_id = $this->_get_clean_value($options, "login_user_id");
         if ($login_user_id) {
             $extra_select = ", (SELECT count($likes_table.id) FROM $likes_table WHERE $likes_table.project_comment_id=$project_comments_table.id AND $likes_table.deleted=0 AND $likes_table.created_by=$login_user_id) as like_status,
                 (SELECT count($pin_comments_table.id) FROM $pin_comments_table WHERE $pin_comments_table.project_comment_id=$project_comments_table.id AND $pin_comments_table.deleted=0 AND $pin_comments_table.pinned_by=$login_user_id) as pinned_comment_status";
@@ -114,7 +114,7 @@ class Project_comments_model extends Crud_model {
         //show the main comments in descending mode
         //but show the replies in ascedning mode
         $sort = " DESC";
-        $comment_id = get_array_value($options, "comment_id");
+        $comment_id = $this->_get_clean_value($options, "comment_id");
         if ($comment_id) {
             $where .= " AND $project_comments_table.comment_id=$comment_id";
             $sort = "ASC";
@@ -138,12 +138,12 @@ class Project_comments_model extends Crud_model {
 
     function save_comment($data) {
         //set extra info
-        $comment_id = get_array_value($data, "comment_id");
-        $file_id = get_array_value($data, "file_id");
-        $task_id = get_array_value($data, "task_id");
-        $customer_feedback_id = get_array_value($data, "customer_feedback_id");
+        $comment_id = $this->_get_clean_value($data, "comment_id");
+        $file_id = $this->_get_clean_value($data, "file_id");
+        $task_id = $this->_get_clean_value($data, "task_id");
+        $customer_feedback_id = $this->_get_clean_value($data, "customer_feedback_id");
 
-        if (get_array_value($data, "description")) {
+        if ($this->_get_clean_value($data, "description")) {
             parent::init_activity_log("project_comment", "description", "project", "project_id");
         }
 
@@ -178,7 +178,7 @@ class Project_comments_model extends Crud_model {
             $task_info = $this->Tasks_model->get_one($task_id);
             $data["project_id"] = $task_info->project_id;
 
-            if (get_array_value($data, "description")) {
+            if ($this->_get_clean_value($data, "description")) {
                 parent::init_activity_log("task_comment", "description", "project", "project_id", "task", "task_id");
             }
         } else if ($customer_feedback_id) {

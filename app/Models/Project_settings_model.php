@@ -39,7 +39,7 @@ class Project_settings_model extends Crud_model {
         $project_settings_table = $this->db->prefixTable('project_settings');
 
         $where = "";
-        $project_id = get_array_value($options, "project_id");
+        $project_id = $this->_get_clean_value($options, "project_id");
         if ($project_id) {
             $where = " WHERE project_id=$project_id";
         }

@@ -16,11 +16,11 @@ class Contract_items_model extends Crud_model {
         $contracts_table = $this->db->prefixTable('contracts');
         $clients_table = $this->db->prefixTable('clients');
         $where = "";
-        $id = get_array_value($options, "id");
+        $id = $this->_get_clean_value($options, "id");
         if ($id) {
             $where .= " AND $contract_items_table.id=$id";
         }
-        $contract_id = get_array_value($options, "contract_id");
+        $contract_id = $this->_get_clean_value($options, "contract_id");
         if ($contract_id) {
             $where .= " AND $contract_items_table.contract_id=$contract_id";
         }

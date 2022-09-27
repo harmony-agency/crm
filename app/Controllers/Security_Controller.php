@@ -482,11 +482,25 @@ class Security_Controller extends App_Controller {
         return $labels_dropdown;
     }
 
-    protected function can_edit_projects() {
+    protected function can_edit_projects($project_id = 0) {
         if ($this->login_user->user_type == "staff") {
             if ($this->can_manage_all_projects()) {
                 return true;
-            } else if (get_array_value($this->login_user->permissions, "can_edit_projects") == "1") {
+            }
+
+            $can_edit_projects = get_array_value($this->login_user->permissions, "can_edit_projects");
+            $can_edit_only_own_created_projects = get_array_value($this->login_user->permissions, "can_edit_only_own_created_projects");
+
+            if ($can_edit_projects) {
+                return true;
+            }
+
+            if ($project_id) {
+                $project_info = $this->Projects_model->get_one($project_id);
+                if ($can_edit_only_own_created_projects && $project_info->created_by === $this->login_user->id) {
+                    return true;
+                }
+            } else if ($can_edit_only_own_created_projects) { //no project given and the user has partial access
                 return true;
             }
         } else {
