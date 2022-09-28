@@ -79,6 +79,7 @@ foreach ($activity_logs as $log) {
                         echo "<ul>";
                         foreach ($changes_array as $change) {
                             echo $change;
+                            
                         }
                         echo "</ul>";
                     }
